@@ -1,4 +1,4 @@
-## 2 **Application Layer**
+## 2 **Capa de Aplicación**
 
 ### 2.1 **Principles of Network Applications**
 
