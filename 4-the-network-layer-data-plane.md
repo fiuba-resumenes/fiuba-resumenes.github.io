@@ -1,3 +1,9 @@
+---
+title: Capa de Red
+nav_order: 3
+---
+
+
 ## 4 **Capa de Red: Plano de Datos**
 
 - La capa de red se descompone en dos partes que interactúan:
