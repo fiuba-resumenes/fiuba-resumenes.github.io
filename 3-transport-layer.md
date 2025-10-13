@@ -1,4 +1,4 @@
-## 3 **Capa de Transporte (Transport Layer)**
+## 3 **Capa de Transporte**
 
 La capa de transporte ofrece servicios de comunicación directamente a los **procesos de aplicación** que se ejecutan en diferentes hosts. Sus responsabilidades clave incluyen:
 
