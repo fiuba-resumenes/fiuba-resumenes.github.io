@@ -1,3 +1,8 @@
+---
+title: Capa de Transporte
+nav_order: 2
+---
+
 ## 3 **Capa de Transporte**
 
 La capa de transporte ofrece servicios de comunicación directamente a los **procesos de aplicación** que se ejecutan en diferentes hosts. Sus responsabilidades clave incluyen:
