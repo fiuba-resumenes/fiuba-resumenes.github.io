@@ -1,4 +1,4 @@
-# Apuntes del libro (Computer Networking - A Top Down Approach)
+Apuntes del libro (Computer Networking - A Top Down Approach)
 
 * [Capa de Aplicación](2-application-layer.md)
 * [Capa de Transporte](3-transport-layer.md)
