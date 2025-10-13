@@ -1,10 +1,15 @@
 title: Redes (TA048) - Cátedra Hamelin
 description: "Apuntes del libro 'Computer Networking - A Top Down Approach'"
 
-theme: jekyll-theme-minimal
+remote_theme: just-the-docs/just-the-docs
+
+button:
+  text: "Descargar en PDF"
+  href: "?print-pdf"
+
 plugins:
   - jekyll-seo-tag
+  - jekyll-remote-theme
+  - jekyll-include-cache
 
-remote_theme: pages-themes/minimal@v0.2.0
-plugins:
-- jekyll-remote-theme
+search_enabled: true
