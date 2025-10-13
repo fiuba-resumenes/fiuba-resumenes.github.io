@@ -1,6 +1,3 @@
-# Apuntes de Redes
-
 * [Capa de Aplicación](2-application-layer.md)
-* [Capa de Transporte](tema2.md)
-* [Capa de Red](tema3.md)
-* [Parciales](practica1.md)
+* [Capa de Transporte](3-transport-layer.md)
+* [Capa de Red - Plano de Datos](4-the-network-layer-data-plane.md)
