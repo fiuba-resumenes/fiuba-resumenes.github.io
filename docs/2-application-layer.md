@@ -151,8 +151,8 @@ nav_order: 1
 #### **2.4.1** Services Provided by DNS
 
 - **Domain Name System (DNS)**: servicio de directorio que traduce nombres de host en direcciones IP.
-		- Base de datos distribuida organizada jerárquicamente entre **servidores DNS**.
-		- Protocolo de capa de aplicación que permite a los hosts consultar esta base de datos distribuida.
+	- Base de datos distribuida organizada jerárquicamente entre **servidores DNS**.
+	- Protocolo de capa de aplicación que permite a los hosts consultar esta base de datos distribuida.
 - **Alias de host**: dado un alias, devuelve el **nombre canónico** del host y su dirección IP.
 - **Alias de servidor de correo**: dado un alias de servidor de correo, devuelve su nombre canónico y dirección IP.
 - **Distribución de carga**: devuelve el conjunto de direcciones IP asociadas a un único nombre de alias, rotando su orden en cada respuesta.
@@ -180,25 +180,24 @@ nav_order: 1
 
 #### **2.4.3** DNS Records and Messages
 
-- **Registros de recursos (RRs)**: cada entrada en la base de datos distribuida de DNS es una **cuádrupla**:
-		`(Name, Value, Type, TTL)`
-		- **Tipo A**: mapeo estándar de nombre de host a dirección IP. `Name` = nombre de host, `Value` = dirección IP.
-		- **Tipo NS**: se usa para delegar consultas a otro servidor DNS. `Name` = dominio, `Value` = nombre de host de un servidor DNS autoritativo.
-		- **Tipo CNAME**: proporciona el nombre _canónico_ (verdadero) de un alias de host. `Name` = alias, `Value` = nombre canónico.
-		- **Tipo MX**: se usa para intercambio de correo; asigna un dominio a su servidor de correo. `Name` = dominio o alias, `Value` = nombre canónico del servidor de correo.
+- **Registros de recursos (RRs)**: cada entrada en la base de datos distribuida de DNS es una **cuádrupla**: `(Name, Value, Type, TTL)`
+	- **Tipo A**: mapeo estándar de nombre de host a dirección IP. `Name` = nombre de host, `Value` = dirección IP.
+	- **Tipo NS**: se usa para delegar consultas a otro servidor DNS. `Name` = dominio, `Value` = nombre de host de un servidor DNS autoritativo.
+	- **Tipo CNAME**: proporciona el nombre _canónico_ (verdadero) de un alias de host. `Name` = alias, `Value` = nombre canónico.
+	- **Tipo MX**: se usa para intercambio de correo; asigna un dominio a su servidor de correo. `Name` = dominio o alias, `Value` = nombre canónico del servidor de correo.
 - **Mensajes DNS**: tanto los mensajes de **consulta** como los de **respuesta** comparten el mismo formato.
-		- **Encabezado (12 bytes)**:
-				- Contiene un **identificador de consulta de 16 bits** (copiado en el mensaje de respuesta).
-				- Banderas:
-						- 1 bit indicando _consulta o respuesta_.
-						- 1 bit para _respuesta autoritativa_.
-						- 1 bit para _recursión deseada_.
-						- 1 bit para _recursión disponible_.
-				- Cuatro contadores de 16 bits que especifican cuántas entradas aparecen en cada una de las cuatro secciones que siguen (Preguntas, Respuesta, Autoridad, Adicional).
-		- **Questions**: información sobre la consulta, incluyendo (1) el **nombre** solicitado y (2) el **tipo** de pregunta (A, MX, etc.).
-		- **Answer**: registro(s) de recurso que responden la consulta. Puede haber múltiples RRs si un nombre de host se asigna a varias IPs.
-		- **Authority**: registros que apuntan a otros servidores autoritativos.
-		- **Additional**: registros adicionales útiles. Ejemplo: para una consulta MX, la sección **Answer** contiene el nombre canónico del servidor de correo, mientras que la sección **Additional** incluye un RR de **Tipo A** con su dirección IP.
+	- **Encabezado (12 bytes)**:
+		- Contiene un **identificador de consulta de 16 bits** (copiado en el mensaje de respuesta).
+		- Banderas:
+			- 1 bit indicando _consulta o respuesta_.
+			- 1 bit para _respuesta autoritativa_.
+			- 1 bit para _recursión deseada_.
+			- 1 bit para _recursión disponible_.
+		- Cuatro contadores de 16 bits que especifican cuántas entradas aparecen en cada una de las cuatro secciones que siguen (Preguntas, Respuesta, Autoridad, Adicional).
+	- **Questions**: información sobre la consulta, incluyendo (1) el **nombre** solicitado y (2) el **tipo** de pregunta (A, MX, etc.).
+	- **Answer**: registro(s) de recurso que responden la consulta. Puede haber múltiples RRs si un nombre de host se asigna a varias IPs.
+	- **Authority**: registros que apuntan a otros servidores autoritativos.
+	- **Additional**: registros adicionales útiles. Ejemplo: para una consulta MX, la sección **Answer** contiene el nombre canónico del servidor de correo, mientras que la sección **Additional** incluye un RR de **Tipo A** con su dirección IP.
 - **Inserción de registros**: cuando se registra un nuevo dominio, el **registrador** inserta un registro **Tipo NS** en los **servidores DNS TLD** correspondientes, apuntando a los servidores DNS autoritativos del dominio. Estos, a su vez, almacenan los **Registros de Recursos (RRs)** reales para ese dominio.
 
 ### 2.5 **Peer-to-Peer File Distribution**
