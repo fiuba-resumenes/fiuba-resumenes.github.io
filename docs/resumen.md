@@ -33,6 +33,43 @@ nav_order: 4
     - Del lado del usuario, se utilizan dispositivos como smartphones, laptops, tablets.
     - Del lado del ISP, se utilizan estaciones base y torres de celular.
 
+#### Métricas de Performance
+
+##### Latencia
+
+- **Tiempo de procesamiento**: Tiempo que tarda un paquete en ser procesado por un dispositivo de red (examinar el encabezado, realizar la verificación de errores, decidir por dónde enviarlo).
+- **Tiempo de encolado**: Tiempo que espera un paquete desde que llega al router hasta que es finalmente transmitido. Depende de la congestión de la red y es muy variable.
+- **Tiempo de inserción**: Tiempo que tarda un paquete en ser insertado en el enlace. Depende de la longitud del paquete $L$ y la tasa de transmisión del enlace $R$ ($L/R$).
+- **Tiempo de propagación**: Tiempo que tarda un paquete en propagarse por el enlace de un router al próximo. Depende de la distancia del enlace $d$ y la velocidad de propagación $v$ ($d/v$)
+
+##### Pérdida de paquetes
+
+- **Intensidad de tráfico**: $I = L \cdot a / R$, donde $L$ es la longitud del paquete (bits), $a$ es la tasa de arribo promedio de paquetes (paquetes/segundo) y $R$ es la tasa de transmisión del enlace (bps).
+    - Si $I > 1$, la intensidad de tráfico es alta y se generan colas largas y pérdida de paquetes.
+    - Si $I < 1$, la intensidad de tráfico es baja y las colas son cortas o inexistentes.
+- **Pérdida de paquetes**: Ocurre cuando la tasa de llegada de paquetes excede la capacidad del enlace, resultando en colas que se llenan y paquetes que son descartados.
+
+##### Mediciones
+
+- **Bandwidth**: Capacidad máxima de un enlace para transmitir datos, medida en bps.
+- **Throughput**: Cantidad real de datos que se transmiten a través de la red en un período determinado de tiempo, en bps.
+- **Round-Trip Time**: Tiempo que tarda un paquete de datos enviado desde un emisor en volver al mismo emisor habiendo pasado por el receptor de destino.
+- **Enlace cuello de botella**: El enlace de menor throughput limita el rendimiento total de una ruta.
+- **Jitter**: Variación en el tiempo que tarda un paquete de datos en viajar desde su origen hasta su destino, midiendo la fluctuación del retardo.
+
+#### Herramientas
+
+- **Ping**: Se usa para probar la accesibilidad de un host en una red IP.
+- **Traceroute**: Se usa para rastrear la ruta que toma un paquete desde el origen hasta el destino.
+- **Dig**: Se usa para consultar servidores DNS y obtener información sobre nombres de dominio (`dig @server domain type`).
+
+#### Medios de transmisión
+
+- **Cable de cobre (UTP, coaxial)**: Su velocidad de propagación es $\approx \frac{3}{4} C$.
+- **Fibra óptica (vidrio)**: Su velocidad de propagación es $\approx \frac{2}{3} C$.
+- **Inalámbrico (WiFi, celular)**: Su velocidad de propagación es $\approx C$.
+    - **C**: Velocidad de la luz en el vacío, $\approx 3 \times 10^8$ m/s.
+
 ### Protocolos
 
 - Define los tipos de mensajes intercambiados, su sintaxis, la semántica de los campos y las reglas sobre cuándo y cómo se envían y responden los mensajes.
@@ -229,43 +266,6 @@ nav_order: 4
     - **Límite de saltos (Hop Limit)** (8 bits): Similar al TTL en IPv4, limita la duración del datagrama en la red.
     - **Dirección IP de origen** (128 bits): Dirección del host que envía el datagrama.
     - **Dirección IP de destino** (128 bits): Dirección del host que recibe el datagrama.
-
-### Métricas de Performance
-
-#### Latencia
-
-- **Tiempo de procesamiento**: Tiempo que tarda un paquete en ser procesado por un dispositivo de red (examinar el encabezado, realizar la verificación de errores, decidir por dónde enviarlo).
-- **Tiempo de encolado**: Tiempo que espera un paquete desde que llega al router hasta que es finalmente transmitido. Depende de la congestión de la red y es muy variable.
-- **Tiempo de inserción**: Tiempo que tarda un paquete en ser insertado en el enlace. Depende de la longitud del paquete $L$ y la tasa de transmisión del enlace $R$ ($L/R$).
-- **Tiempo de propagación**: Tiempo que tarda un paquete en propagarse por el enlace de un router al próximo. Depende de la distancia del enlace $d$ y la velocidad de propagación $v$ ($d/v$)
-
-### Pérdida de paquetes
-
-- **Intensidad de tráfico**: $I = L \cdot a / R$, donde $L$ es la longitud del paquete (bits), $a$ es la tasa de arribo promedio de paquetes (paquetes/segundo) y $R$ es la tasa de transmisión del enlace (bps).
-    - Si $I > 1$, la intensidad de tráfico es alta y se generan colas largas y pérdida de paquetes.
-    - Si $I < 1$, la intensidad de tráfico es baja y las colas son cortas o inexistentes.
-- **Pérdida de paquetes**: Ocurre cuando la tasa de llegada de paquetes excede la capacidad del enlace, resultando en colas que se llenan y paquetes que son descartados.
-
-#### Mediciones
-
-- **Bandwidth**: Capacidad máxima de un enlace para transmitir datos, medida en bps.
-- **Throughput**: Cantidad real de datos que se transmiten a través de la red en un período determinado de tiempo, en bps.
-- **Round-Trip Time**: Tiempo que tarda un paquete de datos enviado desde un emisor en volver al mismo emisor habiendo pasado por el receptor de destino.
-- **Enlace cuello de botella**: El enlace de menor throughput limita el rendimiento total de una ruta.
-- **Jitter**: Variación en el tiempo que tarda un paquete de datos en viajar desde su origen hasta su destino, midiendo la fluctuación del retardo.
-
-### Herramientas
-
-- **Ping**: Se usa para probar la accesibilidad de un host en una red IP.
-- **Traceroute**: Se usa para rastrear la ruta que toma un paquete desde el origen hasta el destino.
-- **Dig**: Se usa para consultar servidores DNS y obtener información sobre nombres de dominio (`dig @server domain type`).
-
-### Medios
-
-- **Cable de cobre (UTP, coaxial)**: Su velocidad de propagación es $\approx \frac{3}{4} C$.
-- **Fibra óptica (vidrio)**: Su velocidad de propagación es $\approx \frac{2}{3} C$.
-- **Inalámbrico (WiFi, celular)**: Su velocidad de propagación es $\approx C$.
-    - **C**: Velocidad de la luz en el vacío, $\approx 3 \times 10^8$ m/s.
 
 ### Capa de Aplicación
 
