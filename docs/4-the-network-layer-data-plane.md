@@ -88,8 +88,7 @@ nav_order: 3
 - **Output queuing** ocurre cuando los paquetes llegan al puerto de salida más rápido de lo que pueden ser transmitidos por el enlace saliente.
 	- Un **packet scheduler** elige qué paquete, entre los que están en cola, será transmitido.
 - La cantidad de buffering (**B**) debe ser igual al **RTT promedio multiplicado por la capacidad del enlace (C)**.  
-  Cuando un gran número de flujos TCP independientes (**N**) atraviesan un enlace, entonces:  
-  $B = RTT \cdot C / \sqrt{N}$.
+  Cuando un gran número de flujos TCP independientes (**N**) atraviesan un enlace, entonces: $B = RTT \cdot C / \sqrt{N}$.
 	- Los buffers grandes no son necesariamente mejores, ya que causan **mayores demoras de cola (queuing delay)** y hacen que los TCP senders respondan más lentamente ante congestión y pérdida de paquetes.
 	- **Bufferbloat**: larga demora causada por un buffering persistente.
 
