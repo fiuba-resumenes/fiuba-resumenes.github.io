@@ -20,3 +20,9 @@ aux_links:
     - "https://github.com/flopeztancredi/flopeztancredi.github.io"
 
 aux_links_new_tab: false
+
+just_the_docs:
+  collections:
+    docs:
+      name: Documentación
+      nav_exclude: false
