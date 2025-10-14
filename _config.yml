@@ -14,3 +14,9 @@ plugins:
   - jekyll-include-cache
 
 search_enabled: true
+
+aux_links:
+  "Ver en GitHub":
+    - "https://github.com/flopeztancredi/flopeztancredi.github.io"
+
+aux_links_new_tab: false
