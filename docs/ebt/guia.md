@@ -1,5 +1,10 @@
-# Empresas de Base Tecnológica I - TC018  
-## Guía de Ejercicios: Valor tiempo del dinero – Bonos  
+---
+title: Guía
+parent: EBT1
+nav_order: 7
+---
+
+## Guía de Ejercicios: Valor tiempo del dinero – Bonos
 
 ---
 
