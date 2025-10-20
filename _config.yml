@@ -25,6 +25,3 @@ just_the_docs:
   collections:
     docs:
       nav_exclude: false
-      nav_order:
-        - Redes
-        - EBT1
