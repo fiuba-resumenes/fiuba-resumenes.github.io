@@ -1,5 +1,6 @@
 ---
 title: Resumen
+parent: Redes
 nav_order: 4
 ---
 

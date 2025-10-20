@@ -1,4 +1,4 @@
-title: Redes (TA048)
+title: FIUBA
 favicon_ico: "/assets/favicon.ico"
 
 remote_theme: just-the-docs/just-the-docs
@@ -26,3 +26,6 @@ just_the_docs:
     docs:
       name: Documentación
       nav_exclude: false
+      nav_order:
+        - Redes
+        - EBT1

@@ -1,5 +1,6 @@
 ---
 title: Capa de Red
+parent: Redes
 nav_order: 3
 ---
 
