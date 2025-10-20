@@ -7,9 +7,9 @@ nav_order: 0
 
 ## Parte 1
 
-- [Introducción](1-introduccion.md)
-- [Economía](2-economia.md)
-- [Contabilidad](3-contabilidad.md)
-- [Valor](4-valor.md)
-- [Finanzas](5-finanzas.md)
-- [Proyectos](6-proyectos.md)
+- [Introducción](introduccion.md)
+- [Economía](economia.md)
+- [Contabilidad](contabilidad.md)
+- [Valor](valor.md)
+- [Finanzas](finanzas.md)
+- [Proyectos](proyectos.md)
