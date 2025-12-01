@@ -1,6 +1,6 @@
 ---
 title: Finanzas
-parent: EBT1
+parent: Economía
 nav_order: 5
 ---
 

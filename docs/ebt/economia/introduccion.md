@@ -1,6 +1,6 @@
 ---
 title: Introducción
-parent: EBT1
+parent: Economía
 nav_order: 1
 ---
 

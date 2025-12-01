@@ -7,9 +7,17 @@ nav_order: 0
 
 ## Parte 1
 
-- [Introducción](introduccion.md)
-- [Economía](economia.md)
-- [Contabilidad](contabilidad.md)
-- [Valor](valor.md)
-- [Finanzas](finanzas.md)
-- [Proyectos](proyectos.md)
+- [Introducción](economia/introduccion.md)
+- [Economía](economia/economia.md)
+- [Contabilidad](economia/contabilidad.md)
+- [Valor](economia/valor.md)
+- [Finanzas](economia/finanzas.md)
+- [Proyectos](economia/proyectos.md)
+
+## Parte 2
+
+- [Derecho](legal/derecho.md)
+- [Vínculos Jurídicos](legal/relaciones.md)
+- [Contratos](legal/contratos.md)
+- [Sociedades](legal/sociedades.md)
+- [Regímenes de Promoción](legal/regimenes.md)
