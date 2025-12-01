@@ -31,9 +31,9 @@ nav_order: 0
 ```
 Derecho
 ├── Derecho Público
-    ├── Derecho Constitucional
-    ├── Derecho Penal
-    └── ...
+│   ├── Derecho Constitucional
+│   ├── Derecho Penal
+│   └── ...
 └── Derecho Privado
     ├── Derecho Civil
     ├── Derecho Comercial
@@ -137,13 +137,12 @@ Derecho
 
 ### Jerarquía de las normas
 
-**De mayor a menor jerarquía:**
-
-- **Constitución Nacional** y **Tratados Internacionales de DDHH con rango constitucional**.
-- **Leyes Nacionales** (Leyes del Congreso de la Nación, Códigos).
-- **Leyes Provinciales** (en armonía con las nacionales).
-- **Otras legislaciones** (decretos, municipales, reglamentos).
-- **Resto de las normas**.
+- **De mayor a menor jerarquía:**
+  - **Constitución Nacional** y **Tratados Internacionales de DDHH con rango constitucional**.
+  - **Leyes Nacionales** (Leyes del Congreso de la Nación, Códigos).
+  - **Leyes Provinciales** (en armonía con las nacionales).
+  - **Otras legislaciones** (decretos, municipales, reglamentos).
+  - **Resto de las normas**.
 
 ### Principio de supremacía constitucional
 
@@ -188,11 +187,13 @@ Derecho
 ## Fases del Derecho
 
 ### Derecho en su Fase Objetiva
+
 - Busca **prevenir los conflictos** entre las personas.
 - Busca **resolver aquellos conflictos** que ya existan.
 - Conjunto de normas que regulan la convivencia social.
 
 ### Derecho en su Fase Subjetiva
+
 - Son los **derechos de las personas humanas**, consagrados en las **leyes del país**.
 - Las personas tienen la **prerrogativa, potestad y facultad** de exigir un comportamiento debido a un tercero (otra persona humana, jurídica, o al Estado).
 
@@ -202,6 +203,7 @@ Derecho
 - Puede ser **derechos reales** o de tipo **personal/creditorio**.
 
 #### Derechos Subjetivos Extrapatrimoniales
+
 - En principio **no son susceptibles de valoración pecuniaria**.
 - **Excepción**: cuando son violados y en proceso judicial se solicita resarcimiento por daños y perjuicios.
 - Ejemplos: **derechos personalísimos**, **derecho al ambiente sano**, **derechos de familia**.
@@ -214,6 +216,7 @@ Derecho
 - Actuación **honesta, leal y correcta**.
 
 ### Abuso del Derecho (Art. 10 CCyC)
+
 - Es **abusivo** cuando causa un daño o utiliza medios reprobables.
 
 ### Abuso de Posición Dominante (Art. 11 CCyC)
