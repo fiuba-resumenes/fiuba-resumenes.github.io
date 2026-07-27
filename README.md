@@ -36,6 +36,29 @@ El build valida antes de escribir: ids únicos, anclas que resuelven, todo
 `var(--token)` definido, cero recursos externos. `fuentes/lint_fragmentos.py`
 revisa cada fragmento contra `fuentes/contrato-fragmento.md`.
 
+## Sincronizar entre dispositivos
+
+`fuentes/sync.html` es un módulo que los builders inyectan antes de `</body>`.
+Agrega el botón "Sincronizar" al panel lateral y guarda los resaltados, las
+notas y los temas marcados en **un gist secreto de la cuenta de GitHub del
+propio lector**. No hay servidor de este sitio en el medio y no hay estado
+compartido: cada uno usa su token, nadie ve lo de nadie, y el que no conecta
+nada sigue con todo en localStorage como siempre.
+
+- Se sincroniza contenido, no interfaz. La regla es por sufijo
+  (`-highlights-v1`, `-study-notes-v1`, `-prepared-topics-v1`), así que una
+  materia nueva entra sola sin tocar el módulo. El tema y los paneles plegados
+  quedan por dispositivo.
+- Gana la versión más nueva, clave por clave, con marca de tiempo propia. Antes
+  de pisar algo local se guarda una copia y el diálogo ofrece "Deshacer".
+- La primera vez en un dispositivo que ya tenía notas, pregunta cuál lado
+  conservar en vez de elegir solo.
+- Sin cuenta hay copia a un archivo JSON, que además es el respaldo que antes
+  no existía.
+
+Está en los cuatro apuntes, incluido el de Aprendizaje Automático, que vive en
+su repo y lo lleva inyectado en el HTML porque no tiene build.
+
 ## Colores
 
 Cada materia tiene su acento, el mismo en la portada y en su apunte, en versión
