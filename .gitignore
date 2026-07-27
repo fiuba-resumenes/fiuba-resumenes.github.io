@@ -1,3 +1,10 @@
 __pycache__/
 *.pyc
 *.bak
+
+# Material de terceros: nunca se republica. Hoy no hay nada de esto en el repo,
+# pero el freno va puesto de antemano y no despues de un commit por error.
+fuentes/bibliografia/
+fuentes/diapositivas/
+fuentes/finales/
+fuentes/notion/
