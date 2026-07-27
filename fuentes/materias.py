@@ -96,10 +96,13 @@ REDES = {
 
 EBT = {
     "clave": "ebt",
-    "salida": "ebt/index.html",
+    # La URL escribe el nombre entero, como las otras tres. /ebt/ queda como
+    # redireccion. El prefijo de localStorage sigue siendo "ebt" a proposito:
+    # es el mismo origen, asi que mover la ruta no le borra las notas a nadie.
+    "salida": "empresas-de-base-tecnologica/index.html",
     "prefijo_ls": "ebt",
     "titulo_tab": "Empresas de Base Tecnológica 1 - Apunte completo",
-    "marca": "EBT 1",
+    "marca": "Empresas de Base Tecnológica",
     "h1": "Empresas de Base Tecnológica",
     "hero": ("Apunte de EBT 1 (FIUBA), las dos mitades de la materia: economía "
              "(valor, contabilidad, finanzas y evaluación de proyectos) y "

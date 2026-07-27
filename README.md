@@ -12,7 +12,7 @@ autocontenido: sin build en el servidor, sin dependencias, sin CDN.
 | Sistemas Distribuidos (75.74) | [/sistemas-distribuidos](https://flopeztancredi.github.io/sistemas-distribuidos/) | repo [sistemas-distribuidos](https://github.com/flopeztancredi/sistemas-distribuidos) |
 | Aprendizaje Automático (75.06) | [/aprendizaje-automatico](https://flopeztancredi.github.io/aprendizaje-automatico/) | repo [aprendizaje-automatico](https://github.com/flopeztancredi/aprendizaje-automatico) |
 | Redes (75.43) | [/redes](https://flopeztancredi.github.io/redes/) | este repo |
-| Empresas de Base Tecnológica 1 | [/ebt](https://flopeztancredi.github.io/ebt/) | este repo |
+| Empresas de Base Tecnológica 1 | [/empresas-de-base-tecnologica](https://flopeztancredi.github.io/empresas-de-base-tecnologica/) | este repo |
 
 Redes y EBT eran markdown servido con just-the-docs. Se convirtieron al mismo
 formato que los otros dos: un solo HTML por materia, con buscador, resaltador,
@@ -23,7 +23,7 @@ Las URLs viejas siguen vivas: `docs/redes/` y `docs/ebt/` son redirecciones.
 
 ```
 python3 fuentes/armar.py redes    # -> redes/index.html
-python3 fuentes/armar.py ebt      # -> ebt/index.html
+python3 fuentes/armar.py ebt      # -> empresas-de-base-tecnologica/index.html
 ```
 
 - `fuentes/shell.html`: el cascarón compartido (CSS, buscador, notas, temas).
