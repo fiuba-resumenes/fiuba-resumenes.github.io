@@ -1,0 +1,367 @@
+<section class="unidad" id="r02" data-titulo="Capa de aplicacion">
+  <h2>R02. Capa de aplicación</h2>
+  <p class="intro">La capa de aplicación es la única capa donde vive el software que la gente realmente usa: navegadores, clientes de correo, aplicaciones P2P. Esta unidad recorre los protocolos que sostienen la Web moderna (HTTP, cookies, caché, DNS, correo) y los dos grandes modelos de distribución de contenido (cliente-servidor y P2P, streaming adaptativo y CDNs), mostrando cómo cada uno resuelve el mismo problema de fondo: qué reglas siguen dos procesos en hosts distintos para intercambiar mensajes con sentido. Cierra con la interfaz real entre una aplicación y la red: los sockets.</p>
+
+  <h3 id="r02-principios">Principios de las aplicaciones de red</h3>
+  <p>Desarrollar una aplicación de red es escribir programas que corren en distintos <b>end systems</b> y se comunican a través de ella. El software de aplicación se limita a esos end systems: no se escribe código de aplicación para los dispositivos del núcleo de la red (routers, switches), que solo mueven bits.</p>
+
+  <h4 id="r02-arquitecturas">Arquitecturas de aplicación: cliente-servidor y P2P</h4>
+  <p>La <b>arquitectura de aplicación</b> la decide el desarrollador y dicta cómo se estructura el software entre los end systems. Hay dos modelos posibles:</p>
+  <ul>
+    <li><b>Cliente-servidor:</b> un host siempre encendido (el <b>servidor</b>), con dirección fija y bien conocida, recibe solicitudes de otros hosts (los <b>clientes</b>). Como un solo host servidor no puede manejar millones de solicitudes, se usan <b>centros de datos</b> para armar un servidor virtual.</li>
+    <li><b>Peer-to-peer (P2P):</b> comunicación directa entre pares de hosts conectados de forma intermitente (los <b>peers</b>), sin pasar por un servidor dedicado en un centro de datos.</li>
+  </ul>
+  <div class="idea">P2P es <b>autoescalable</b>: cada peer nuevo agrega demanda (pide archivos) pero también agrega capacidad (puede servirle piezas a otros). Por eso es <b>rentable</b>, ya que no requiere infraestructura de servidor significativa ni ancho de banda de servidor propio. El costo de esa ventaja son tres <b>desafíos</b> que no tiene el modelo cliente-servidor: seguridad, rendimiento y confiabilidad, porque ya no hay un único punto controlado por el proveedor del servicio.</div>
+  <figure class="diag">
+    <svg viewBox="0 0 560 230" role="img" aria-label="Comparación entre arquitectura cliente-servidor y P2P">
+      <rect x="95" y="25" width="70" height="30" fill="none" stroke="var(--acc)"/>
+      <text x="130" y="44" text-anchor="middle" fill="currentColor" font-size="12">Servidor</text>
+      <rect x="10" y="145" width="60" height="30" fill="none" stroke="currentColor"/>
+      <text x="40" y="164" text-anchor="middle" fill="currentColor" font-size="11">Cliente</text>
+      <rect x="100" y="145" width="60" height="30" fill="none" stroke="currentColor"/>
+      <text x="130" y="164" text-anchor="middle" fill="currentColor" font-size="11">Cliente</text>
+      <rect x="190" y="145" width="60" height="30" fill="none" stroke="currentColor"/>
+      <text x="220" y="164" text-anchor="middle" fill="currentColor" font-size="11">Cliente</text>
+      <line x1="130" y1="55" x2="40" y2="145" stroke="var(--linea)"/>
+      <line x1="130" y1="55" x2="130" y2="145" stroke="var(--linea)"/>
+      <line x1="130" y1="55" x2="220" y2="145" stroke="var(--linea)"/>
+      <text x="130" y="215" text-anchor="middle" fill="currentColor" font-size="13">Cliente-servidor</text>
+
+      <rect x="320" y="25" width="60" height="30" fill="none" stroke="currentColor"/>
+      <text x="350" y="44" text-anchor="middle" fill="currentColor" font-size="11">Peer</text>
+      <rect x="470" y="25" width="60" height="30" fill="none" stroke="currentColor"/>
+      <text x="500" y="44" text-anchor="middle" fill="currentColor" font-size="11">Peer</text>
+      <rect x="470" y="145" width="60" height="30" fill="none" stroke="currentColor"/>
+      <text x="500" y="164" text-anchor="middle" fill="currentColor" font-size="11">Peer</text>
+      <rect x="320" y="145" width="60" height="30" fill="none" stroke="currentColor"/>
+      <text x="350" y="164" text-anchor="middle" fill="currentColor" font-size="11">Peer</text>
+      <line x1="380" y1="40" x2="470" y2="40" stroke="var(--linea)"/>
+      <line x1="500" y1="55" x2="500" y2="145" stroke="var(--linea)"/>
+      <line x1="470" y1="160" x2="380" y2="160" stroke="var(--linea)"/>
+      <line x1="350" y1="145" x2="350" y2="55" stroke="var(--linea)"/>
+      <line x1="380" y1="55" x2="470" y2="145" stroke="var(--linea)"/>
+      <line x1="470" y1="55" x2="380" y2="145" stroke="var(--linea)"/>
+      <text x="425" y="215" text-anchor="middle" fill="currentColor" font-size="13">P2P</text>
+    </svg>
+    <figcaption>Cliente-servidor concentra el servicio en un host siempre encendido y con dirección fija. En P2P todos los peers son equivalentes y se conectan directamente entre sí, sin nodo central dedicado.</figcaption>
+  </figure>
+
+  <h4 id="r02-procesos">Procesos, sockets y direccionamiento</h4>
+  <div class="def"><b>Proceso.</b> Una instancia de un programa en ejecución.</div>
+  <p>Dentro de un mismo host, los procesos se comunican mediante mecanismos de comunicación entre procesos, controlados por el sistema operativo. Entre hosts distintos, se comunican intercambiando <b>mensajes</b> a través de la red. Por convención, en un par cliente-servidor el <b>cliente</b> es quien inicia la comunicación y el otro es el <b>servidor</b>.</p>
+  <div class="def"><b>Socket.</b> Interfaz entre la capa de aplicación y la capa de transporte dentro de un host: la API entre la aplicación y la red.</div>
+  <p>El direccionamiento necesita dos partes: el host se identifica por su <b>dirección IP</b>, y el proceso dentro de ese host por un <b>número de puerto</b>.</p>
+
+  <h4 id="r02-servicios-transporte">Qué necesita una aplicación del transporte</h4>
+  <p>Al diseñar una aplicación hay que decidir qué le pide a la capa de transporte, en cuatro ejes:</p>
+  <ul>
+    <li><b>Transferencia confiable de datos:</b> algunas aplicaciones (<b>tolerantes a pérdidas</b>) aceptan perder datos a cambio de más velocidad; otras necesitan entrega garantizada.</li>
+    <li><b>Rendimiento (throughput):</b> las <b>sensibles al ancho de banda</b> piden una tasa garantizada de bits por segundo; las <b>elásticas</b> usan el ancho de banda disponible, sea el que sea.</li>
+    <li><b>Temporización:</b> las aplicaciones <b>interactivas en tiempo real</b> necesitan garantías de tiempo; las que no son en tiempo real no imponen restricciones estrictas de retraso.</li>
+    <li><b>Seguridad:</b> las aplicaciones sensibles piden cifrado, integridad y autenticación de los extremos.</li>
+  </ul>
+
+  <h4 id="r02-tcp-udp">Qué ofrece Internet: TCP, UDP y TLS</h4>
+  <table>
+    <thead><tr><th></th><th>TCP</th><th>UDP</th></tr></thead>
+    <tbody>
+      <tr><td>Conexión</td><td>Orientado a conexión: handshaking previo, full-duplex</td><td>Sin conexión</td></tr>
+      <tr><td>Confiabilidad</td><td>Transferencia de datos confiable</td><td>No confiable</td></tr>
+      <tr><td>Congestión</td><td>Con mecanismo de control de congestión</td><td>Sin control de congestión</td></tr>
+    </tbody>
+  </table>
+  <p>Sobre TCP se monta <b>TLS</b> (Transport Layer Security): una mejora que, en el modelo de esta materia, se implementa en la capa de aplicación y agrega cifrado a la conexión.</p>
+  <div class="warn">Internet no ofrece garantías de rendimiento ni de tiempo, ni siquiera usando TCP: TCP garantiza que los datos <b>lleguen</b> completos y en orden, no garantiza <b>cuándo</b> ni a qué velocidad. En la práctica suele alcanzar para aplicaciones sensibles al tiempo, pero no hay promesa formal de eso.</div>
+
+  <h4 id="r02-protocolo-app">Protocolos de capa de aplicación</h4>
+  <div class="def"><b>Protocolo de capa de aplicación.</b> Define los tipos de mensajes que se intercambian, su sintaxis, la semántica de sus campos, y las reglas sobre cuándo y cómo se envían y responden esos mensajes.</div>
+
+  <h3 id="r02-http">La Web y HTTP</h3>
+  <h4 id="r02-http-overview">HTTP en líneas generales</h4>
+  <div class="def"><b>HTTP (HyperText Transfer Protocol).</b> El protocolo de capa de aplicación de la Web: define cómo los navegadores (clientes) solicitan páginas web a los servidores web. Una página está compuesta de <b>objetos</b> (archivos), cada uno referenciado por su <b>URL</b> (host del servidor más la ruta).</div>
+  <p>HTTP es un <b>protocolo sin estado</b>: el servidor web no guarda información sobre pedidos anteriores del cliente.</p>
+
+  <h4 id="r02-conexiones">Conexiones no persistentes y persistentes</h4>
+  <ul>
+    <li><b>No persistentes:</b> cada par solicitud/respuesta viaja sobre una conexión TCP separada. Es el modelo de <b>HTTP/1.0</b>: hay que abrir y mantener una conexión nueva para cada objeto pedido.</li>
+    <li><b>Persistentes:</b> todas las solicitudes y respuestas viajan sobre la misma conexión TCP. Es el modelo de <b>HTTP/1.1</b>: el servidor deja la conexión abierta después de responder (se cierra recién tras un tiempo de espera sin uso), y además permite <b>pipelining</b>: mandar varias solicitudes seguidas sin esperar la respuesta de la anterior.</li>
+  </ul>
+  <div class="warn">Persistencia y pipelining no son lo mismo: persistencia es reutilizar la misma conexión TCP para varios pares request/response consecutivos; pipelining es, además, no esperar cada respuesta antes de mandar el siguiente request por esa conexión. HTTP/1.1 habilita ambas cosas, pero son dos optimizaciones distintas.</div>
+  <figure class="diag">
+    <svg viewBox="0 0 560 300" role="img" aria-label="Conexiones no persistentes versus persistentes en HTTP">
+      <defs>
+        <marker id="r02-seq-acc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--acc)"/>
+        </marker>
+        <marker id="r02-seq-acc2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--acc2)"/>
+        </marker>
+      </defs>
+      <line x1="40" y1="18" x2="40" y2="248" stroke="currentColor"/>
+      <line x1="200" y1="18" x2="200" y2="248" stroke="currentColor"/>
+      <text x="40" y="12" text-anchor="middle" fill="currentColor" font-size="12">Cliente</text>
+      <text x="200" y="12" text-anchor="middle" fill="currentColor" font-size="12">Servidor</text>
+
+      <line x1="40" y1="35" x2="200" y2="35" stroke="var(--acc2)" stroke-dasharray="4 3" marker-end="url(#r02-seq-acc2)"/>
+      <text x="120" y="29" text-anchor="middle" fill="currentColor" font-size="9">conecta (TCP)</text>
+      <line x1="40" y1="62" x2="200" y2="62" stroke="var(--acc)" marker-end="url(#r02-seq-acc)"/>
+      <text x="120" y="56" text-anchor="middle" fill="currentColor" font-size="9">GET obj1</text>
+      <line x1="200" y1="89" x2="40" y2="89" stroke="var(--acc)" marker-end="url(#r02-seq-acc)"/>
+      <text x="120" y="102" text-anchor="middle" fill="currentColor" font-size="9">200 OK obj1</text>
+      <line x1="40" y1="111" x2="40" y2="121" stroke="var(--acc2)"/>
+      <line x1="200" y1="111" x2="200" y2="121" stroke="var(--acc2)"/>
+      <text x="120" y="119" text-anchor="middle" fill="currentColor" font-size="9">cierra conexión</text>
+      <line x1="40" y1="143" x2="200" y2="143" stroke="var(--acc2)" stroke-dasharray="4 3" marker-end="url(#r02-seq-acc2)"/>
+      <text x="120" y="137" text-anchor="middle" fill="currentColor" font-size="9">conecta (TCP)</text>
+      <line x1="40" y1="170" x2="200" y2="170" stroke="var(--acc)" marker-end="url(#r02-seq-acc)"/>
+      <text x="120" y="164" text-anchor="middle" fill="currentColor" font-size="9">GET obj2</text>
+      <line x1="200" y1="197" x2="40" y2="197" stroke="var(--acc)" marker-end="url(#r02-seq-acc)"/>
+      <text x="120" y="210" text-anchor="middle" fill="currentColor" font-size="9">200 OK obj2</text>
+      <line x1="40" y1="219" x2="40" y2="229" stroke="var(--acc2)"/>
+      <line x1="200" y1="219" x2="200" y2="229" stroke="var(--acc2)"/>
+      <text x="120" y="227" text-anchor="middle" fill="currentColor" font-size="9">cierra conexión</text>
+      <text x="120" y="270" text-anchor="middle" fill="currentColor" font-size="12">No persistente (HTTP/1.0)</text>
+
+      <line x1="360" y1="18" x2="360" y2="248" stroke="currentColor"/>
+      <line x1="520" y1="18" x2="520" y2="248" stroke="currentColor"/>
+      <text x="360" y="12" text-anchor="middle" fill="currentColor" font-size="12">Cliente</text>
+      <text x="520" y="12" text-anchor="middle" fill="currentColor" font-size="12">Servidor</text>
+
+      <line x1="360" y1="35" x2="520" y2="35" stroke="var(--acc2)" stroke-dasharray="4 3" marker-end="url(#r02-seq-acc2)"/>
+      <text x="440" y="29" text-anchor="middle" fill="currentColor" font-size="9">conecta (TCP), una sola vez</text>
+      <line x1="360" y1="62" x2="520" y2="62" stroke="var(--acc)" marker-end="url(#r02-seq-acc)"/>
+      <text x="440" y="56" text-anchor="middle" fill="currentColor" font-size="9">GET obj1</text>
+      <line x1="520" y1="89" x2="360" y2="89" stroke="var(--acc)" marker-end="url(#r02-seq-acc)"/>
+      <text x="440" y="102" text-anchor="middle" fill="currentColor" font-size="9">200 OK obj1</text>
+      <line x1="360" y1="116" x2="520" y2="116" stroke="var(--acc)" marker-end="url(#r02-seq-acc)"/>
+      <text x="440" y="110" text-anchor="middle" fill="currentColor" font-size="9">GET obj2</text>
+      <line x1="520" y1="143" x2="360" y2="143" stroke="var(--acc)" marker-end="url(#r02-seq-acc)"/>
+      <text x="440" y="156" text-anchor="middle" fill="currentColor" font-size="9">200 OK obj2</text>
+      <text x="440" y="185" text-anchor="middle" fill="var(--acc2)" font-size="9">(la conexión sigue abierta)</text>
+      <text x="440" y="270" text-anchor="middle" fill="currentColor" font-size="12">Persistente (HTTP/1.1)</text>
+    </svg>
+    <figcaption>Con conexiones no persistentes, cada objeto exige abrir y cerrar una conexión TCP nueva. Con conexiones persistentes, todos los objetos viajan por la misma conexión, ya abierta.</figcaption>
+  </figure>
+
+  <h4 id="r02-formato-http">Formato de los mensajes HTTP</h4>
+  <p>Un mensaje de <b>solicitud</b> tiene línea de solicitud (método, URL, versión de HTTP), líneas de encabezado, una línea en blanco que separa encabezado de cuerpo, y un cuerpo de entidad opcional (por ejemplo, en un POST). Un mensaje de <b>respuesta</b> tiene línea de estado (versión, código de estado, frase de razón), líneas de encabezado (tipo de contenido, longitud, información de caché), línea en blanco, y el cuerpo de entidad con el contenido real.</p>
+  <pre><code>GET /index.html HTTP/1.1
+Host: www.example.com
+Connection: keep-alive
+Accept-language: es
+
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-length: 6821
+Content-type: text/html
+
+&lt;!DOCTYPE html&gt; ...</code></pre>
+
+  <h4 id="r02-cookies">Cookies</h4>
+  <p>El problema de fondo: al no guardar estado, un sitio no puede por sí solo reconocer a un usuario entre visitas, y muchas veces quiere hacerlo (restringir acceso, servir contenido a medida). La solución son las <b>cookies</b>, con tres piezas:</p>
+  <ul>
+    <li>Una línea de encabezado <code>Set-cookie:</code> en la respuesta del servidor, y <code>Cookie:</code> en cada solicitud posterior del cliente.</li>
+    <li>Un archivo de cookie guardado en el sistema del usuario, administrado por el navegador.</li>
+    <li>Una base de datos de respaldo del lado del sitio web.</li>
+  </ul>
+  <pre><code>Set-cookie: 1678-a9f...      # respuesta del servidor, primera visita
+Cookie: 1678-a9f...          # pedidos siguientes del mismo navegador</code></pre>
+  <div class="warn">HTTP en sí mismo sigue siendo sin estado: la cookie no es una función del protocolo, es un mecanismo de aplicación que se apoya en dos headers de texto para simular estado del lado del cliente. El servidor la reconoce cruzándola contra su base de datos, no porque HTTP "recuerde" nada.</div>
+
+  <h4 id="r02-cache">Web caching y GET condicional</h4>
+  <div class="def"><b>Cache web (proxy server).</b> Satisface solicitudes HTTP en nombre del servidor web original: si tiene el objeto guardado localmente lo devuelve directo; si no, se conecta al servidor origen, lo pide, y recién ahí responde.</div>
+  <p>Sus ventajas son reducir el tiempo de respuesta al cliente y reducir el tráfico en el enlace de acceso a Internet de una institución (con el ahorro de costos que eso implica). Las <b>Redes de Distribución de Contenido (CDN)</b> llevan esta misma idea más lejos, instalando muchas caches distribuidas geográficamente por Internet.</p>
+  <figure class="diag">
+    <svg viewBox="0 0 600 200" role="img" aria-label="Cache web como intermediario entre cliente y servidor origen">
+      <defs>
+        <marker id="r02-cache-acc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--acc)"/>
+        </marker>
+        <marker id="r02-cache-acc2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--acc2)"/>
+        </marker>
+      </defs>
+      <rect x="20" y="70" width="110" height="50" fill="none" stroke="currentColor"/>
+      <text x="75" y="99" text-anchor="middle" fill="currentColor" font-size="12">Cliente</text>
+      <rect x="245" y="70" width="130" height="50" fill="none" stroke="var(--acc)"/>
+      <text x="310" y="93" text-anchor="middle" fill="currentColor" font-size="12">Cache web</text>
+      <text x="310" y="109" text-anchor="middle" fill="currentColor" font-size="11">(proxy)</text>
+      <rect x="470" y="70" width="110" height="50" fill="none" stroke="currentColor"/>
+      <text x="525" y="93" text-anchor="middle" fill="currentColor" font-size="12">Servidor</text>
+      <text x="525" y="109" text-anchor="middle" fill="currentColor" font-size="11">origen</text>
+
+      <line x1="130" y1="82" x2="245" y2="82" stroke="var(--acc)" marker-end="url(#r02-cache-acc)"/>
+      <text x="187" y="72" text-anchor="middle" fill="currentColor" font-size="9">1: GET objeto</text>
+      <line x1="245" y1="108" x2="130" y2="108" stroke="var(--acc)" marker-end="url(#r02-cache-acc)"/>
+      <text x="187" y="130" text-anchor="middle" fill="currentColor" font-size="9">4: respuesta (hit: termina aquí)</text>
+      <line x1="375" y1="82" x2="470" y2="82" stroke="var(--acc2)" stroke-dasharray="4 3" marker-end="url(#r02-cache-acc2)"/>
+      <text x="422" y="72" text-anchor="middle" fill="currentColor" font-size="9">2: si es miss, pide al origen</text>
+      <line x1="470" y1="108" x2="375" y2="108" stroke="var(--acc2)" stroke-dasharray="4 3" marker-end="url(#r02-cache-acc2)"/>
+      <text x="422" y="130" text-anchor="middle" fill="currentColor" font-size="9">3: responde, cache guarda copia</text>
+    </svg>
+    <figcaption>El cache web responde directo si tiene el objeto (hit). Si no lo tiene (miss), lo pide al servidor origen, guarda una copia local y recién entonces responde al cliente.</figcaption>
+  </figure>
+  <p>Para que la cache sepa si su copia sigue vigente sin descargar el objeto entero, existe el <b>GET condicional</b>: un GET con el header <code>If-Modified-Since:</code>. El servidor solo envía el objeto si cambió desde esa fecha; si no cambió, responde <code>304 Not modified</code> con el cuerpo vacío.</p>
+
+  <h4 id="r02-http2">HTTP/2 y HTTP/3</h4>
+  <p>HTTP/2 no cambia métodos, códigos de estado, URLs ni campos de encabezado de HTTP/1.1. Sus objetivos son reducir la latencia percibida mediante <b>multiplexación</b> de solicitudes y respuestas sobre una sola conexión TCP, soportar <b>priorización de solicitudes</b> y <b>server push</b>, y comprimir de forma eficiente los headers (con HPACK).</p>
+  <div class="idea">El problema que resuelve es el <b>bloqueo de cabecera de línea</b>: en HTTP/1.1, un objeto chico queda esperando detrás de uno grande en la misma conexión, y los navegadores mitigaban esto abriendo varias conexiones TCP paralelas. HTTP/2 elimina esa necesidad partiendo cada mensaje en <b>frames</b> pequeños y codificados en binario, que se entrelazan libremente sobre la misma conexión: la capa de frames intercala pedazos de distintas solicitudes y respuestas, así que un objeto grande ya no tapa a uno chico.</div>
+  <p>Además, HTTP/2 asigna <b>prioridades relativas</b> a las solicitudes para optimizar el rendimiento percibido, y permite <b>server push</b>: el servidor manda varias respuestas para un solo pedido del cliente, ya que la página HTML base indica de antemano qué otros objetos hacen falta para renderizarla completa.</p>
+  <p><b>HTTP/3</b> es un protocolo nuevo diseñado para correr sobre <b>QUIC</b>, un protocolo de transporte que se implementa en la capa de aplicación por encima de UDP.</p>
+
+  <h3 id="r02-correo">Correo electrónico</h3>
+  <p>El correo electrónico en Internet es un medio de comunicación asincrónico con tres componentes principales: los <b>agentes de usuario</b> (para leer, responder, reenviar, guardar y redactar mensajes), los <b>servidores de correo</b> (mantienen el buzón de mensajes recibidos y una cola de salida para cada usuario), y <b>SMTP</b> (Simple Mail Transfer Protocol), el protocolo de capa de aplicación sobre TCP que mueve los mensajes entre servidores.</p>
+
+  <h4 id="r02-smtp">SMTP</h4>
+  <p>Operación básica: el usuario A redacta y envía un mensaje con su agente de usuario, que lo deja en la cola del servidor de correo. El lado cliente de SMTP abre una conexión TCP contra el servidor SMTP del destinatario, hace el <b>handshaking SMTP</b>, y transfiere el mensaje por esa conexión. El lado servidor lo recibe y lo coloca en el buzón de B, que lo lee con su propio agente de usuario. SMTP normalmente no pasa por servidores de correo intermedios.</p>
+  <div class="ej">Handshaking SMTP típico (puerto por defecto 25):
+  <pre><code>(el cliente abre la conexion TCP)
+S: 220 Service ready
+C: HELO cliente.com
+S: 250 OK
+C: MAIL FROM: &lt;a@cliente.com&gt;
+S: 250 OK
+C: RCPT TO: &lt;b@destino.com&gt;
+S: 250 OK
+C: DATA
+... (contenido del mensaje) ...
+S: 250 OK
+C: QUIT
+S: 221 GOODBYE</code></pre></div>
+
+  <h4 id="r02-formato-correo">Formato de los mensajes de correo</h4>
+  <p>Un mensaje de correo tiene encabezado (<code>From:</code>, <code>To:</code>, <code>Date:</code>, <code>Subject</code>), una línea en blanco como separador, y el cuerpo con el contenido real.</p>
+
+  <h4 id="r02-imap">Protocolos de acceso: IMAP</h4>
+  <p>El agente de usuario existe por dos razones prácticas: si el servidor de correo tuviera que hablar directo con el agente del destinatario para entregarle un mensaje, ese agente tendría que estar siempre corriendo y conectado a Internet; y si el agente tuviera que hablar directo con el servidor de correo del destinatario para enviar, tendría que quedarse activo para reintentar si el primer intento falla. <b>IMAP</b> (Internet Mail Access Protocol) es el protocolo que usan los agentes de usuario para gestionar las carpetas que en realidad viven guardadas en el servidor de correo.</p>
+
+  <h3 id="r02-dns">DNS: el servicio de directorio de Internet</h3>
+  <p>Un <b>nombre de host</b> es un identificador mnemónico, de longitud variable, compuesto de caracteres alfanuméricos. Una <b>dirección IP</b> es un identificador de longitud fija y estructura jerárquica. Los humanos prefieren el primero, la red necesita el segundo.</p>
+
+  <h4 id="r02-dns-servicios">Qué servicios provee DNS</h4>
+  <div class="def"><b>DNS (Domain Name System).</b> Servicio de directorio que traduce nombres de host en direcciones IP: una base de datos distribuida organizada jerárquicamente entre servidores DNS, más el protocolo de capa de aplicación que permite a los hosts consultarla.</div>
+  <p>Además de la traducción básica, DNS resuelve <b>alias de host</b> (dado un alias, devuelve el nombre canónico y la IP), <b>alias de servidor de correo</b> (lo mismo, para el servidor de correo de un dominio), y <b>distribución de carga</b>: cuando varias IPs responden a un mismo nombre, DNS devuelve el conjunto completo rotando el orden en cada respuesta.</p>
+
+  <h4 id="r02-dns-jerarquia">Cómo funciona: jerarquía y tipos de consulta</h4>
+  <p>Un diseño <b>centralizado</b>, con un único servidor DNS almacenando todos los mapeos, tiene cuatro problemas serios: es un <b>punto único de falla</b>, no soporta el <b>volumen de tráfico</b> global, la <b>base de datos centralizada</b> queda lejos de muchos clientes, y su <b>mantenimiento</b> es inviable a escala de Internet. Por eso DNS es una base de datos distribuida y jerárquica, con tres clases de servidores (más un cuarto rol práctico):</p>
+  <table>
+    <thead><tr><th>Servidor</th><th>Rol</th></tr></thead>
+    <tbody>
+      <tr><td>Raíz</td><td>13 servidores principales, replicados en cerca de 1000 ubicaciones. Dan la IP de los servidores TLD.</td></tr>
+      <tr><td>TLD</td><td>Uno por cada dominio de nivel superior (<code>com</code>, <code>org</code>, <code>net</code>, <code>uk</code>, <code>ar</code>). Dan la IP de los servidores autoritativos.</td></tr>
+      <tr><td>Autoritativo</td><td>Guarda los mapeos reales entre nombres de dominio y direcciones IP de los hosts públicos de ese dominio.</td></tr>
+      <tr><td>Local (extra)</td><td>Uno por ISP. Primer punto de contacto de las consultas de sus hosts; actúa de proxy y reenvía hacia el resto de la jerarquía.</td></tr>
+    </tbody>
+  </table>
+  <p>Sobre esa jerarquía hay dos formas de consultar:</p>
+  <ul>
+    <li><b>Consulta recursiva:</b> el cliente le pide a un servidor (normalmente el local) que consiga la IP final <i>en su nombre</i>. Ese servidor consulta a los demás, recursivamente, hasta tener la respuesta y devolverla.</li>
+    <li><b>Consulta iterativa:</b> el servidor consultado no resuelve todo, solo responde con la dirección de otro servidor a contactar. El cliente (a menudo el servidor local, actuando en nombre del host original) va consultando cada servidor referido, uno por uno.</li>
+  </ul>
+  <div class="warn">La diferencia no es "quién pregunta" sino "quién itera": en ambos casos el host final le habla solo a su servidor local. Lo que cambia es si ese servidor local resuelve todo por su cuenta yendo y viniendo por la jerarquía (recursiva, desde el punto de vista del cliente) o si cada servidor de la cadena solo da una referencia y deja que el que preguntó siga la pista (iterativa). La figura de abajo muestra el caso iterativo: el servidor local hace los ocho pasos.</div>
+  <figure class="diag">
+    <svg viewBox="0 0 560 320" role="img" aria-label="Consulta DNS iterativa a través de la jerarquía de servidores">
+      <defs>
+        <marker id="r02-dns-acc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--acc)"/>
+        </marker>
+        <marker id="r02-dns-acc2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--acc2)"/>
+        </marker>
+      </defs>
+      <rect x="10" y="270" width="90" height="40" fill="none" stroke="currentColor"/>
+      <text x="55" y="294" text-anchor="middle" fill="currentColor" font-size="11">Cliente</text>
+      <rect x="140" y="270" width="120" height="40" fill="none" stroke="var(--acc)"/>
+      <text x="200" y="294" text-anchor="middle" fill="currentColor" font-size="11">DNS local (ISP)</text>
+      <rect x="400" y="15" width="110" height="40" fill="none" stroke="currentColor"/>
+      <text x="455" y="39" text-anchor="middle" fill="currentColor" font-size="11">Raíz</text>
+      <rect x="400" y="90" width="110" height="40" fill="none" stroke="currentColor"/>
+      <text x="455" y="114" text-anchor="middle" fill="currentColor" font-size="10">TLD (.com, .ar)</text>
+      <rect x="400" y="165" width="110" height="40" fill="none" stroke="currentColor"/>
+      <text x="455" y="189" text-anchor="middle" fill="currentColor" font-size="10">Autoritativo</text>
+
+      <line x1="100" y1="282" x2="140" y2="282" stroke="var(--acc)" marker-end="url(#r02-dns-acc)"/>
+      <text x="120" y="277" text-anchor="middle" fill="currentColor" font-size="9">1</text>
+      <line x1="140" y1="300" x2="100" y2="300" stroke="var(--acc2)" stroke-dasharray="3 3" marker-end="url(#r02-dns-acc2)"/>
+      <text x="120" y="313" text-anchor="middle" fill="currentColor" font-size="9">8</text>
+
+      <path d="M170,270 L170,35 L400,35" fill="none" stroke="var(--acc)" marker-end="url(#r02-dns-acc)"/>
+      <text x="300" y="28" text-anchor="middle" fill="currentColor" font-size="9">2</text>
+      <path d="M400,45 L185,45 L185,270" fill="none" stroke="var(--acc2)" stroke-dasharray="3 3" marker-end="url(#r02-dns-acc2)"/>
+      <text x="300" y="55" text-anchor="middle" fill="currentColor" font-size="9">3: referral (IP de un TLD)</text>
+
+      <path d="M195,270 L195,110 L400,110" fill="none" stroke="var(--acc)" marker-end="url(#r02-dns-acc)"/>
+      <text x="300" y="103" text-anchor="middle" fill="currentColor" font-size="9">4</text>
+      <path d="M400,120 L210,120 L210,270" fill="none" stroke="var(--acc2)" stroke-dasharray="3 3" marker-end="url(#r02-dns-acc2)"/>
+      <text x="300" y="132" text-anchor="middle" fill="currentColor" font-size="9">5: referral (IP del autoritativo)</text>
+
+      <path d="M225,270 L225,185 L400,185" fill="none" stroke="var(--acc)" marker-end="url(#r02-dns-acc)"/>
+      <text x="300" y="178" text-anchor="middle" fill="currentColor" font-size="9">6</text>
+      <path d="M400,195 L240,195 L240,270" fill="none" stroke="var(--acc2)" stroke-dasharray="3 3" marker-end="url(#r02-dns-acc2)"/>
+      <text x="300" y="207" text-anchor="middle" fill="currentColor" font-size="9">7: respuesta (IP final)</text>
+    </svg>
+    <figcaption>Consulta iterativa: el cliente le pregunta una sola vez a su servidor local (1); ese servidor va y viene con la raíz (2, 3), el TLD (4, 5) y el autoritativo (6, 7) hasta tener la IP final, y recién entonces responde al cliente (8).</figcaption>
+  </figure>
+  <p>Para no repetir todo este camino en cada consulta, los servidores DNS y los hosts <b>cachean</b> los mapeos recientes, junto con las direcciones de servidores TLD y autoritativos ya visitados. Cada entrada cacheada vive un tiempo limitado marcado por su <b>TTL</b> (Time To Live); mientras no expiró, el servidor responde directo sin reenviar la consulta.</p>
+  <div class="warn">El caché de DNS reduce carga en los servidores de arriba de la jerarquía y mejora la escalabilidad, pero tiene un costo: si el mapeo real cambia antes de que expire el TTL, algún cliente va a recibir una respuesta vieja. Es el trade-off clásico entre frescura y escalabilidad.</div>
+
+  <h4 id="r02-dns-registros">Registros y mensajes DNS</h4>
+  <p>Cada entrada de la base de datos distribuida de DNS es un <b>registro de recurso</b> (RR), una cuádrupla <code>(Name, Value, Type, TTL)</code>:</p>
+  <table>
+    <thead><tr><th>Tipo</th><th>Name</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>A</td><td>nombre de host</td><td>dirección IP (mapeo estándar)</td></tr>
+      <tr><td>NS</td><td>dominio</td><td>nombre de host de un servidor autoritativo (delega la consulta)</td></tr>
+      <tr><td>CNAME</td><td>alias</td><td>nombre canónico (verdadero) del host</td></tr>
+      <tr><td>MX</td><td>dominio o alias</td><td>nombre canónico del servidor de correo (intercambio de correo)</td></tr>
+    </tbody>
+  </table>
+  <div class="idea">Mnemotecnia rápida: A de address, NS de nameserver (delega hacia otro servidor), CNAME de canonical name (el alias apunta al nombre real), MX de mail exchange (dónde entregar el correo de ese dominio).</div>
+  <p>Los mensajes de <b>consulta</b> y de <b>respuesta</b> de DNS comparten el mismo formato: un encabezado de 12 bytes con un identificador de consulta de 16 bits (que la respuesta copia), un set de banderas (consulta o respuesta, respuesta autoritativa, recursión deseada, recursión disponible, todas de 1 bit), y cuatro contadores de 16 bits con la cantidad de entradas en cada una de las cuatro secciones que siguen: <b>Questions</b> (el nombre pedido y el tipo de pregunta), <b>Answer</b> (el o los RR que responden, puede haber varios si el host tiene varias IPs), <b>Authority</b> (RRs que apuntan a otros servidores autoritativos) y <b>Additional</b> (registros útiles adicionales: en una consulta MX, Answer trae el nombre canónico del servidor de correo, y Additional trae un RR tipo A con su IP).</p>
+  <p>Cuando alguien registra un dominio nuevo, el <b>registrador</b> inserta un registro tipo NS en los servidores DNS TLD correspondientes, apuntando a los servidores autoritativos de ese dominio, que a su vez van a guardar los RRs reales.</p>
+
+  <h3 id="r02-p2p">Distribución de archivos P2P</h3>
+  <p>La pregunta central es cuánto tarda en distribuirse un archivo de tamaño <b>F</b> a <b>N</b> peers, según la arquitectura.</p>
+  <ul>
+    <li><b>Cliente-servidor:</b> el servidor manda una copia completa a cada peer, es decir <b>NF bits</b> en total por su enlace de subida (a tasa u<sub>s</sub>). Cada peer descarga a su propia tasa; el tiempo total queda limitado por lo que tarde más entre "el servidor termina de subir todo" y "el peer más lento termina de bajar".</li>
+    <li><b>P2P:</b> cada peer que ya tiene una parte del archivo puede subírsela a otros, así que la capacidad total de subida del sistema crece con N (la del servidor más la suma de las de todos los peers). Como para que todos terminen hacen falta al menos NF bits subidos en total, el tiempo mínimo queda limitado por tres factores a la vez: que el servidor suba al menos una copia completa, que el peer más lento baje el archivo entero, y que se cubran esos NF bits con la capacidad de subida conjunta del sistema.</li>
+  </ul>
+  <div class="idea">Por eso P2P escala mejor: en cliente-servidor, agregar peers solo agrega demanda de descarga y el servidor sigue siendo el único que sube. En P2P, cada peer nuevo trae también su propia capacidad de subida, así que el sistema entero se hace más rápido a medida que crece, en vez de más lento.</div>
+  <details class="mas">
+    <summary>Las fórmulas exactas de tiempo de distribución</summary>
+    <p>Arquitectura cliente-servidor: el tiempo de distribución es</p>
+    <p><code>D_cs = max { NF / u_s , F / d_min }</code></p>
+    <p>donde d<sub>min</sub> es la tasa de descarga más baja entre los N peers. El tiempo queda atado a la capacidad de subida del servidor o a la velocidad del peer más lento, lo que sea peor.</p>
+    <p>Arquitectura P2P: sea u<sub>i</sub> la tasa de subida del peer i. La capacidad total de subida del sistema es u<sub>s</sub> + suma de todas las u<sub>i</sub>. El tiempo mínimo posible está acotado por:</p>
+    <p><code>D_P2P &gt;= max { F / u_s , F / d_min , NF / (u_s + suma de u_i) }</code></p>
+    <div class="warn">Notar el signo: en cliente-servidor la igualdad es exacta (así es como funciona el protocolo); en P2P es una <b>cota inferior</b> (el mejor caso teórico si la red reparte las piezas de forma óptima entre peers, sin cuellos de botella extra).</div>
+    <p>Los tres términos del máximo en P2P son: F/u<sub>s</sub>, el tiempo para que el servidor suba al menos una copia; F/d<sub>min</sub>, el tiempo para que el peer más lento baje el archivo entero; y NF/(u<sub>s</sub> + suma de u<sub>i</sub>), el tiempo si se aprovechara toda la capacidad de subida del sistema (servidor más peers) sin desperdiciar nada.</p>
+  </details>
+
+  <h3 id="r02-streaming">Streaming de video y CDN</h3>
+  <p>Para que un video se reproduzca sin cortes, el rendimiento extremo a extremo promedio tiene que ser al menos igual a la tasa de bits del video comprimido. Como esa condición no siempre se cumple, el contenido se <b>codifica</b> en varias versiones a distintas calidades (tasas de bits), y el usuario o el cliente de streaming adaptativo elige la que mejor se ajusta a su ancho de banda disponible y a las condiciones de red del momento.</p>
+
+  <h4 id="r02-dash">HTTP streaming y DASH</h4>
+  <p>En <b>HTTP streaming</b> clásico, el video se guarda en el servidor como un archivo regular con su propia URL y se manda con mensajes HTTP estándar; el cliente lo descarga, lo va guardando en un búfer de aplicación, y arranca a reproducir recién cuando ese búfer llega a un umbral mínimo. La desventaja es que todos los clientes reciben la <b>misma codificación</b>, sin importar su ancho de banda: buffering para los lentos, desperdicio de ancho de banda para los rápidos.</p>
+  <div class="def"><b>DASH (Dynamic Adaptive Streaming over HTTP).</b> El video se parte en fragmentos chicos (de pocos segundos) codificados a varias tasas de bits. El cliente pide dinámicamente cada fragmento, eligiendo la tasa de bits que mejor se banca según el ancho de banda actual y el estado de su búfer.</div>
+  <p>Del lado del servidor, cada versión del video se guarda bajo una URL distinta, y un <b>archivo de manifiesto</b> lista todas las URLs disponibles junto con sus tasas de bits: el cliente lee ese manifiesto para decidir qué fragmento pedir en cada momento.</p>
+
+  <h4 id="r02-cdn">Redes de Distribución de Contenido (CDN)</h4>
+  <p>Concentrar todo en un único centro de datos masivo trae tres problemas: la <b>distancia</b> a clientes lejanos aumenta la demora y baja el rendimiento, se <b>desperdicia ancho de banda</b> porque el mismo video puede cruzar los mismos enlaces varias veces para usuarios distintos, y es un <b>punto único de falla</b>.</p>
+  <div class="def"><b>CDN.</b> Múltiples servidores distribuidos geográficamente que guardan copias de videos y otros contenidos, con el objetivo de servir a cada usuario desde una ubicación cercana. Puede ser <b>privada</b> (del propio proveedor de contenido) o de <b>terceros</b> (ofrece el servicio a varios proveedores).</div>
+  <table>
+    <thead><tr><th></th><th>Enter Deep</th><th>Bring Home</th></tr></thead>
+    <tbody>
+      <tr><td>Ubicación de clústeres</td><td>Dentro de los ISPs de acceso, en todo el mundo</td><td>En Puntos de Intercambio de Internet (IXPs)</td></tr>
+      <tr><td>Latencia</td><td>Baja: muy cerca del usuario final</td><td>Algo mayor</td></tr>
+      <tr><td>Costo y mantenimiento</td><td>Caro y difícil de mantener</td><td>Más fácil de gestionar</td></tr>
+    </tbody>
+  </table>
+  <p>Para decidir qué contenido guardar dónde, hay dos estrategias de distribución: <b>push</b>, donde la CDN réplica proactivamente el contenido popular o nuevo hacia clústeres elegidos antes de que nadie lo pida (garantiza disponibilidad inmediata, pero exige predecir bien la demanda); y <b>pull</b>, donde el clúster recién pide el contenido a otra ubicación de la CDN (o al servidor original) cuando un cliente lo solicita por primera vez, guardando una copia local mientras lo transmite (evita precargar de más, a costa de un pequeño retraso la primera vez).</p>
+  <p>La CDN <b>intercepta</b> la solicitud del cliente, decide cuál es el clúster más adecuado según varios factores, y <b>redirige</b> la solicitud a un servidor de ese clúster. El <b>DNS</b> participa activamente en esto: cuando el cliente consulta el dominio del proveedor de contenido, el servidor autoritativo de ese dominio devuelve un nombre que ya cae dentro del dominio de la CDN; después, el propio sistema DNS de la CDN elige el servidor o clúster específico que va a atender el pedido.</p>
+  <div class="warn">La distancia geográfica sola no garantiza el mejor rendimiento: el clúster físicamente más cercano no siempre es el de menor latencia o menos saltos de red. Por eso muchas CDNs miden rendimiento real, mandando mensajes de sondeo periódicos a los servidores DNS locales (LDNS) del mundo para estimar demora y pérdida, aunque muchos LDNS están configurados para ignorar o bloquear esos sondeos, lo que limita la precisión del método.</div>
+
+  <h3 id="r02-sockets">Programación de sockets</h3>
+  <p>La programación de sockets es la puesta en práctica del concepto ya visto en <a href="#r02-procesos">procesos y sockets</a>: escribir el código de cliente y servidor que abre esa interfaz entre la aplicación y el transporte. Programar con <b>UDP</b> significa mandar cada paquete indicando explícitamente su dirección de destino, sin negociar una conexión antes; programar con <b>TCP</b> significa establecer primero la conexión (el servidor queda escuchando y acepta, el cliente conecta) y recién después intercambiar datos por ese canal ya armado, coherente con las diferencias entre ambos protocolos vistas en <a href="#r02-tcp-udp">TCP y UDP</a>.</p>
+  <p class="nota">El material fuente de esta sección se limita a los títulos de las dos prácticas (sockets UDP y sockets TCP); el detalle de implementación se trabaja en los prácticos de la materia, no en la teoría.</p>
+</section>

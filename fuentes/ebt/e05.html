@@ -1,0 +1,186 @@
+<section class="unidad" id="e05" data-titulo="Evaluacion de proyectos">
+  <h2>E05. Evaluación de proyectos</h2>
+  <p class="intro">Esta unidad cubre cómo decidir si conviene ejecutar un proyecto de inversión: los tres criterios cuantitativos centrales (VAN, TIR y período de recuperación), las distintas formas de armar el flujo de fondos que alimenta esos cálculos, el capital de trabajo operativo que financia el día a día del proyecto una vez en marcha, y los dos instrumentos financieros más comunes para levantar o colocar capital (bonos y acciones) con sus reglas de valuación. Para una empresa de base tecnológica estos criterios son los que separan una buena idea de un proyecto que efectivamente conviene ejecutar.</p>
+
+  <h3 id="e05-evaluacion">Qué es evaluar un proyecto</h3>
+  <div class="def"><b>Evaluación de proyectos.</b> Proceso de análisis y valoración de un proyecto para determinar su viabilidad económica, financiera y técnica antes de su implementación.</div>
+  <p>Permite tomar decisiones informadas sobre la inversión en proyectos, considerando los costos, los beneficios, los riesgos y los retornos esperados. Los tres valores cuantitativos que sostienen esa decisión son el VAN, la TIR y el período de recuperación (payback), desarrollados a continuación.</p>
+
+  <h3 id="e05-valores-clave">VAN, TIR y payback: los tres valores clave</h3>
+
+  <h4 id="e05-van">Valor Actual Neto (VAN)</h4>
+  <div class="def"><b>Valor Actual Neto (VAN).</b> Diferencia entre el valor presente de los flujos de caja futuros esperados y la inversión inicial. Indica si un proyecto generará valor.</div>
+  <p><code>VAN = Σ FCt / (1 + r)^t</code>, sumando desde t = 0 (donde FC0 es la inversión inicial, con signo negativo) hasta el último período del proyecto. La tasa <code>r</code> suele ser la TREMA (Tasa de Rendimiento Mínima Aceptable): el piso de rentabilidad que la empresa exige para inmovilizar capital en ese proyecto en lugar de en otra alternativa.</p>
+  <div class="idea">Pensar el VAN como traer cada peso futuro a pesos de hoy (descontarlo por el paso del tiempo y por el riesgo) y compararlo contra lo que hay que poner arriba de la mesa ahora. Si lo que se trae de vuelta vale más que lo que se puso, el proyecto crea valor.</div>
+  <p><b>Criterio de decisión:</b> se acepta el proyecto si VAN mayor a cero (crea valor por encima de la TREMA exigida); se rechaza si VAN menor a cero; si VAN es igual a cero, el proyecto rinde exactamente la TREMA y resulta indiferente frente a la alternativa de referencia.</p>
+
+  <h4 id="e05-tir">Tasa Interna de Retorno (TIR)</h4>
+  <div class="def"><b>Tasa Interna de Retorno (TIR).</b> Tasa de descuento que hace que el VAN sea cero. Indica la rentabilidad intrínseca del proyecto.</div>
+  <p>Se calcula resolviendo la ecuación <code>0 = Σ FCt / (1 + TIR)^t</code>. A diferencia del VAN, que da un monto, la TIR da un porcentaje directamente comparable contra otras tasas.</p>
+  <p><b>Criterio de decisión:</b> se compara la TIR contra la tasa de corte (la TREMA). Si TIR mayor a la tasa de corte, se acepta el proyecto; si TIR menor a la tasa de corte, se rechaza. Para un proyecto convencional (un solo cambio de signo en el flujo de fondos) este criterio coincide siempre con el del VAN.</p>
+
+  <h4 id="e05-payback">Período de recuperación (payback)</h4>
+  <div class="def"><b>Período de Recuperación (Payback).</b> Tiempo necesario para recuperar la inversión inicial a través de los flujos de caja generados por el proyecto.</div>
+  <p>Se calcula sumando los flujos de caja período a período hasta que el acumulado iguale la inversión inicial; el momento en que eso ocurre es el payback.</p>
+  <p><b>Criterio de decisión:</b> se compara el payback obtenido contra el plazo máximo que la empresa esté dispuesta a esperar para recuperar el capital. Cuanto más corto, mejor, porque el capital vuelve a estar disponible antes.</p>
+  <div class="warn">El payback tal como se calcula arriba no descuenta los flujos ni tiene en cuenta lo que pasa después del momento de recupero: dos proyectos con el mismo payback pueden tener un VAN muy distinto. La cátedra no profundiza en esta limitación, pero conviene tenerla presente para no usar el payback como único criterio.</div>
+
+  <h3 id="e05-ejemplo">Ejemplo numérico: un mismo proyecto, tres criterios</h3>
+  <div class="ej">
+    <p>Un proyecto requiere una inversión inicial de $95.000 y genera flujos de caja de $40.000 al final de cada uno de los próximos 3 años. La TREMA de la empresa es 10% anual.</p>
+    <table>
+      <thead><tr><th>Período (t)</th><th>Flujo de caja</th><th>Flujo descontado a r = 10%</th><th>Acumulado sin descontar</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>-95.000</td><td>-95.000,00</td><td>-95.000</td></tr>
+        <tr><td>1</td><td>+40.000</td><td>36.363,64</td><td>-55.000</td></tr>
+        <tr><td>2</td><td>+40.000</td><td>33.057,85</td><td>-15.000</td></tr>
+        <tr><td>3</td><td>+40.000</td><td>30.052,59</td><td>+25.000</td></tr>
+      </tbody>
+    </table>
+    <p><b>VAN:</b> la suma de los flujos descontados de los períodos 1 a 3 da 99.474,08. VAN = 99.474,08 - 95.000 = <b>+4.474,08</b>. Como VAN mayor a cero, se acepta el proyecto.</p>
+    <p><b>TIR:</b> resolviendo la ecuación del payback de la anualidad para estos flujos, la TIR resulta <b>≈ 12,66%</b>. Como 12,66% es mayor que la TREMA del 10%, el criterio de la TIR también indica aceptar, coincidiendo con el VAN.</p>
+    <p><b>Payback:</b> al cierre del año 2 falta recuperar $15.000 de los $40.000 que entran en el año 3, es decir 15.000 / 40.000 = 0,375 del período. Payback = 2 + 0,375 = <b>≈ 2,4 años</b> (2 años y unos 4 a 5 meses).</p>
+  </div>
+
+  <figure class="diag">
+    <svg viewBox="0 0 700 250" role="img" aria-label="Linea de tiempo de un flujo de fondos: una salida de caja en el periodo cero (inversion inicial) y tres entradas de caja iguales en los periodos uno a tres, cada una traida a valor presente mediante una flecha punteada que converge sobre el periodo cero">
+      <defs>
+        <marker id="e05-arr1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <line x1="40" y1="150" x2="660" y2="150" stroke="var(--linea)" stroke-width="1.5"/>
+      <g stroke="var(--linea)" stroke-width="1.5">
+        <line x1="100" y1="147" x2="100" y2="153"/>
+        <line x1="280" y1="147" x2="280" y2="153"/>
+        <line x1="460" y1="147" x2="460" y2="153"/>
+        <line x1="640" y1="147" x2="640" y2="153"/>
+      </g>
+      <g fill="currentColor" font-size="11" text-anchor="middle">
+        <text x="100" y="170">t0</text>
+        <text x="280" y="170">t1</text>
+        <text x="460" y="170">t2</text>
+        <text x="640" y="170">t3</text>
+      </g>
+      <line x1="100" y1="150" x2="100" y2="205" stroke="currentColor" stroke-width="1.6" marker-end="url(#e05-arr1)"/>
+      <text x="100" y="222" fill="currentColor" font-size="10" text-anchor="middle">Inversión inicial</text>
+      <text x="100" y="236" fill="var(--acc2)" font-size="11" text-anchor="middle">-95.000</text>
+      <g stroke="currentColor" stroke-width="1.6" marker-end="url(#e05-arr1)">
+        <line x1="280" y1="150" x2="280" y2="95"/>
+        <line x1="460" y1="150" x2="460" y2="95"/>
+        <line x1="640" y1="150" x2="640" y2="95"/>
+      </g>
+      <g fill="currentColor" font-size="11" text-anchor="middle">
+        <text x="280" y="82">+40.000</text>
+        <text x="460" y="82">+40.000</text>
+        <text x="640" y="82">+40.000</text>
+      </g>
+      <g stroke="var(--acc)" stroke-width="1.2" stroke-dasharray="4 3" fill="none" marker-end="url(#e05-arr1)">
+        <path d="M280,95 C220,60 160,45 102,48"/>
+        <path d="M460,95 C340,40 200,35 102,44"/>
+        <path d="M640,95 C420,25 200,25 102,40"/>
+      </g>
+      <text x="100" y="30" fill="var(--acc)" font-size="11" text-anchor="middle">valor presente de cada flujo</text>
+    </svg>
+    <figcaption>Flujo de fondos del ejemplo en el tiempo: la inversión inicial sale en t0 y cada flujo futuro se trae a valor presente (líneas punteadas) para compararlo contra ella; la diferencia entre ambos es el VAN.</figcaption>
+  </figure>
+
+  <figure class="diag">
+    <svg viewBox="0 0 480 280" role="img" aria-label="Curva del VAN en funcion de la tasa de descuento: decrece a medida que aumenta la tasa, cruza el cero en la TIR, y se compara contra la TREMA para decidir aceptar o rechazar el proyecto">
+      <defs>
+        <marker id="e05-arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <line x1="60" y1="230" x2="60" y2="20" stroke="currentColor" stroke-width="1.3" marker-end="url(#e05-arr2)"/>
+      <text x="30" y="30" fill="currentColor" font-size="11">VAN</text>
+      <line x1="60" y1="140" x2="440" y2="140" stroke="var(--linea)" stroke-width="1.3" stroke-dasharray="4 3"/>
+      <text x="445" y="144" fill="currentColor" font-size="10">VAN = 0</text>
+      <path d="M80,40 C120,60 150,90 190,120 C205,128 220,135 230,140 C245,148 255,158 270,165 C300,180 320,195 340,200 C365,207 385,213 400,215" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <line x1="190" y1="140" x2="190" y2="230" stroke="var(--linea)" stroke-width="1.2" stroke-dasharray="4 3"/>
+      <text x="190" y="245" fill="currentColor" font-size="10" text-anchor="middle">TREMA (10%)</text>
+      <line x1="230" y1="140" x2="230" y2="230" stroke="var(--acc)" stroke-width="1.2" stroke-dasharray="4 3"/>
+      <circle cx="230" cy="140" r="3.5" fill="var(--acc)"/>
+      <text x="230" y="262" fill="var(--acc)" font-size="10" text-anchor="middle">TIR (≈ 12,66%)</text>
+      <text x="120" y="60" fill="currentColor" font-size="11">Aceptar (VAN mayor a cero)</text>
+      <text x="330" y="190" fill="currentColor" font-size="11">Rechazar (VAN menor a cero)</text>
+      <text x="250" y="272" fill="currentColor" font-size="11" text-anchor="middle">tasa de descuento (r)</text>
+    </svg>
+    <figcaption>VAN del ejemplo en función de la tasa de descuento: es positivo para tasas menores a la TIR y negativo para tasas mayores. Como la TIR (≈ 12,66%) supera a la TREMA (10%), la TREMA cae en la zona de aceptar y el proyecto conviene.</figcaption>
+  </figure>
+
+  <h3 id="e05-estrategias">Estrategias para armar el flujo de fondos</h3>
+  <div class="def"><b>Flujo de fondos (cash flow).</b> Análisis detallado de los ingresos y egresos de efectivo asociados al proyecto en cada período, considerando solo los montos marginales (los que el proyecto agrega o quita respecto de no hacerlo). Busca identificar la liquidez y la capacidad del proyecto para generar efectivo, y evitar el quiebre de caja.</div>
+  <p>Sobre esa base, hay tres formas de encarar la proyección de los números, según por dónde se empiece:</p>
+  <table>
+    <thead><tr><th>Enfoque</th><th>Punto de partida</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td>Descendente</td><td>Ventas proyectadas</td><td>Deduce los costos, los gastos y los impuestos para determinar la rentabilidad final.</td></tr>
+      <tr><td>Ascendente</td><td>Costos y gastos estimados</td><td>Proyecta las ventas necesarias para cubrirlos y generar ganancia.</td></tr>
+      <tr><td>Fiscal</td><td>Impacto de los impuestos</td><td>Incorpora explícitamente deducciones fiscales y créditos tributarios a los flujos de caja del proyecto.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="e05-ktop">Capital de Trabajo Operativo (KTOP)</h3>
+  <div class="def"><b>Capital de Trabajo Operativo (KTOP).</b> Diferencia entre los activos corrientes operativos y los pasivos corrientes operativos de una empresa: el capital necesario para financiar las operaciones diarias, sin contar los elementos financieros o no operativos.</div>
+  <p><code>KTOP = Activo Corriente (operativo) - Pasivo Corriente (operativo)</code></p>
+  <ul>
+    <li><b>Activo Corriente Operativo:</b> activo de corto plazo vinculado al ciclo operativo de la empresa. No incluye caja, bancos ni inversiones financieras, porque esos rubros no forman parte del ciclo operativo. Se valúa aplicando el <b>principio de valuación de activos</b>: se usa información de activos similares en el mercado para determinar su valor razonable.</li>
+    <li><b>Pasivo Corriente Operativo:</b> pasivo de corto plazo vinculado al ciclo operativo de la empresa. No incluye préstamos financieros ni deudas bancarias, porque tampoco forman parte del ciclo operativo.</li>
+  </ul>
+  <div class="warn">El KTOP no es lo mismo que el capital de trabajo contable total (activo corriente menos pasivo corriente, sin filtrar). El KTOP excluye del activo la caja, los bancos y las inversiones financieras, y excluye del pasivo los préstamos y las deudas bancarias: solo entran los rubros que pertenecen al ciclo operativo del negocio, no a su financiamiento.</div>
+
+  <h3 id="e05-bonos">Bonos</h3>
+  <div class="def"><b>Bonos.</b> Instrumentos de deuda emitidos por empresas o gobiernos para financiarse, que representan una obligación de pago futuro con intereses.</div>
+  <table>
+    <thead><tr><th>Característica</th><th>Qué es</th></tr></thead>
+    <tbody>
+      <tr><td>Valor nominal</td><td>Monto que se pagará al vencimiento del bono.</td></tr>
+      <tr><td>Tasa de interés (cupón)</td><td>Porcentaje del valor nominal que se paga periódicamente como interés.</td></tr>
+      <tr><td>Plazo</td><td>Tiempo hasta el vencimiento del bono.</td></tr>
+      <tr><td>Precio de mercado</td><td>Valor actual del bono en el mercado, que puede ser diferente al valor nominal.</td></tr>
+    </tbody>
+  </table>
+  <p><b>Valuación de bonos:</b> el precio de un bono se determina a partir del valor presente de sus cupones y el valor presente de su valor nominal al vencimiento.</p>
+  <p><b>Cláusulas habituales:</b></p>
+  <ul>
+    <li><b>Rescatable:</b> permite al emisor pagar el bono antes del vencimiento, generalmente para volver a emitir deuda a una tasa cupón menor.</li>
+    <li><b>Convertible:</b> permite al tenedor convertir el bono en acciones de la empresa emisora bajo ciertas condiciones.</li>
+    <li><b>Exento:</b> no paga impuestos sobre los intereses generados; suelen emitirlos gobiernos locales o entidades sin fines de lucro.</li>
+  </ul>
+  <div class="def"><b>Duration.</b> Medida de la sensibilidad del precio del bono a cambios en las tasas de interés. Indica el tiempo promedio ponderado hasta recibir los flujos de caja del bono.</div>
+  <div class="idea">Se prefiere una duration corta, porque implica menor exposición a que suban las tasas, a menos que se espere específicamente una baja en las tasas de interés: en ese escenario conviene una duration larga para capturar más la suba de precio del bono.</div>
+
+  <h3 id="e05-acciones">Acciones</h3>
+  <div class="def"><b>Acciones.</b> Títulos que representan una parte proporcional del capital social de una empresa, otorgando derechos de propiedad y participación en las ganancias.</div>
+  <table>
+    <thead><tr><th>Característica</th><th>Qué es</th></tr></thead>
+    <tbody>
+      <tr><td>Valor nominal</td><td>Monto asignado a cada acción en el momento de su emisión.</td></tr>
+      <tr><td>Valor de mercado</td><td>Precio al que se negocian las acciones en el mercado bursátil, determinado por oferta y demanda.</td></tr>
+      <tr><td>Dividendos</td><td>Parte de las ganancias distribuidas a los accionistas, en efectivo o en acciones adicionales.</td></tr>
+      <tr><td>Derechos de voto</td><td>Permiten participar en decisiones importantes de la empresa, como la elección del directorio.</td></tr>
+    </tbody>
+  </table>
+  <p><b>Tipos de acciones:</b></p>
+  <ul>
+    <li><b>Ordinarias:</b> otorgan derechos de voto y participación en los dividendos.</li>
+    <li><b>Preferidas:</b> tienen prioridad en el pago de dividendos y en la liquidación de activos, pero generalmente no otorgan derechos de voto.</li>
+  </ul>
+  <p><b>Valuación de acciones:</b> se puede realizar mediante el descuento de flujos de caja futuros, el modelo de crecimiento de dividendos o comparaciones con empresas similares en el mercado. Dos herramientas puntuales:</p>
+  <ul>
+    <li><b>Índice PER (Price to Earnings Ratio):</b> relación entre el precio de la acción y las ganancias por acción. Indica cuántas veces las ganancias actuales están reflejadas en el precio de la acción. <code>PER = Precio de la acción / Ganancias por acción</code>.</li>
+    <li><b>Modelo de Gordon:</b> valora la acción a partir del valor presente de los dividendos futuros esperados, asumiendo un crecimiento constante. <code>Valor de la acción = D1 / (r - g)</code>, donde D1 es el dividendo esperado el próximo año, r es la tasa de descuento requerida y g es la tasa de crecimiento de los dividendos.</li>
+  </ul>
+
+  <h4 id="e05-acciones-comparacion">Bonos y acciones en síntesis</h4>
+  <table>
+    <thead><tr><th></th><th>Bonos</th><th>Acciones</th></tr></thead>
+    <tbody>
+      <tr><td><b>Naturaleza</b></td><td>Deuda: el emisor debe pagar</td><td>Propiedad: parte del capital social</td></tr>
+      <tr><td><b>Renta</b></td><td>Fija, pactada por el cupón</td><td>Variable, según dividendos y precio de mercado</td></tr>
+      <tr><td><b>Prioridad de cobro</b></td><td>Cobra antes que los accionistas</td><td>Cobra después (las preferidas, antes que las ordinarias)</td></tr>
+      <tr><td><b>Derechos de voto</b></td><td>No otorga</td><td>Las ordinarias sí; las preferidas, en general no</td></tr>
+    </tbody>
+  </table>
+</section>

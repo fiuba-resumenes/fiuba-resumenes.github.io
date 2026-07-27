@@ -1,0 +1,400 @@
+<section class="unidad" id="r01" data-titulo="Internet, borde, nucleo y retardos">
+  <h2>R01. Internet, el borde, el núcleo y los retardos</h2>
+  <p class="intro">Este capítulo presenta a Internet desde dos ángulos complementarios: la infraestructura de hardware y software que la compone, y el conjunto de servicios que ofrece a las aplicaciones distribuidas. Recorre el borde de la red (cómo se conectan los end systems) y el núcleo (cómo viajan los paquetes por enlaces y switches), analiza los cuatro componentes del retardo en una red de paquetes junto con la pérdida y el throughput, y cierra con el modelo de capas y la encapsulación que organiza a todos los protocolos de Internet. Es la base conceptual sobre la que se apoya el resto de la materia.</p>
+
+  <h3 id="r01-que-es-internet">Qué es Internet</h3>
+  <p>Internet admite dos descripciones complementarias: una centrada en los componentes de hardware y software que la forman (una descripción "de tuercas y tornillos"), y otra centrada en la infraestructura de red que provee servicios a las aplicaciones distribuidas.</p>
+
+  <h4 id="r01-hardware-y-software">Descripción de hardware y software</h4>
+  <div class="def"><b>Host (end system).</b> Cualquier dispositivo conectado a Internet: computadoras de escritorio, servidores, smartphones, sensores, etc.</div>
+  <p>Los end systems se conectan a la red mediante <b>enlaces de comunicación</b> (communication links) y <b>packet switches</b>:</p>
+  <ul>
+    <li><b>Tasa de transmisión</b>: cada enlace transmite información a una velocidad distinta, medida en bits por segundo.</li>
+    <li><b>Packet switches</b>: los más importantes son los <b>routers</b> (capa de red) y los <b>link-layer switches</b> (capa de enlace). Su función es reenviar cada paquete hacia su destino final, definiendo así su ruta (route o path) a través de la red.</li>
+  </ul>
+  <div class="def"><b>Paquete.</b> Fragmento de datos con un header agregado, resultado de que el end system emisor segmenta la información que quiere enviar. Cada paquete viaja de forma independiente por la red hasta el receptor, que reensambla todos los paquetes para reconstruir los datos originales.</div>
+  <p>Los <b>Internet Service Providers (ISPs)</b> son redes de packet switches y enlaces de comunicación que dan acceso a Internet a los end systems. Conforman una estructura jerárquica: los ISPs de menor nivel se conectan entre sí a través de ISPs de nivel superior (se detalla en <a href="#r01-red-de-redes">la sección sobre la red de redes</a>). Todo este envío y recepción de información está controlado por <b>protocolos</b>; los principales protocolos de Internet se conocen colectivamente como <b>TCP/IP</b>.</p>
+
+  <h4 id="r01-descripcion-de-servicios">Descripción de servicios</h4>
+  <p>Las <b>aplicaciones distribuidas</b> involucran a múltiples end systems que intercambian datos entre sí, y se ejecutan en los end systems, no en los packet switches del núcleo.</p>
+  <div class="def"><b>Socket.</b> Interfaz que específica cómo un programa le pide a la infraestructura de Internet que entregue datos a un programa destino que corre en otro end system.</div>
+
+  <h4 id="r01-que-es-un-protocolo">Qué es un protocolo</h4>
+  <div class="def"><b>Protocolo de red.</b> Define el formato y el orden de los mensajes intercambiados entre dos o más entidades de comunicación, así como las acciones que se toman al transmitir o recibir un mensaje, o ante algún otro evento.</div>
+
+  <h3 id="r01-borde-de-la-red">El borde de la red</h3>
+  <p>Los end systems también se llaman <b>hosts</b>, porque "hostean" (ejecutan) programas de aplicación. Se dividen habitualmente en <b>clientes</b> y <b>servidores</b>.</p>
+
+  <h4 id="r01-redes-de-acceso">Redes de acceso</h4>
+  <div class="def"><b>Red de acceso (access network).</b> Red que conecta a un end system con el primer router de su ruta hacia cualquier otro end system, llamado <b>edge router</b>.</div>
+  <p>Tecnologías de acceso doméstico:</p>
+  <ul>
+    <li><b>Digital Subscriber Line (DSL)</b>: la proporciona la compañía telefónica, que multiplexa el par de cobre existente para ofrecer a la vez un canal de descarga de alta velocidad, un canal de subida de menor capacidad y un canal reservado para telefonía de voz bidireccional. Del lado del cliente, un <i>splitter</i> separa las señales entrantes y dirige los datos al módem DSL; del lado de la compañía, un <b>DSLAM</b> (Digital Subscriber Line Access Multiplexer) hace la separación inversa y envía los datos hacia Internet.</li>
+    <li><b>Cable</b>: aprovecha la infraestructura de la compañía de televisión por cable (fibra óptica hasta el vecindario, cable coaxial hasta cada hogar). Del lado del cliente, el <b>cable módem</b> divide la conexión en un canal de subida y uno de bajada; del lado del proveedor, el <b>CMTS</b> (Cable Modem Termination System) gestiona las conexiones, convierte las señales y las enruta hacia Internet. Es un <b>medio compartido de difusión</b>: si muchos usuarios transmiten al mismo tiempo (por ejemplo, descargando video), la velocidad disponible para cada uno se reduce.</li>
+    <li><b>Fiber to the Home (FTTH)</b>: conecta el hogar directamente con la oficina central mediante fibra óptica. La forma más simple es la <b>fibra dedicada</b> (una fibra exclusiva por hogar); lo más común es que una sola fibra saliente de la central se comparta entre varios hogares y se divida cerca de las viviendas mediante divisores ópticos, con dos arquitecturas posibles: <b>AON</b> (Active Optical Network, con equipos activos alimentados eléctricamente) y <b>PON</b> (Passive Optical Network, con divisores pasivos, más simples y económicos pero con recursos compartidos).</li>
+    <li><b>5G Fixed Wireless</b>: los datos viajan de forma inalámbrica y a alta velocidad entre la estación base 5G del proveedor y un receptor en el hogar (módem o CPE), que a su vez se conecta a un router WiFi que distribuye la conexión dentro de la casa.</li>
+  </ul>
+  <p>Tecnologías de acceso empresarial: <b>Ethernet</b> (cable de par trenzado de cobre hacia un switch Ethernet, que a su vez se conecta a Internet) y <b>WiFi</b> (los dispositivos transmiten a través de un punto de acceso conectado a la red de la empresa). El <b>acceso inalámbrico de área amplia</b> (tecnologías celulares 3G, 4G LTE y 5G) permite conectarse a Internet a través de la red del operador móvil, sin necesidad de infraestructura fija en el hogar o la empresa.</p>
+  <table>
+    <thead><tr><th>Tecnología</th><th>Medio físico</th><th>Rasgo distintivo</th></tr></thead>
+    <tbody>
+      <tr><td>DSL</td><td>Par de cobre telefónico</td><td>Splitter y DSLAM, canales multiplexados junto con la voz</td></tr>
+      <tr><td>Cable</td><td>Coaxial más fibra hasta el vecindario</td><td>Medio compartido de difusión (CMTS)</td></tr>
+      <tr><td>FTTH</td><td>Fibra óptica dedicada</td><td>AON (activa) o PON (pasiva, compartida)</td></tr>
+      <tr><td>5G Fixed Wireless</td><td>Radioenlace inalámbrico</td><td>Estación base 5G a CPE, luego WiFi interno</td></tr>
+      <tr><td>Ethernet (empresa)</td><td>Par trenzado de cobre</td><td>Switch Ethernet dedicado</td></tr>
+      <tr><td>WiFi</td><td>Radioenlace inalámbrico</td><td>Punto de acceso compartido</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="r01-medios-fisicos">Medios físicos</h4>
+  <div class="def"><b>Medio físico.</b> Soporte por el que viajan los bits durante la transmisión, mediante propagación de ondas electromagnéticas o pulsos ópticos.</div>
+  <p><b>Medios guiados</b>: las ondas viajan por un medio sólido, como un cable de fibra óptica, un cable de cobre trenzado o un cable coaxial. <b>Medios no guiados</b> (unguided media): las ondas se propagan por la atmósfera o el espacio libre, como en una LAN inalámbrica (WiFi) o un canal satelital digital.</p>
+
+  <h3 id="r01-nucleo-de-la-red">El núcleo de la red</h3>
+  <p>El núcleo de la red es la malla de routers y enlaces que interconecta a los end systems. Hay dos enfoques fundamentales para mover datos por ese núcleo: la conmutación de paquetes y la conmutación de circuitos.</p>
+
+  <h4 id="r01-conmutacion-de-paquetes">Conmutación de paquetes</h4>
+  <p>Para enviar un <b>mensaje</b> (los datos de una aplicación) de un host a otro, el sistema de origen lo divide en fragmentos pequeños llamados <b>paquetes</b>. Cada paquete viaja a través de enlaces y packet switches (routers y switches de capa de enlace), transmitiéndose sobre cada enlace a su tasa de transmisión completa: el tiempo de transmisión de un paquete de <i>L</i> bits sobre un enlace de tasa <i>R</i> es <code>L / R</code> segundos.</p>
+  <div class="def"><b>Store-and-forward transmissión.</b> Mecanismo que usa la mayoría de los packet switches: el switch debe recibir el paquete completo antes de poder empezar a transmitirlo por el enlace de salida.</div>
+  <p>El retardo de extremo a extremo para enviar un paquete de tamaño <i>L</i> a través de <i>N</i> enlaces de tasa <i>R</i> (sin contar retardos de propagación) es <code>d = N * (L / R)</code>.</p>
+  <div class="def"><b>Cola de salida (output buffer).</b> Cada packet switch tiene un búfer de salida por cada enlace. Si un paquete llega y el enlace de salida está ocupado, debe esperar ahí, lo que genera un <b>retardo de cola</b> (queuing delay).</div>
+  <div class="warn">Como los búferes tienen tamaño finito, si un paquete llega y la cola está llena se produce <b>pérdida de paquetes</b> (packet loss): el router descarta el paquete que llega o alguno ya encolado. No es un caso raro: es la consecuencia directa de compartir un recurso finito entre muchos flujos.</div>
+  <p>Cada router tiene una <b>tabla de reenvío</b> (forwarding table) que mapea direcciones de destino con enlaces de salida. Cuando llega un paquete, el router examina su dirección IP de destino y usa la tabla para decidir a qué enlace reenviarlo. Estas tablas se configuran automáticamente mediante <b>protocolos de enrutamiento</b> (routing protocols), que determinan las mejores rutas entre origen y destino.</p>
+
+  <h4 id="r01-conmutacion-de-circuitos">Conmutación de circuitos</h4>
+  <p>Es el otro enfoque fundamental para mover datos. A diferencia del packet switching, en la <b>conmutación de circuitos</b> los recursos necesarios en la ruta (búferes, tasa de transmisión) se <b>reservan</b> durante toda la sesión de comunicación: antes de enviar datos, la red establece una conexión de extremo a extremo llamada <b>circuito</b>, que garantiza una tasa de transmisión constante. Las redes telefónicas tradicionales son el ejemplo clásico.</p>
+  <p>Un enlace se divide en múltiples circuitos mediante dos formas de multiplexación:</p>
+  <ul>
+    <li><b>Multiplexación por división de frecuencia (FDM)</b>: el espectro de frecuencia del enlace se divide en bandas, y cada conexión recibe una banda dedicada.</li>
+    <li><b>Multiplexación por división de tiempo (TDM)</b>: el tiempo se divide en tramas de duración fija, cada trama se divide en ranuras de tiempo (time slots), y a cada conexión se le asigna una ranura en cada trama.</li>
+  </ul>
+  <figure class="diag">
+    <svg viewBox="0 0 680 300" role="img" aria-label="Conmutación de paquetes con cola en el router, comparada con conmutación de circuitos por división en frecuencia y por división en tiempo">
+      <defs>
+        <marker id="r01-arrow-ps" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+        <marker id="r01-arrow-ps2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--acc2)"/>
+        </marker>
+      </defs>
+      <g fill="currentColor" font-size="12" text-anchor="middle">
+        <text x="160" y="16">Conmutación de paquetes</text>
+      </g>
+      <g fill="none" stroke="currentColor">
+        <rect x="20" y="70" width="60" height="40"/>
+        <rect x="130" y="50" width="70" height="90"/>
+        <rect x="240" y="70" width="60" height="40"/>
+        <line x1="80" y1="90" x2="130" y2="90" marker-end="url(#r01-arrow-ps)"/>
+        <line x1="200" y1="90" x2="240" y2="90" marker-end="url(#r01-arrow-ps)"/>
+      </g>
+      <g fill="none" stroke="var(--acc)" stroke-dasharray="3 3">
+        <rect x="145" y="60" width="18" height="14"/>
+        <rect x="145" y="78" width="18" height="14"/>
+        <rect x="145" y="96" width="18" height="14"/>
+      </g>
+      <g fill="currentColor" font-size="11" text-anchor="middle">
+        <text x="50" y="94">Host A</text>
+        <text x="165" y="45">Router</text>
+        <text x="270" y="94">Host B</text>
+        <text x="185" y="130">cola de salida</text>
+        <text x="160" y="165">d_trans = L / R por enlace</text>
+        <text x="160" y="180">(store-and-forward)</text>
+      </g>
+      <g fill="currentColor" font-size="12" text-anchor="middle">
+        <text x="520" y="16">Conmutación de circuitos</text>
+      </g>
+      <g fill="none" stroke="currentColor">
+        <rect x="360" y="40" width="300" height="70"/>
+        <line x1="360" y1="63.3" x2="660" y2="63.3"/>
+        <line x1="360" y1="86.6" x2="660" y2="86.6"/>
+      </g>
+      <g fill="currentColor" font-size="10" text-anchor="middle">
+        <text x="510" y="30">FDM: bandas de frecuencia dedicadas</text>
+        <text x="510" y="57">conexión 1</text>
+        <text x="510" y="80">conexión 2</text>
+        <text x="510" y="103">conexión 3</text>
+      </g>
+      <g fill="none" stroke="currentColor">
+        <rect x="360" y="150" width="90" height="30"/>
+        <rect x="450" y="150" width="90" height="30"/>
+        <rect x="540" y="150" width="90" height="30"/>
+      </g>
+      <g fill="currentColor" font-size="10" text-anchor="middle">
+        <text x="510" y="140">TDM: una trama con tres ranuras de tiempo</text>
+        <text x="405" y="169">slot 1</text>
+        <text x="495" y="169">slot 2</text>
+        <text x="585" y="169">slot 3</text>
+      </g>
+      <line x1="360" y1="195" x2="630" y2="195" stroke="var(--acc2)" stroke-dasharray="4 4" marker-end="url(#r01-arrow-ps2)"/>
+      <text x="510" y="212" fill="currentColor" font-size="10" text-anchor="middle">se repite trama tras trama, misma ranura para la misma conexión</text>
+      <text x="510" y="250" fill="currentColor" font-size="11" text-anchor="middle">recursos reservados durante toda la sesión</text>
+    </svg>
+    <figcaption>Conmutación de paquetes: el router almacena el paquete completo antes de reenviarlo (store-and-forward) y forma una cola de salida cuando el enlace está ocupado. Conmutación de circuitos: cada conexión reserva una banda de frecuencia fija (FDM) o una ranura de tiempo fija en cada trama (TDM) durante toda la sesión.</figcaption>
+  </figure>
+  <table>
+    <thead><tr><th>Ventajas de packet switching</th><th>Ventajas de circuit switching</th></tr></thead>
+    <tbody>
+      <tr><td>Más eficiente con tráfico a ráfagas (bursty): comparte mejor la capacidad del enlace.</td><td>Ofrece garantías de rendimiento: tasa constante y sin demoras de cola.</td></tr>
+      <tr><td>Más simple y menos costoso de implementar.</td><td>Adecuado para servicios en tiempo real, como llamadas de voz.</td></tr>
+      <tr><td>Los recursos no usados por un usuario quedan disponibles para otros.</td><td>El rendimiento nunca se degrada por la congestión de otros usuarios.</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="r01-red-de-redes">Una red de redes</h4>
+  <p>Internet es una "red de redes": para conectar a miles de millones de sistemas finales, los <b>ISPs de acceso</b> deben interconectarse entre sí. La estructura evolucionó hacia una jerarquía compleja:</p>
+  <ul>
+    <li><b>ISPs de acceso</b>: conectan a los usuarios finales con la red.</li>
+    <li><b>ISPs regionales</b>: agrupan a los ISPs de acceso de una región.</li>
+    <li><b>ISPs de nivel 1 (Tier-1)</b>: grandes redes troncales que abarcan continentes y se conectan entre sí; los ISPs regionales les pagan por la conexión.</li>
+  </ul>
+  <p>Para optimizar costos y conectividad se sumaron más elementos: los <b>Points of Presence (PoPs)</b>, puntos donde un ISP cliente puede conectarse a la red de un ISP proveedor; el <b>multi-homing</b>, cuando un ISP se conecta a dos o más proveedores para tener redundancia; el <b>peering</b>, cuando dos ISPs se conectan directamente para intercambiar tráfico local, generalmente sin costo (settlement-free), evitando pasar por sus proveedores de nivel superior; y los <b>Internet Exchange Points (IXPs)</b>, puntos de encuentro físicos donde varios ISPs hacen peering entre sí. Las grandes <b>redes de proveedores de contenido</b> (como Google) construyeron sus propias redes globales para conectar sus centros de datos, y hacen peering directo con ISPs de niveles inferiores, evitando a los ISPs de nivel 1 para reducir costos y mejorar el rendimiento.</p>
+  <figure class="diag">
+    <svg viewBox="0 0 680 350" role="img" aria-label="Jerarquía de ISPs de nivel 1, regionales y de acceso, con peering en un IXP y bypass de una red de contenido">
+      <g fill="none" stroke="currentColor">
+        <rect x="180" y="20" width="100" height="40"/>
+        <rect x="400" y="20" width="100" height="40"/>
+        <line x1="280" y1="40" x2="400" y2="40"/>
+
+        <rect x="80" y="110" width="100" height="40"/>
+        <rect x="300" y="110" width="100" height="40"/>
+        <rect x="500" y="110" width="100" height="40"/>
+        <line x1="230" y1="60" x2="130" y2="110"/>
+        <line x1="230" y1="60" x2="350" y2="110"/>
+        <line x1="450" y1="60" x2="350" y2="110"/>
+        <line x1="450" y1="60" x2="550" y2="110"/>
+
+        <rect x="20" y="200" width="90" height="40"/>
+        <rect x="140" y="200" width="90" height="40"/>
+        <rect x="380" y="200" width="90" height="40"/>
+        <rect x="560" y="200" width="90" height="40"/>
+        <line x1="130" y1="150" x2="65" y2="200"/>
+        <line x1="130" y1="150" x2="185" y2="200"/>
+        <line x1="350" y1="150" x2="425" y2="200"/>
+        <line x1="550" y1="150" x2="605" y2="200"/>
+
+        <rect x="250" y="290" width="80" height="40"/>
+        <rect x="500" y="290" width="150" height="40"/>
+      </g>
+      <g fill="none" stroke="var(--acc2)" stroke-dasharray="4 4">
+        <line x1="185" y1="240" x2="270" y2="290"/>
+        <line x1="425" y1="240" x2="310" y2="290"/>
+        <line x1="605" y1="240" x2="575" y2="290"/>
+      </g>
+      <g fill="currentColor" font-size="11" text-anchor="middle">
+        <text x="230" y="44">ISP Tier-1</text>
+        <text x="450" y="44">ISP Tier-1</text>
+        <text x="130" y="134">ISP regional</text>
+        <text x="350" y="134">ISP regional</text>
+        <text x="550" y="134">ISP regional</text>
+        <text x="65" y="224">ISP de acceso</text>
+        <text x="185" y="224">ISP de acceso</text>
+        <text x="425" y="224">ISP de acceso</text>
+        <text x="605" y="224">ISP de acceso</text>
+        <text x="290" y="314">IXP</text>
+        <text x="575" y="310">Red de contenido</text>
+        <text x="575" y="324">(ej. Google)</text>
+        <text x="290" y="270">peering</text>
+        <text x="575" y="266">bypass de Tier-1</text>
+      </g>
+    </svg>
+    <figcaption>Los ISPs de acceso se agrupan bajo ISPs regionales, y estos bajo ISPs de nivel 1 (Tier-1) que se conectan entre sí. Dos ISPs de acceso hacen peering directo en un IXP sin pasar por sus proveedores de nivel superior, y una red de proveedor de contenido peerea directamente con un ISP de acceso, evitando a los Tier-1.</figcaption>
+  </figure>
+
+  <h3 id="r01-retardo-perdida-throughput">Retardo, pérdida y throughput</h3>
+  <p>Un paquete sufre distintos tipos de latencia en cada nodo (host o router) de su ruta, y esas latencias determinan cuánta capacidad efectiva tiene la red y cuánto tráfico puede perder.</p>
+
+  <h4 id="r01-tipos-de-retardo">Tipos de retardo en un nodo</h4>
+  <p>La <b>latencia nodal total</b> es la suma de cuatro componentes:</p>
+  <ul>
+    <li><b>Latencia de procesamiento</b> (processing delay): tiempo para examinar la cabecera del paquete, comprobar errores y decidir a qué enlace de salida enviarlo. Del orden de microsegundos o menos.</li>
+    <li><b>Latencia de cola</b> (queuing delay): tiempo que el paquete espera en la cola de salida. Depende del nivel de congestión de la red y puede variar mucho.</li>
+    <li><b>Latencia de transmisión</b> (transmissión delay): tiempo necesario para empujar todos los bits del paquete al enlace, igual a <code>L / R</code> (longitud del paquete sobre tasa de transmisión del enlace). No depende de la distancia.</li>
+    <li><b>Latencia de propagación</b> (propagation delay): tiempo que tarda un bit en viajar desde un extremo del enlace hasta el otro, igual a <code>d / s</code> (distancia del enlace sobre velocidad de propagación). No depende del tamaño del paquete.</li>
+  </ul>
+  <p>La latencia total de un nodo es <code>d_nodal = d_proc + d_queue + d_trans + d_prop</code>.</p>
+  <figure class="diag">
+    <svg viewBox="0 0 680 220" role="img" aria-label="Los cuatro componentes del retardo nodal: procesamiento, cola, transmisión y propagación entre dos routers">
+      <defs>
+        <marker id="r01-arrow-delay" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <text x="340" y="20" fill="currentColor" font-size="12" text-anchor="middle">d_nodal = d_proc + d_queue + d_trans + d_prop</text>
+      <g fill="none" stroke="currentColor">
+        <rect x="0" y="90" width="40" height="90"/>
+        <rect x="620" y="90" width="40" height="90"/>
+      </g>
+      <g fill="currentColor" font-size="10" text-anchor="middle">
+        <text x="20" y="115">Router</text>
+        <text x="20" y="128">A</text>
+        <text x="640" y="115">Router</text>
+        <text x="640" y="128">B</text>
+      </g>
+      <line x1="50" y1="80" x2="610" y2="80" stroke="currentColor" marker-end="url(#r01-arrow-delay)"/>
+      <g fill="none" stroke="currentColor">
+        <rect x="50" y="110" width="80" height="50"/>
+      </g>
+      <g fill="none" stroke="var(--acc)" stroke-dasharray="3 3">
+        <rect x="130" y="110" width="120" height="50"/>
+      </g>
+      <g fill="none" stroke="currentColor">
+        <rect x="250" y="110" width="140" height="50"/>
+      </g>
+      <g fill="none" stroke="var(--acc2)" stroke-dasharray="3 3">
+        <rect x="390" y="110" width="220" height="50"/>
+      </g>
+      <g fill="currentColor" font-size="10" text-anchor="middle">
+        <text x="90" y="180">procesamiento</text>
+        <text x="90" y="192">d_proc</text>
+        <text x="190" y="180">cola</text>
+        <text x="190" y="192">d_queue (variable)</text>
+        <text x="320" y="180">transmisión</text>
+        <text x="320" y="192">d_trans = L / R</text>
+        <text x="500" y="180">propagación</text>
+        <text x="500" y="192">d_prop = d / s</text>
+      </g>
+    </svg>
+    <figcaption>Los cuatro componentes de la latencia nodal, en el orden en que se acumulan entre el Router A y el Router B: procesamiento y cola ocurren dentro del router (la cola es variable, depende de la congestión), y transmisión y propagación ocurren en el enlace de salida hacia el siguiente nodo.</figcaption>
+  </figure>
+
+  <h4 id="r01-retardo-de-cola-y-perdida">Retardo de cola y pérdida de paquetes</h4>
+  <p>La latencia de cola es el componente más complejo y variable de los cuatro. Se caracteriza con la <b>intensidad de tráfico</b> (traffic intensity), la relación <code>La / R</code>, donde <i>L</i> es el tamaño del paquete, <i>a</i> la tasa media de llegada de paquetes y <i>R</i> la tasa de transmisión del enlace:</p>
+  <ul>
+    <li>Si <code>La / R</code> es mayor a 1, la cola crece sin límite y la latencia tiende a infinito.</li>
+    <li>Si <code>La / R</code> es menor o igual a 1, la latencia depende de la naturaleza del tráfico (si llega a ráfagas o de forma periódica).</li>
+    <li>A medida que la intensidad de tráfico se acerca a 1, la latencia de cola media crece de forma exponencial.</li>
+  </ul>
+  <div class="warn">Las colas de los routers tienen capacidad finita: si un paquete llega y la cola está llena, el router lo descarta (drop), y eso es pérdida de paquetes, no un simple aumento de latencia.</div>
+
+  <h4 id="r01-retardo-extremo-a-extremo">Retardo de extremo a extremo</h4>
+  <p>La latencia total de extremo a extremo es la suma de las latencias nodales a lo largo de toda la ruta. En una red sin congestión con <i>N-1</i> routers entre origen y destino, la latencia de extremo a extremo es <code>d_end_end = N * (d_proc + d_trans + d_prop)</code>.</p>
+  <div class="def"><b>Traceroute.</b> Herramienta que permite a un host descubrir la ruta (la secuencia de routers) hacia un destino y medir el tiempo de ida y vuelta (round-trip time) hacia cada uno de ellos.</div>
+
+  <h4 id="r01-throughput">Throughput</h4>
+  <div class="def"><b>Throughput.</b> Tasa (en bits por segundo) a la que se transfieren los bits entre un emisor y un receptor.</div>
+  <p>Se distingue el <b>throughput instantáneo</b> (la tasa en un momento dado) del <b>throughput medio</b>: si un archivo de <i>F</i> bits tarda <i>T</i> segundos en transferirse, el throughput medio es <code>F / T</code>.</p>
+  <div class="idea">En una ruta de <i>N</i> enlaces con tasas <code>R1, R2, ..., RN</code>, el throughput de extremo a extremo es el mínimo de esas tasas: es el <b>enlace cuello de botella</b> (bottleneck link) el que determina el rendimiento total, no el promedio de todos los enlaces. En la Internet actual el cuello de botella suele estar en el enlace de acceso (la conexión del usuario o del servidor a la red), porque el núcleo de la red suele estar sobredimensionado.</div>
+
+  <h3 id="r01-capas-y-encapsulamiento">Capas de protocolos y encapsulamiento</h3>
+
+  <h4 id="r01-arquitectura-en-capas">Arquitectura en capas</h4>
+  <p>Para gestionar la complejidad del diseño de redes, los protocolos se organizan en <b>capas</b> (layers). Una arquitectura en capas permite discutir una parte específica de un sistema complejo y da <b>modularidad</b>: se puede actualizar la implementación de una capa sin afectar al resto del sistema. El conjunto de protocolos de las distintas capas se llama <b>pila de protocolos</b> (protocol stack).</p>
+  <p>La pila de protocolos de Internet consta de cinco capas:</p>
+  <table>
+    <thead><tr><th>Capa</th><th>Función</th><th>Unidad de datos</th></tr></thead>
+    <tbody>
+      <tr><td>Aplicación</td><td>Aloja las aplicaciones de red y sus protocolos (HTTP, SMTP, DNS)</td><td>Mensaje</td></tr>
+      <tr><td>Transporte</td><td>Transporta mensajes entre los extremos de la comunicación; entrega confiable (TCP) o no confiable (UDP)</td><td>Segmento</td></tr>
+      <tr><td>Red</td><td>Mueve paquetes de un host a otro; direcciones y enrutamiento (IP)</td><td>Datagrama</td></tr>
+      <tr><td>Enlace</td><td>Mueve datagramas entre elementos adyacentes de la ruta (por ejemplo, de un host a un router); Ethernet, WiFi</td><td>Trama</td></tr>
+      <tr><td>Física</td><td>Mueve los bits individuales que componen una trama de un nodo al siguiente</td><td>Bit</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="r01-encapsulamiento">Encapsulamiento</h4>
+  <p>En el host emisor, a medida que los datos bajan por la pila, cada capa le agrega su propia cabecera (header) a los datos recibidos de la capa superior: la capa de transporte toma un mensaje y le agrega una cabecera de transporte para formar un segmento; la capa de red toma el segmento y le agrega una cabecera de red para formar un datagrama; la capa de enlace toma el datagrama y le agrega una cabecera de enlace para formar una trama. En el host receptor el proceso se invierte (desencapsulamiento): cada capa procesa y quita su propia cabecera antes de pasar los datos a la capa superior.</p>
+  <figure class="diag">
+    <svg viewBox="0 0 680 320" role="img" aria-label="Pila de capas de Internet y encapsulamiento: cada capa agrega su propia cabecera al bajar hacia la capa física">
+      <defs>
+        <marker id="r01-arrow-enc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <g fill="none" stroke="currentColor">
+        <rect x="20" y="15" width="140" height="45"/>
+        <rect x="20" y="75" width="140" height="45"/>
+        <rect x="20" y="135" width="140" height="45"/>
+        <rect x="20" y="195" width="140" height="45"/>
+        <rect x="20" y="255" width="140" height="45"/>
+      </g>
+      <g stroke="currentColor" marker-end="url(#r01-arrow-enc)">
+        <line x1="90" y1="60" x2="90" y2="75"/>
+        <line x1="90" y1="120" x2="90" y2="135"/>
+        <line x1="90" y1="180" x2="90" y2="195"/>
+        <line x1="90" y1="240" x2="90" y2="255"/>
+      </g>
+      <g fill="currentColor" font-size="12" text-anchor="middle">
+        <text x="90" y="41">Aplicación</text>
+        <text x="90" y="101">Transporte</text>
+        <text x="90" y="161">Red</text>
+        <text x="90" y="221">Enlace</text>
+        <text x="90" y="281">Física</text>
+      </g>
+      <g stroke="currentColor" marker-end="url(#r01-arrow-enc)">
+        <line x1="160" y1="37" x2="250" y2="37"/>
+        <line x1="160" y1="97" x2="250" y2="97"/>
+        <line x1="160" y1="157" x2="250" y2="157"/>
+        <line x1="160" y1="217" x2="250" y2="217"/>
+        <line x1="160" y1="277" x2="250" y2="277"/>
+      </g>
+      <rect x="250" y="25" width="150" height="25" fill="none" stroke="currentColor"/>
+      <text x="325" y="42" fill="currentColor" font-size="11" text-anchor="middle">mensaje</text>
+
+      <rect x="250" y="85" width="190" height="25" fill="none" stroke="currentColor"/>
+      <rect x="250" y="85" width="30" height="25" fill="none" stroke="var(--acc)"/>
+      <g fill="currentColor" font-size="10" text-anchor="middle">
+        <text x="265" y="101">Ht</text>
+        <text x="345" y="101">mensaje</text>
+      </g>
+
+      <rect x="250" y="145" width="220" height="25" fill="none" stroke="currentColor"/>
+      <rect x="250" y="145" width="30" height="25" fill="none" stroke="var(--acc2)"/>
+      <rect x="280" y="145" width="30" height="25" fill="none" stroke="var(--acc)"/>
+      <g fill="currentColor" font-size="10" text-anchor="middle">
+        <text x="265" y="161">Hn</text>
+        <text x="295" y="161">Ht</text>
+        <text x="385" y="161">mensaje</text>
+      </g>
+
+      <rect x="250" y="205" width="250" height="25" fill="none" stroke="currentColor"/>
+      <rect x="250" y="205" width="30" height="25" fill="none" stroke="currentColor" stroke-width="2"/>
+      <rect x="280" y="205" width="30" height="25" fill="none" stroke="var(--acc2)"/>
+      <rect x="310" y="205" width="30" height="25" fill="none" stroke="var(--acc)"/>
+      <g fill="currentColor" font-size="10" text-anchor="middle">
+        <text x="265" y="221">Hl</text>
+        <text x="295" y="221">Hn</text>
+        <text x="325" y="221">Ht</text>
+        <text x="420" y="221">mensaje</text>
+      </g>
+
+      <text x="325" y="281" fill="currentColor" font-size="11" text-anchor="middle">10110100111000101...</text>
+
+      <g fill="currentColor" font-size="10" text-anchor="start">
+        <text x="410" y="42">(mensaje)</text>
+        <text x="450" y="101">(segmento)</text>
+        <text x="480" y="161">(datagrama)</text>
+        <text x="510" y="221">(trama)</text>
+      </g>
+    </svg>
+    <figcaption>Encapsulamiento: al bajar por la pila, cada capa toma la unidad de la capa superior y le agrega su propia cabecera (Ht de transporte, Hn de red, Hl de enlace) hasta llegar a una trama de bits que la capa física transmite. En el receptor el proceso se invierte: cada capa quita su cabecera antes de pasar los datos hacia arriba.</figcaption>
+  </figure>
+
+  <h3 id="r01-seguridad-en-redes">Redes bajo ataque</h3>
+  <p>La <b>seguridad de redes</b> estudia cómo se pueden atacar las redes y cómo defenderlas.</p>
+  <ul>
+    <li><b>Malware</b>: software malicioso (virus, gusanos, spyware) que infecta dispositivos, borra archivos, roba información privada o enrola al dispositivo en una <b>botnet</b> (red de dispositivos comprometidos) para lanzar ataques a gran escala.</li>
+    <li><b>Packet sniffing</b>: un receptor pasivo captura una copia de los paquetes que se transmiten por un medio, especialmente en redes inalámbricas o medios compartidos. La criptografía es la principal defensa.</li>
+    <li><b>IP spoofing</b>: creación de paquetes con una dirección IP de origen falsa, para hacerse pasar por otro usuario. La defensa requiere mecanismos de <b>autenticación de punto final</b>.</li>
+  </ul>
+  <p>Los <b>ataques de denegación de servicio (DoS)</b> hacen que una red o un host quede inaccesible para los usuarios legítimos:</p>
+  <table>
+    <thead><tr><th>Variante de DoS</th><th>Mecanismo</th></tr></thead>
+    <tbody>
+      <tr><td>Vulnerability attack</td><td>Mensajes diseñados para explotar una vulnerabilidad y hacer que una aplicación o un sistema operativo se detenga o se bloquee.</td></tr>
+      <tr><td>Bandwidth flooding</td><td>El atacante inunda el enlace de acceso del objetivo con paquetes, saturándolo e impidiendo que llegue tráfico legítimo.</td></tr>
+      <tr><td>Connection flooding</td><td>El atacante abre un gran número de conexiones TCP (completas o a medio abrir), agotando los recursos del objetivo.</td></tr>
+    </tbody>
+  </table>
+  <div class="warn">Distributed Denial of Service (DDoS) no es una variante distinta de las anteriores: es un ataque de bandwidth flooding lanzado desde múltiples fuentes a la vez (a menudo una botnet), lo que lo hace mucho más potente y difícil de frenar que un DoS desde una sola fuente.</div>
+
+  <h3 id="r01-historia">Historia de las redes de computadoras e Internet</h3>
+  <ul>
+    <li><b>1961-1972, desarrollo de la conmutación de paquetes</b>: los trabajos teóricos de Leonard Kleinrock, Paul Baran y Donald Davies sientan las bases de la conmutación de paquetes. <b>ARPANET</b>, el precursor de Internet, arranca en 1969 con 4 nodos; Ray Tomlinson escribe el primer programa de correo electrónico en 1972.</li>
+    <li><b>1972-1980, redes propietarias e interconexión</b>: aparecen otras redes como ALOHAnet y Ethernet. Vinton Cerf y Robert Kahn desarrollan los principios de la interconexión de redes (internetting), que llevan a la creación de los protocolos TCP/IP.</li>
+    <li><b>1980-1990, proliferación de redes</b>: el 1 de enero de 1983 TCP/IP se convierte en el protocolo estándar de ARPANET. Se crean redes académicas como CSNET y NSFNET, que se convierten en la columna vertebral (backbone) de Internet, y se desarrolla el DNS.</li>
+    <li><b>Los 90, la explosión de Internet</b>: ARPANET deja de existir y NSFNET permite el uso comercial. Tim Berners-Lee inventa la World Wide Web (HTTP, HTML, navegador, servidor), y el navegador Mosaic (luego Netscape) populariza la Web y lleva Internet a millones de hogares y empresas.</li>
+    <li><b>El nuevo milenio</b>: despliegue masivo de banda ancha (cable, DSL, FTTH), explosión de la conectividad inalámbrica y los dispositivos móviles (WiFi, 3G, 4G, 5G), y auge de las redes sociales, el streaming de video y la computación en la nube (cloud computing).</li>
+  </ul>
+</section>

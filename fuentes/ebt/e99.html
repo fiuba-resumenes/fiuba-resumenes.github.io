@@ -1,0 +1,168 @@
+<section class="unidad" id="e99" data-titulo="Ejercicios resueltos">
+  <h2>E99. Ejercicios resueltos</h2>
+  <p class="intro">Esta guía cierra el bloque de finanzas con ejercicios de valor tiempo del dinero: tasas equivalentes bajo distintos regímenes de capitalización, valor presente y futuro de anualidades y perpetuidades, amortización de préstamos por los métodos francés, alemán, directo y bullet, y valorización de bonos junto con su duration.</p>
+  <p class="nota">La guía original trae, para cada ejercicio, el enunciado y el resultado numérico final, pero no el desarrollo intermedio. Las resoluciones paso a paso que siguen son un desarrollo propio construido para llegar a esos resultados (no una transcripción de material de la cátedra); el resultado final de cada uno sí coincide con la clave de respuestas de la guía.</p>
+
+  <h3 id="e99-tasas">Tasas</h3>
+
+  <details class="preg">
+    <summary>1.1. Se invierte una cantidad de dinero de la siguiente manera: 9 meses a 20% anual capitalizado semestralmente; luego 4 meses a 30% anual capitalizado mensualmente; por 8 meses más a 27% anual capitalizado cuatrimestralmente; finalmente, por 15 meses más a 24% anual capitalizado trimestralmente. El monto al término de la operación fue de $4.049.457,14. Determine el capital inicial y la tasa efectiva anual de la operación.</summary>
+    <p>Cada tramo capitaliza a su propia tasa periódica. La tasa periódica de cada tramo es la tasa nominal anual dividida por la cantidad de capitalizaciones al año, y la cantidad de períodos es la duración del tramo expresada en esa misma unidad:</p>
+    <ul>
+      <li>9 meses al 20% anual capitalizado semestralmente: <code>i = 20% / 2 = 10%</code> semestral, <code>n = 9/6 = 1,5</code> semestres.</li>
+      <li>4 meses al 30% anual capitalizado mensualmente: <code>i = 30% / 12 = 2,5%</code> mensual, <code>n = 4</code> meses.</li>
+      <li>8 meses al 27% anual capitalizado cuatrimestralmente: <code>i = 27% / 3 = 9%</code> cuatrimestral, <code>n = 8/4 = 2</code> cuatrimestres.</li>
+      <li>15 meses al 24% anual capitalizado trimestralmente: <code>i = 24% / 4 = 6%</code> trimestral, <code>n = 15/3 = 5</code> trimestres.</li>
+    </ul>
+    <p>El monto final es el capital inicial multiplicado por el producto de los factores de capitalización de cada tramo:</p>
+    <p><code>Monto = Capital x (1+0,10)^1,5 x (1+0,025)^4 x (1+0,09)^2 x (1+0,06)^5</code></p>
+    <p><code>Monto = Capital x 1,1537 x 1,1038 x 1,1881 x 1,3382 = Capital x 2,0247</code></p>
+    <p>Despejando el capital inicial con el monto dado:</p>
+    <p><code>Capital = 4.049.457,14 / 2,0247 = $2.000.000</code></p>
+    <p>La operación completa dura 9+4+8+15 = 36 meses, es decir 3 años. La tasa efectiva anual (TEA) es la tasa que, compuesta durante esos 3 años, produce el mismo factor total:</p>
+    <p><code>(1+TEA)^3 = 2,0247</code></p>
+    <p><code>TEA = 2,0247^(1/3) - 1 = 0,2651 = 26,51%</code></p>
+    <p>Capital inicial: <b>$2.000.000</b>. TEA: <b>26,51%</b>.</p>
+  </details>
+
+  <details class="preg">
+    <summary>1.2. Hallar la tasa nominal semestral capitalizable bimestralmente (TNS) que corresponde al 30% nominal anual capitalizable mensualmente (1 año = 360 días).</summary>
+    <p>Dos tasas nominales son equivalentes cuando producen la misma tasa efectiva en un mismo lapso. Primero se calcula la tasa efectiva semestral que produce el 30% nominal anual capitalizable mensualmente (6 capitalizaciones mensuales en el semestre):</p>
+    <p><code>i mensual = 30% / 12 = 2,5%</code></p>
+    <p><code>i efectiva semestral = (1+0,025)^6 - 1 = 0,159693 = 15,9693%</code></p>
+    <p>La TNS capitalizable bimestralmente tiene 3 subperíodos bimestrales por semestre (6 meses / 2 meses = 3). Se busca la TNS cuya tasa efectiva semestral coincida con la calculada:</p>
+    <p><code>(1 + TNS/3)^3 - 1 = 0,159693</code></p>
+    <p><code>TNS/3 = 1,159693^(1/3) - 1 = 0,050625</code></p>
+    <p><code>TNS = 3 x 0,050625 = 0,151875 = 15,19%</code></p>
+    <p>TNS: <b>15,19%</b>.</p>
+  </details>
+
+  <h3 id="e99-anualidades-perpetuidades">Anualidades y perpetuidades</h3>
+
+  <details class="preg">
+    <summary>2.1. Un joven Ingeniero en Informática desea actualizar el hardware de su infraestructura. Su proveedor le ofrece: a) contado $35.000; b) 15 cuotas trimestrales iguales de $3.000; c) cuotas mensuales de $650 durante 4 años, con una cuota de refuerzo al final de cada año; d) contrato de por vida con cuotas mensuales de $180. Los ahorros de la empresa se invierten a una TEA del 7%. ¿Cuál es la forma más conveniente de actualizar el hardware?</summary>
+    <p>Para comparar las cuatro alternativas hay que llevarlas todas al mismo momento: valor presente, descontando cada una a la tasa de oportunidad de la empresa (TEA 7%). Como el pago b) es trimestral y el c) es mensual, primero se calculan las tasas periódicas equivalentes a la TEA del 7%, redondeadas a dos decimales para el cálculo:</p>
+    <p><code>i trimestral = (1,07)^(1/4) - 1 = 0,017059 &#8776; 1,71%</code></p>
+    <p><code>i mensual = (1,07)^(1/12) - 1 = 0,005654 &#8776; 0,57%</code></p>
+    <p><b>a) Contado:</b> ya está expresado en el presente: <code>VP = $35.000</code>.</p>
+    <p><b>b) 15 cuotas trimestrales de $3.000</b>, descontadas a la tasa trimestral equivalente:</p>
+    <p><code>VP = 3.000 x [1-(1+0,0171)^-15] / 0,0171 = 3.000 x 13,1325 = $39.397,44</code></p>
+    <p>Como es un desembolso, se expresa como salida de fondos: <b>-$39.397,44</b>.</p>
+    <p><b>c) Cuotas mensuales de $650 durante 4 años (48 meses) con refuerzo anual</b>: se suman el valor presente de la anualidad mensual y el de las 4 cuotas de refuerzo (una al final de cada año, descontadas directamente a la TEA del 7%):</p>
+    <p><code>VP mensual = 650 x [1-(1+0,0057)^-48] / 0,0057 = 650 x 41,89 = $27.228,46</code></p>
+    <p><code>VP refuerzo = 650 x [1-(1,07)^-4] / 0,07 = 650 x 3,3888 = $2.201,69</code></p>
+    <p><code>VP total = 27.228,46 + 2.201,69 = $29.430,15</code></p>
+    <p><b>d) Contrato de por vida con cuotas mensuales de $180</b>: es una perpetuidad mensual, que se descuenta con la fórmula <code>VP = C / i</code> usando la tasa mensual equivalente:</p>
+    <p><code>VP = 180 / 0,0057 = $31.578,95</code></p>
+    <table>
+      <thead><tr><th>Alternativa</th><th>Valor presente</th></tr></thead>
+      <tbody>
+        <tr><td>a) Contado</td><td>$35.000</td></tr>
+        <tr><td>b) 15 cuotas trimestrales de $3.000</td><td>-$39.397,44</td></tr>
+        <tr><td>c) Cuotas mensuales de $650 + refuerzo anual</td><td>$29.430,15</td></tr>
+        <tr><td>d) Contrato de por vida, $180 mensuales</td><td>$31.578,95</td></tr>
+      </tbody>
+    </table>
+    <p>Todas las alternativas son desembolsos que reemplazan al pago de contado, así que conviene la de menor valor presente: la <b>opción c)</b>, con $29.430,15, es la forma más conveniente de actualizar el hardware.</p>
+  </details>
+
+  <details class="preg">
+    <summary>2.2. Una Ingeniera en Informática planea invertir 5.000 U$S por año durante 20 años en un fondo que le permite ganar una tasa anual del 8%. Si el primer depósito se realiza el 17 de octubre de 2025 y a partir de ahí todos los 17 de octubre, ¿cuánto dinero habrá en la cuenta dentro de 20 años?</summary>
+    <p>Como el primer depósito se hace hoy y no dentro de un año, se trata de una <b>anualidad adelantada (anticipada)</b>: cada uno de los 20 depósitos capitaliza un período más que en una anualidad ordinaria (donde el primer depósito se haría recién al final del primer año). El valor futuro de la anualidad adelantada es el de la anualidad ordinaria multiplicado por <code>(1+i)</code>:</p>
+    <p><code>VF ordinaria = 5.000 x [(1,08)^20 - 1] / 0,08 = 5.000 x 45,762 = $228.809,82</code></p>
+    <p><code>VF adelantada = 228.809,82 x 1,08 = $247.114,61</code></p>
+    <p>Dentro de 20 años habrá aproximadamente <b>$247.114,63</b> en la cuenta.</p>
+  </details>
+
+  <h3 id="e99-amortizacion-prestamos">Amortización de préstamos</h3>
+
+  <details class="preg">
+    <summary>3.1. Método francés y método directo. Una EBT obtuvo hace 12 meses un préstamo a 5 años con TNA del 12% (cuotas mensuales, sistema francés) por $150.000. Al momento de pagar la cuota 12 la empresa no puede afrontarla y refinancia el saldo adeudado en 60 meses a una tasa del 0,8% mensual directo. a) ¿Cuál es la deuda al momento de tener que pagar la cuota 12 del plan original? b) Calcular la cuota constante de la refinanciación. c) Calcular el total de intereses a pagar por la nueva financiación. d) Calcular la tasa de interés sobre saldos equivalente (tantear con 1,4%).</summary>
+    <p><b>a) Deuda al momento de la cuota 12.</b> La tasa mensual del préstamo original es <code>i = 12%/12 = 1%</code>, con <code>n = 60</code> cuotas. La cuota constante del sistema francés es:</p>
+    <p><code>Cuota = P x i / [1-(1+i)^-n] = 150.000 x 0,01 / [1-(1,01)^-60] = $3.336,67</code></p>
+    <p>El saldo deudor inmediatamente después de pagar la cuota 11 es el valor presente de las 49 cuotas que todavía faltan:</p>
+    <p><code>Saldo tras cuota 11 = 3.336,67 x [1-(1,01)^-49] / 0,01 = 3.336,67 x 38,588 = $128.755,68</code></p>
+    <p>Como la empresa no llega a pagar la cuota 12, ese saldo devenga un mes más de interés sin amortizarse. La deuda al momento de tener que pagar la cuota 12 es:</p>
+    <p><code>Deuda cuota 12 = 128.755,68 x 1,01 = $130.043,24</code></p>
+    <p><b>b) Cuota constante de la refinanciación.</b> En el sistema directo la amortización es constante (<code>A = P/n</code>) pero el interés de cada cuota se calcula siempre sobre el capital original, no sobre el saldo: <code>Cuota = A + i x P</code>, con <code>P = $130.043,24</code>, <code>i = 0,8%</code> mensual y <code>n = 60</code>:</p>
+    <p><code>A = 130.043,24 / 60 = $2.167,39</code></p>
+    <p><code>Cuota = 2.167,39 + 0,008 x 130.043,24 = 2.167,39 + 1.040,35 = $3.207,74</code></p>
+    <p><b>c) Total de intereses de la nueva financiación.</b> Es la diferencia entre todo lo pagado (60 cuotas iguales) y el capital refinanciado:</p>
+    <p><code>Total pagado = 3.207,74 x 60 = $192.464,40</code></p>
+    <p><code>Intereses = 192.464,40 - 130.043,24 = $62.421</code></p>
+    <p><b>d) Tasa sobre saldos equivalente.</b> Se busca la tasa <code>i</code> tal que, si la misma cuota constante de $3.207,74 amortizara el saldo de $130.043,24 en 60 cuotas por el sistema francés (interés sobre saldo), el resultado fuera consistente. Se plantea la ecuación de la cuota francesa y se tantea, empezando por 1,4% como sugiere el enunciado:</p>
+    <p><code>130.043,24 = 3.207,74 x [1-(1+i)^-60] / i</code></p>
+    <p>Probando <code>i = 1,4%</code> el valor presente de las 60 cuotas queda apenas por debajo de $130.043,24, y probando con tasas ligeramente menores el valor presente sube; tanteando entre 1,3% y 1,4% converge en <code>i &#8776; 1,39%</code>, que es la tasa efectiva sobre saldos que ese préstamo directo termina representando en la práctica.</p>
+    <p>Respuestas: a) $130.043,24; b) $3.207,74; c) $62.421; d) <code>i</code> = 1,39%.</p>
+  </details>
+
+  <details class="preg">
+    <summary>3.2. Método alemán. Una EBT en expansión acude a un banco por un préstamo de $72.000, sistema alemán, a pagar en 2 años con cuotas mensuales y una tasa efectiva mensual del 3%. a) ¿Cuál será el interés incluido en la cuota 8? b) Realice el detalle de las primeras 3 cuotas.</summary>
+    <p>En el sistema alemán la <b>amortización</b> es constante y el interés se calcula sobre el saldo deudor, que decrece cuota a cuota: por eso la cuota total es decreciente. Con 24 cuotas (2 años):</p>
+    <p><code>A = P / n = 72.000 / 24 = $3.000</code> constante en todas las cuotas.</p>
+    <p><b>a) Interés de la cuota 8.</b> El saldo antes de pagar la cuota 8 es el capital menos las 7 amortizaciones ya hechas:</p>
+    <p><code>Saldo antes de cuota 8 = 72.000 - 3.000 x 7 = $51.000</code></p>
+    <p><code>Interés 8 = 51.000 x 0,03 = $1.530</code></p>
+    <p><b>b) Detalle de las primeras 3 cuotas.</b> En cada cuota, el interés es el 3% del saldo vigente y la cuota total es amortización más interés:</p>
+    <table>
+      <thead><tr><th>Cuota</th><th>Saldo antes</th><th>Interés (3%)</th><th>Amortización</th><th>Cuota total</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>$72.000</td><td>$2.160</td><td>$3.000</td><td>$5.160</td></tr>
+        <tr><td>2</td><td>$69.000</td><td>$2.070</td><td>$3.000</td><td>$5.070</td></tr>
+        <tr><td>3</td><td>$66.000</td><td>$1.980</td><td>$3.000</td><td>$4.980</td></tr>
+      </tbody>
+    </table>
+    <p>Respuestas: a) $1.530; b) $5.160 - $5.070 - $4.980.</p>
+  </details>
+
+  <details class="preg">
+    <summary>3.3. Método bullet. La compañía EBT I S.A. compra un rodado emitiendo una nota de deuda de 100.000 U$S a pagar en 3 años, con una tasa del 6% efectivo anual. El acuerdo requiere pagar al final de cada año el interés acumulado, devolviendo completamente el capital al final del último año. a) ¿Cuánto es el interés pagado cada año? b) Calcule el valor de la última cuota.</summary>
+    <p>En el sistema bullet el capital no se amortiza hasta el vencimiento: cada cuota intermedia es <b>solo interés</b> sobre el capital original, que se mantiene constante durante toda la vida del préstamo:</p>
+    <p><b>a)</b> <code>Interés anual = P x i = 100.000 x 0,06 = $6.000</code>, igual en el año 1, 2 y 3.</p>
+    <p><b>b)</b> La última cuota, además del interés del último año, incluye la devolución total del capital:</p>
+    <p><code>Última cuota = Capital + Interés = 100.000 + 6.000 = $106.000</code></p>
+    <p>Respuestas: a) $6.000; b) $106.000.</p>
+  </details>
+
+  <h3 id="e99-precio-bonos-duration">Precio de bonos y duration</h3>
+
+  <details class="preg">
+    <summary>4.1. Calcular el precio de dos bonos con valor nominal $1.000, tasa cupón 10%, vencimiento en 4 años y rendimiento requerido del 9% anual. El Bono 1 paga el capital al vencimiento (bullet), mientras que el Bono 2 amortiza parcialmente el capital (pagando $500 los años 2 y 4). a) Calcular el precio de ambos bonos. b) ¿Cuál de los dos bonos tendrá duration más baja? ¿Por qué? Explicar el concepto de duration. c) Calcular la duration de ambos bonos.</summary>
+    <div class="def"><b>Precio de un bono.</b> Valor presente de todos los flujos de fondos futuros que promete el bono (cupones y devoluciones de capital), descontados a la tasa de rendimiento requerida por el mercado.</div>
+    <p><b>a) Flujos de fondos y precio.</b> El cupón anual es el 10% del capital vigente en cada año.</p>
+    <p><b>Bono 1 (bullet):</b> paga $100 de cupón los años 1, 2 y 3, y en el año 4 paga el cupón más los $1.000 de capital:</p>
+    <p><code>Precio 1 = 100/1,09 + 100/1,09^2 + 100/1,09^3 + 1.100/1,09^4</code></p>
+    <p><code>Precio 1 = 91,74 + 84,17 + 77,22 + 779,20 = $1.032,33 &#8776; $1.032</code></p>
+    <p><b>Bono 2 (amortiza $500 en el año 2 y $500 en el año 4):</b> el cupón de cada año se calcula sobre el capital que queda vigente. Año 1: cupón sobre $1.000. Año 2: cupón sobre $1.000 más la amortización de $500. Año 3: cupón sobre el saldo de $500. Año 4: cupón sobre $500 más la amortización final de $500:</p>
+    <p><code>Precio 2 = 100/1,09 + 600/1,09^2 + 50/1,09^3 + 550/1,09^4</code></p>
+    <p><code>Precio 2 = 91,74 + 504,98 + 38,61 + 389,66 = $1.024,99 &#8776; $1.025</code></p>
+    <p>Precios: Bono 1 <b>$1.032</b>, Bono 2 <b>$1.025</b>.</p>
+    <div class="def"><b>Duration (duración de Macaulay).</b> Plazo promedio, ponderado por el valor presente de cada flujo, en el que un tenedor recupera su inversión en un bono. Se calcula como la suma de (momento del flujo x valor presente del flujo), dividida por el precio del bono.</div>
+    <div class="idea"><b>b) Cuál tiene duration más baja, sin hacer cuentas.</b> El Bono 2 amortiza capital antes del vencimiento (recupera $500 ya en el año 2), mientras que el Bono 1 devuelve todo el capital recién en el año 4. Como la duration pondera cada flujo por el momento en que ocurre, adelantar la recuperación de capital acerca el promedio ponderado al presente: por eso el <b>Bono 2 tiene duration más baja</b>. La duration es también la medida de sensibilidad del precio del bono ante cambios en la tasa de interés: a mayor duration, mayor es la variación porcentual del precio frente a un mismo cambio de tasa.</div>
+    <p><b>c) Cálculo de la duration.</b> Se pondera cada flujo por su momento y se divide por el precio del bono:</p>
+    <table>
+      <thead><tr><th>Año</th><th>Flujo Bono 1</th><th>VP Bono 1</th><th>Año x VP</th><th>Flujo Bono 2</th><th>VP Bono 2</th><th>Año x VP</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>$100</td><td>$91,74</td><td>91,74</td><td>$100</td><td>$91,74</td><td>91,74</td></tr>
+        <tr><td>2</td><td>$100</td><td>$84,17</td><td>168,34</td><td>$600</td><td>$504,98</td><td>1.009,96</td></tr>
+        <tr><td>3</td><td>$100</td><td>$77,22</td><td>231,66</td><td>$50</td><td>$38,61</td><td>115,83</td></tr>
+        <tr><td>4</td><td>$1.100</td><td>$779,20</td><td>3.116,80</td><td>$550</td><td>$389,66</td><td>1.558,64</td></tr>
+      </tbody>
+    </table>
+    <p><code>Duration 1 = (91,74+168,34+231,66+3.116,80) / 1.032,33 = 3.608,54 / 1.032,33 = 3,50 años</code></p>
+    <p><code>Duration 2 = (91,74+1.009,96+115,83+1.558,64) / 1.024,99 = 2.776,17 / 1.024,99 = 2,71 años</code></p>
+    <p>Durations: Bono 1 <b>3,5 años</b>, Bono 2 <b>2,7 años</b>, confirmando lo anticipado en b).</p>
+  </details>
+
+  <details class="preg">
+    <summary>4.2. Si la tasa requerida para estos bonos cambia del 9% al 12%, ¿cuáles son los nuevos precios de los bonos? ¿Qué relación existe entre el precio, la tasa y la duration?</summary>
+    <p>Se repite el mismo cálculo de valor presente, descontando ahora al 12% en lugar del 9%:</p>
+    <p><code>Precio 1 = 100/1,12 + 100/1,12^2 + 100/1,12^3 + 1.100/1,12^4 = $939,25</code></p>
+    <p><code>Precio 2 = 100/1,12 + 600/1,12^2 + 50/1,12^3 + 550/1,12^4 = $952,73</code></p>
+    <p>Al subir la tasa del 9% al 12%, ambos precios bajan (relación inversa entre precio y tasa), pero el Bono 1, que tiene mayor duration, cae proporcionalmente más: baja de $1.032 a $939,25 (-9,0%), mientras que el Bono 2 baja de $1.025 a $952,73 (-7,1%). Esa es justamente la relación que mide la duration: es, aproximadamente, el cociente entre la variación porcentual del precio y la variación porcentual de la tasa,</p>
+    <p><code>d = &#916;P% / &#916;r%</code></p>
+    <p>de modo que a mayor duration, mayor sensibilidad del precio del bono ante cambios en la tasa de interés.</p>
+    <p>Nuevos precios: Bono 1 <b>$939,25</b>, Bono 2 <b>$952,73</b>.</p>
+  </details>
+
+</section>

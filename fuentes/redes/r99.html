@@ -1,0 +1,327 @@
+<section class="unidad" id="r99" data-titulo="Resumen integrador">
+  <h2>R99. Resumen integrador</h2>
+  <p class="intro">Este cierre repasa toda la materia en formato compacto: panorama de Internet y sus métricas, y los tres protocolos de capa (aplicación, transporte, red) con sus mecanismos clave. No desarrolla de nuevo lo ya explicado en los capítulos anteriores: lo organiza en tablas y listas para repasar antes del final, con énfasis en las definiciones, fórmulas y comparaciones que más se piden.</p>
+
+  <h3 id="r99-panorama">Panorama de Internet</h3>
+
+  <p>Internet es una red de redes con jerarquía de proveedores y puntos de interconexión:</p>
+  <table>
+    <thead><tr><th>Componente</th><th>Rol</th></tr></thead>
+    <tbody>
+      <tr><td>Tier 1 ISP</td><td>Conectividad global, se interconectan entre sí sin costo (peering).</td></tr>
+      <tr><td>Regional ISP</td><td>Conectividad dentro de una región específica.</td></tr>
+      <tr><td>Access ISP</td><td>Conectividad a usuarios finales y pequeñas empresas.</td></tr>
+      <tr><td>POP (Point of Presence)</td><td>Ubicación física donde un ISP concentra infraestructura para conectar usuarios.</td></tr>
+      <tr><td>CPN (Content Provider Network)</td><td>Red propia de un proveedor de contenido (Google, Facebook, Amazon) para acercar su contenido al usuario.</td></tr>
+      <tr><td>Data Center</td><td>Aloja servidores y servicios en la nube.</td></tr>
+      <tr><td>IXP (Internet Exchange Point)</td><td>Facilita la interconexión entre distintos ISPs.</td></tr>
+    </tbody>
+  </table>
+
+  <p>Redes de acceso, con su par de equipos usuario y del lado del ISP:</p>
+  <table>
+    <thead><tr><th>Tecnología</th><th>Medio</th><th>Equipo del usuario</th><th>Equipo del ISP</th></tr></thead>
+    <tbody>
+      <tr><td>DSL</td><td>Línea telefónica de cobre, con multiplexación</td><td>Módem DSL</td><td>DSLAM</td></tr>
+      <tr><td>Cable</td><td>Infraestructura de TV por cable</td><td>Módem de cable</td><td>CMTS</td></tr>
+      <tr><td>Fibra óptica</td><td>Fibra, alta velocidad y ancho de banda</td><td>ONT</td><td>OLT</td></tr>
+      <tr><td>Inalámbrico (WiFi, celular)</td><td>Señales de radio</td><td>Smartphones, laptops, tablets</td><td>Estaciones base, torres de celular</td></tr>
+    </tbody>
+  </table>
+
+  <div class="idea">La velocidad de propagación depende del medio, no de la tecnología que corre sobre él: cobre (UTP, coaxial) a <code>3/4 C</code>, fibra óptica a <code>2/3 C</code>, inalámbrico a <code>C</code> (<code>C ~ 3 x 10^8</code> m/s, la velocidad de la luz en el vacío). Esto entra directo en el tiempo de propagación de un enlace.</div>
+
+  <h3 id="r99-metricas">Métricas de performance y herramientas</h3>
+
+  <p>Todo paquete que atraviesa un dispositivo de red acumula cuatro componentes de retardo (retardo nodal):</p>
+  <table>
+    <thead><tr><th>Componente</th><th>Qué mide</th><th>Depende de</th></tr></thead>
+    <tbody>
+      <tr><td>Procesamiento</td><td>Examinar encabezado, verificar errores, decidir por dónde enviar.</td><td>Velocidad del dispositivo.</td></tr>
+      <tr><td>Encolado</td><td>Espera en el router hasta ser transmitido.</td><td>Congestión de la red; muy variable.</td></tr>
+      <tr><td>Inserción (transmisión)</td><td>Insertar el paquete en el enlace.</td><td><code>L / R</code> (longitud del paquete sobre tasa de transmisión).</td></tr>
+      <tr><td>Propagación</td><td>Viajar de un router al siguiente.</td><td><code>d / v</code> (distancia sobre velocidad de propagación).</td></tr>
+    </tbody>
+  </table>
+
+  <div class="def"><b>Intensidad de tráfico.</b> <code>I = L . a / R</code>, con <code>L</code> longitud del paquete en bits, <code>a</code> tasa de arribo promedio en paquetes por segundo y <code>R</code> tasa de transmisión del enlace en bps. Si <code>I &gt; 1</code> se generan colas largas y pérdida de paquetes; si <code>I &lt; 1</code> las colas son cortas o inexistentes.</div>
+  <div class="ej">Un enlace de <code>R = 1 Mbps</code> que recibe paquetes de <code>L = 1000 bits</code> a <code>a = 900</code> paquetes por segundo tiene <code>I = 1000 . 900 / 1.000.000 = 0.9</code>: cerca del límite, con colas que empiezan a crecer pero sin descartes sistemáticos todavía.</div>
+  <p>La pérdida de paquetes ocurre cuando la tasa de llegada excede la capacidad del enlace: la cola se llena y los paquetes que llegan después se descartan.</p>
+
+  <table>
+    <thead><tr><th>Medición</th><th>Definición</th></tr></thead>
+    <tbody>
+      <tr><td>Bandwidth</td><td>Capacidad máxima de un enlace para transmitir datos (bps).</td></tr>
+      <tr><td>Throughput</td><td>Cantidad real de datos transmitidos en un período (bps).</td></tr>
+      <tr><td>RTT (Round-Trip Time)</td><td>Tiempo de ida y vuelta entre emisor y receptor.</td></tr>
+      <tr><td>Enlace cuello de botella</td><td>El de menor throughput en la ruta; limita el rendimiento total.</td></tr>
+      <tr><td>Jitter</td><td>Variación del retardo entre paquetes sucesivos.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">Bandwidth y throughput se confunden seguido: bandwidth es la capacidad teórica del enlace, throughput es lo que efectivamente se logra transmitir, y siempre está acotado por el cuello de botella de la ruta completa, no solo por el primer o el último enlace.</div>
+
+  <p>Herramientas de diagnóstico: <b>ping</b> prueba la accesibilidad de un host; <b>traceroute</b> rastrea la ruta salto a salto entre origen y destino; <b>dig</b> consulta servidores DNS (<code>dig @server dominio tipo</code>).</p>
+
+  <h3 id="r99-aplicacion">Capa de aplicación</h3>
+
+  <p>Objetivo: dar servicios de red a las aplicaciones del usuario final. Se implementa enteramente en los endsystems, nunca en los routers. Dos arquitecturas posibles:</p>
+  <table>
+    <thead><tr><th>Arquitectura</th><th>Características</th></tr></thead>
+    <tbody>
+      <tr><td>Cliente-servidor</td><td>Servidor siempre encendido, con IP fija y conocida, atendiendo a múltiples clientes; alojado en data centers. Ejemplos: HTTP, SMTP.</td></tr>
+      <tr><td>P2P (peer-to-peer)</td><td>Cada nodo es cliente y servidor a la vez. Autoescalable y de bajo costo, pero menos confiable. Ejemplo: BitTorrent.</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="r99-http">HTTP</h4>
+  <table>
+    <thead><tr><th>Versión</th><th>Característica</th></tr></thead>
+    <tbody>
+      <tr><td>HTTP/1.0</td><td>Conexión no persistente: una solicitud por conexión.</td></tr>
+      <tr><td>HTTP/1.1</td><td>Conexiones persistentes por defecto, múltiples solicitudes por conexión, pipelining.</td></tr>
+      <tr><td>HTTP/2</td><td>Multiplexación de solicitudes y respuestas en una conexión (framing), compresión de encabezados, priorización.</td></tr>
+      <tr><td>HTTP/3</td><td>Corre sobre QUIC (UDP en lugar de TCP) para reducir latencia.</td></tr>
+      <tr><td>HTTPS</td><td>HTTP cifrado con SSL/TLS.</td></tr>
+    </tbody>
+  </table>
+  <p>Un request tiene línea de solicitud (método, URL, versión), encabezados y cuerpo opcional. Una response tiene línea de estado (versión, código, mensaje), encabezados y cuerpo opcional. El <b>web caching</b> guarda copias temporales de recursos para reducir latencia y carga del servidor; las <b>cookies</b> son archivos que el navegador guarda para mantener estado de sesión.</p>
+
+  <h4 id="r99-smtp">SMTP</h4>
+  <p>Protocolo de envío de correo, con handshaking inicial de comandos y respuestas:</p>
+  <table>
+    <thead><tr><th>Elemento</th><th>Detalle</th></tr></thead>
+    <tbody>
+      <tr><td>Comandos del cliente</td><td><code>HELO</code>, <code>MAIL FROM</code>, <code>RCPT TO</code>, <code>DATA</code>.</td></tr>
+      <tr><td>Respuestas del servidor</td><td>Códigos de estado por cada comando.</td></tr>
+      <tr><td>Formato del mensaje</td><td>Encabezados (<code>From</code>, <code>To</code>, <code>Subject</code>, <code>Date</code>) más cuerpo (texto plano o HTML).</td></tr>
+      <tr><td>User Agent</td><td>Cliente de correo del usuario final (Outlook, Gmail).</td></tr>
+      <tr><td>Mail Server</td><td>Envía, recibe y almacena correos.</td></tr>
+      <tr><td>IMAP / POP3</td><td>Protocolos con los que el cliente recupera correo del servidor.</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="r99-dns">DNS</h4>
+  <div class="def"><b>DNS.</b> Sistema de nombres jerárquico y distribuido que traduce nombres de dominio en direcciones IP. También resuelve alias de host, alias de servidor de correo, y distribuye carga devolviendo un conjunto de IPs para un mismo nombre en orden rotado (round-robin).</div>
+  <p>Se distribuye para evitar un único punto de falla, escalar y reducir latencia, en una jerarquía de tres niveles:</p>
+  <table>
+    <thead><tr><th>Nivel</th><th>Rol</th></tr></thead>
+    <tbody>
+      <tr><td>Root DNS</td><td>Conoce la ubicación de los servidores de TLD.</td></tr>
+      <tr><td>TLD DNS</td><td>Maneja dominios de nivel superior (<code>.com</code>, <code>.org</code>, <code>.ar</code>).</td></tr>
+      <tr><td>Authoritative DNS</td><td>Tiene la información definitiva de un dominio específico.</td></tr>
+    </tbody>
+  </table>
+  <p>El <b>LDNS</b> (Local DNS Server, del ISP del usuario) es el primer punto de contacto y cachea respuestas según su TTL. La resolución puede ser <b>recursiva</b> (el LDNS resuelve toda la consulta contactando a otros servidores) o <b>iterativa</b> (el LDNS responde con lo mejor que sabe y el cliente sigue preguntando él mismo).</p>
+  <div class="warn">Recursiva versus iterativa se pregunta seguido y se confunde: en ambos casos hay un cliente y varios servidores DNS involucrados, la diferencia es quién hace el trabajo de seguir la cadena de referencias, no cuántos servidores se consultan.</div>
+
+  <p>Formato de un registro de recurso (RR): <code>Name | Value | Type | TTL | Class</code> (la clase es casi siempre <code>IN</code>).</p>
+  <table>
+    <thead><tr><th>Tipo</th><th>Mapea</th></tr></thead>
+    <tbody>
+      <tr><td>A</td><td>Nombre de dominio a dirección IPv4.</td></tr>
+      <tr><td>AAAA</td><td>Nombre de dominio a dirección IPv6.</td></tr>
+      <tr><td>CNAME</td><td>Alias a otro nombre de dominio.</td></tr>
+      <tr><td>MX</td><td>Servidores de correo del dominio.</td></tr>
+      <tr><td>NS</td><td>Servidores de nombres autoritativos del dominio.</td></tr>
+    </tbody>
+  </table>
+  <p>Un mensaje DNS tiene encabezado de 12 bytes (identificador de 16 bits copiado en la respuesta; flags de consulta/respuesta, respuesta autoritativa, recursión deseada y recursión disponible; cuatro contadores de 16 bits) y cuatro secciones: <b>Questions</b> (la consulta), <b>Answer</b> (los RR de respuesta), <b>Authority</b> (RR que apuntan a otros servidores autoritativos) y <b>Additional</b> (información extra).</p>
+
+  <h4 id="r99-cdn">CDN</h4>
+  <p>Red de servidores distribuidos geográficamente que cachea contenido web. El usuario es redirigido al servidor CDN más cercano o eficiente, que le entrega el contenido cacheado; reduce latencia, mejora disponibilidad y redundancia, y baja la carga del origen. Dos estrategias de cacheo: <b>push</b> (el contenido se envía proactivamente) y <b>pull</b> (se trae del origen recién en el primer pedido). El DNS participa redirigiendo al CDN más cercano con Anycast o GeoDNS.</p>
+
+  <h4 id="r99-dhcp">DHCP</h4>
+  <p>Asigna automáticamente IP y parámetros de red a un dispositivo, en cuatro pasos:</p>
+  <ol>
+    <li><code>DHCPDISCOVER</code>: el cliente busca servidores DHCP disponibles.</li>
+    <li><code>DHCPOFFER</code>: un servidor ofrece una IP y otros parámetros.</li>
+    <li><code>DHCPREQUEST</code>: el cliente acepta la oferta.</li>
+    <li><code>DHCPACK</code>: el servidor confirma la asignación.</li>
+  </ol>
+
+  <h3 id="r99-transporte">Capa de transporte</h3>
+
+  <p>Objetivo: comunicación lógica entre procesos de aplicaciones en distintos hosts, implementada en los endsystems (nunca en los routers). Servicios que ofrece:</p>
+  <table>
+    <thead><tr><th>Tipo</th><th>Servicio</th><th>Qué resuelve</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="2">Mínimos</td><td>Multiplexación / demultiplexación</td><td>Extiende host a host a proceso a proceso, usando puertos.</td></tr>
+      <tr><td>Detección y corrección de errores</td><td>Integridad de los datos mediante checksums.</td></tr>
+      <tr><td rowspan="4">Adicionales</td><td>Control de flujo</td><td>Que un emisor rápido no abrume a un receptor lento.</td></tr>
+      <tr><td>Control de congestión</td><td>Que demasiados paquetes no inunden la red.</td></tr>
+      <tr><td>Conexión confiable</td><td>Entrega ordenada y sin pérdidas (TCP).</td></tr>
+      <tr><td>Conexión no confiable</td><td>Sin garantía de entrega ni orden (UDP).</td></tr>
+    </tbody>
+  </table>
+
+  <p>Protocolos de recuperación de errores, de menor a mayor eficiencia:</p>
+  <table>
+    <thead><tr><th>Protocolo</th><th>Mecanismo</th></tr></thead>
+    <tbody>
+      <tr><td>Stop-and-Wait</td><td>Un paquete a la vez; espera ACK antes de enviar el siguiente, retransmite si no llega a tiempo.</td></tr>
+      <tr><td>Go-Back-N</td><td>Envía varios paquetes sin esperar ACK, dentro de una ventana; si uno se pierde, retransmite ese y todos los siguientes.</td></tr>
+      <tr><td>Selective Repeat</td><td>Como Go-Back-N, pero retransmite solo los paquetes no reconocidos.</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="r99-udp">UDP</h4>
+  <p>Transporte no orientado a conexión, sin garantía de entrega, orden ni integridad. Encabezado de cuatro campos de 16 bits: puerto de origen, puerto de destino, longitud (encabezado más datos) y checksum.</p>
+
+  <h4 id="r99-tcp">TCP</h4>
+  <p>Transporte orientado a conexión, confiable, ordenado y sin pérdidas, para un flujo de bytes entre aplicaciones.</p>
+  <ul>
+    <li><b>Conexión:</b> handshake de tres vías (SYN, SYN-ACK, ACK). El <b>SYN cookie</b> evita crear estado en el servidor hasta que la conexión se completa, como defensa contra DoS.</li>
+    <li><b>Control de flujo</b> con ventana deslizante: <code>rwnd = RcvBuffer - (LastByteReceived - LastByteRead)</code>. El emisor cumple <code>LastByteSent - LastByteAcked &lt;= rwnd</code>; el receptor cumple <code>LastByteReceived - LastByteRead &lt;= RcvBuffer</code>.</li>
+    <li><b>Control de congestión</b> con <code>cwnd</code> (ventana de congestión) y <code>ssthresh</code> (umbral entre Slow Start y Congestión Avoidance): <code>LastByteSent - LastByteAcked &lt;= min(cwnd, rwnd)</code>. Algoritmos: <b>Tahoe</b> (Slow Start, Congestión Avoidance, Fast Retransmit) y <b>Reno</b> (Tahoe más Fast Recovery). Ver diagrama abajo.</li>
+  </ul>
+
+  <table>
+    <thead><tr><th>Campo del encabezado TCP</th><th>Tamaño</th><th>Función</th></tr></thead>
+    <tbody>
+      <tr><td>Puerto de origen / destino</td><td>16 + 16 bits</td><td>Identifican los procesos emisor y receptor.</td></tr>
+      <tr><td>Número de secuencia</td><td>32 bits</td><td>Posición del primer byte de datos del segmento.</td></tr>
+      <tr><td>Número de acuse de recibo</td><td>32 bits</td><td>Siguiente byte esperado por el receptor.</td></tr>
+      <tr><td>Longitud del encabezado</td><td>4 bits</td><td>Tamaño del encabezado en palabras de 32 bits.</td></tr>
+      <tr><td>Reservado</td><td>6 bits</td><td>Debe ser cero.</td></tr>
+      <tr><td>Flags</td><td>6 bits</td><td><code>SYN</code>, <code>ACK</code>, <code>FIN</code>, <code>RST</code>, <code>PSH</code>, <code>URG</code>.</td></tr>
+      <tr><td>Ventana</td><td>16 bits</td><td>Tamaño de ventana para control de flujo.</td></tr>
+      <tr><td>Checksum</td><td>16 bits</td><td>Detección de errores en encabezado y datos.</td></tr>
+      <tr><td>Puntero urgente</td><td>16 bits</td><td>Posición del último byte urgente.</td></tr>
+      <tr><td>Opciones</td><td>0 a 40 bytes</td><td>Funcionalidades avanzadas.</td></tr>
+    </tbody>
+  </table>
+
+  <p>Lógica de transferencia confiable:</p>
+  <table>
+    <thead><tr><th>Lado</th><th>Evento</th><th>Acción</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="4">Cliente</td><td>Envía un paquete</td><td>Prende el temporizador si no estaba prendido.</td></tr>
+      <tr><td>Llega un ACK</td><td>Actualiza la ventana; reinicia el temporizador si hay datos pendientes.</td></tr>
+      <tr><td>Expira el temporizador</td><td>Retransmite y reinicia el temporizador con el doble de tiempo.</td></tr>
+      <tr><td>Tres ACKs duplicados</td><td>Fast Retransmit: retransmite sin esperar el timeout.</td></tr>
+      <tr><td rowspan="3">Servidor</td><td>Paquete en orden</td><td>Envía ACK y entrega los datos a la aplicación.</td></tr>
+      <tr><td>Paquete fuera de orden</td><td>Envía ACK del último paquete recibido en orden.</td></tr>
+      <tr><td>Paquete duplicado</td><td>Reenvía el ACK correspondiente.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="def"><b>Estimación de RTT.</b> <code>SampleRTT</code> es una medición individual. <code>EstimatedRTT = (1 - a) . EstimatedRTT + a . SampleRTT</code> (<code>a ~ 0.125</code>). <code>DevRTT = (1 - b) . DevRTT + b . |SampleRTT - EstimatedRTT|</code> (<code>b ~ 0.25</code>). El temporizador de retransmisión usa <code>TimeoutInterval = EstimatedRTT + 4 . DevRTT</code>.</div>
+
+  <figure class="diag">
+    <svg viewBox="0 0 640 300" role="img" aria-label="Evolución de la ventana de congestión de TCP en el tiempo: crecimiento exponencial en Slow Start hasta el umbral ssthresh, crecimiento lineal en Congestion Avoidance, y ante un evento de pérdida dos comportamientos distintos: Tahoe vuelve a cwnd mínimo y reinicia Slow Start, Reno reduce a la mitad y retoma Congestion Avoidance con Fast Recovery">
+      <defs>
+        <marker id="r99-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <g stroke="var(--linea)" stroke-width="1.2" fill="none">
+        <line x1="50" y1="20" x2="50" y2="260" marker-end="url(#r99-arr)"/>
+        <line x1="50" y1="260" x2="610" y2="260" marker-end="url(#r99-arr)"/>
+      </g>
+      <line x1="50" y1="90" x2="610" y2="90" stroke="var(--acc2)" stroke-width="1" stroke-dasharray="5 4"/>
+      <text x="600" y="84" font-size="10" fill="var(--acc2)" text-anchor="end">ssthresh</text>
+      <polyline points="50,255 80,240 110,210 140,160 170,90 260,40" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <polyline points="260,40 260,253 290,233 320,203 350,150 380,90 420,60" fill="none" stroke="var(--acc)" stroke-width="1.6"/>
+      <polyline points="260,40 260,150 310,128 360,104 410,85 460,70" fill="none" stroke="var(--linea)" stroke-width="1.6" stroke-dasharray="4 3"/>
+      <line x1="260" y1="35" x2="260" y2="260" stroke="currentColor" stroke-width="0.8" stroke-dasharray="2 3"/>
+      <g fill="currentColor" font-size="11">
+        <text x="55" y="35">cwnd</text>
+        <text x="590" y="275" text-anchor="end">tiempo (RTT)</text>
+        <text x="90" y="230">Slow Start</text>
+        <text x="175" y="70">Congestión</text>
+        <text x="175" y="82">Avoidance</text>
+        <text x="264" y="30" font-size="10">pérdida (3 ACK dup o timeout)</text>
+        <text x="300" y="245" fill="var(--acc)">Tahoe: vuelve a 1</text>
+        <text x="380" y="120" fill="var(--linea)">Reno: cwnd/2, Fast Recovery</text>
+      </g>
+    </svg>
+    <figcaption>Control de congestión de TCP: Slow Start (exponencial) hasta ssthresh, Congestión Avoidance (lineal), y la divergencia ante pérdida entre Tahoe (retrocede a cwnd mínimo y repite Slow Start) y Reno (reduce cwnd a la mitad y retoma Congestión Avoidance sin volver a arrancar de cero).</figcaption>
+  </figure>
+
+  <div class="warn">Tahoe siempre castiga la pérdida volviendo a <code>cwnd = 1</code> y a Slow Start, sin importar si vino de un timeout o de tres ACKs duplicados. Reno distingue: ante tres ACKs duplicados hace Fast Recovery (reduce a la mitad y sigue en Congestión Avoidance); ante timeout se comporta igual que Tahoe.</div>
+
+  <h3 id="r99-red">Capa de red</h3>
+
+  <p>Objetivo: comunicación lógica entre hosts de redes distintas, con <b>best-effort delivery</b> (sin garantía de entrega, orden, integridad ni ancho de banda mínimo). Se implementa en routers y en los endsystems, y se separa en dos planos:</p>
+  <table>
+    <thead><tr><th>Plano</th><th>Qué determina</th></tr></thead>
+    <tbody>
+      <tr><td>Datos</td><td>Funciones per-router: cómo se envía cada paquete.</td></tr>
+      <tr><td>Control</td><td>Lógica de red: qué ruta siguen los paquetes.</td></tr>
+    </tbody>
+  </table>
+
+  <p>Componentes de un router:</p>
+  <table>
+    <thead><tr><th>Componente</th><th>Función</th></tr></thead>
+    <tbody>
+      <tr><td>Input ports</td><td>Reciben paquetes, verifican errores, extraen la dirección de destino y encolan para envío.</td></tr>
+      <tr><td>Switching fabric</td><td>Conecta puertos de entrada con puertos de salida (por memoria, bus o red de interconexión).</td></tr>
+      <tr><td>Output ports</td><td>Desencolan, agregan cabecera de enlace, verifican errores y transmiten. Algoritmos de selección: FIFO, Priority Queuing, Round Robin, Weighted Fair Queuing.</td></tr>
+    </tbody>
+  </table>
+
+  <p>La <b>tabla de ruteo</b> guarda, por entrada, destino, máscara, next hop e interfaz de salida; el router elige la coincidencia más específica con el prefijo de destino. Puede calcularse de forma <b>tradicional</b> (cada router localmente) o vía <b>SDN</b> (un controlador centralizado calcula y distribuye las rutas). El forwarding puede ser <b>destination-based</b> (solo la IP de destino) o <b>generalized</b> (también QoS o políticas).</p>
+
+  <p>Direccionamiento IP: <b>classful</b> dividía las direcciones en clases A/B/C/D/E con prefijos fijos de 8, 16 o 24 bits; <b>CIDR</b> (Classless Inter-Domain Routing) permite prefijos de longitud variable (VLSM), notados con barra (<code>/24</code>); las <b>subredes</b> dividen una red IP en redes más chicas para gestión y seguridad.</p>
+  <div class="ej">Una red <code>200.23.16.0/23</code> agrupa dos bloques classful clase C contiguos bajo un único prefijo de 23 bits: eso es CIDR resolviendo lo que classful no podía expresar.</div>
+
+  <h4 id="r99-ip">IP (IPv4)</h4>
+  <table>
+    <thead><tr><th>Campo</th><th>Tamaño</th><th>Función</th></tr></thead>
+    <tbody>
+      <tr><td>Versión</td><td>4 bits</td><td>IPv4 o IPv6.</td></tr>
+      <tr><td>Longitud del encabezado</td><td>4 bits</td><td>Tamaño en palabras de 32 bits.</td></tr>
+      <tr><td>Tipo de servicio</td><td>8 bits</td><td>Prioridad y tipo de tráfico.</td></tr>
+      <tr><td>Longitud total</td><td>16 bits</td><td>Encabezado más datos.</td></tr>
+      <tr><td>Identificación</td><td>16 bits</td><td>Identifica el datagrama de forma única.</td></tr>
+      <tr><td>Flags</td><td>3 bits</td><td>Reservado, DF (don't fragment), MF (more fragments).</td></tr>
+      <tr><td>Desplazamiento de fragmento</td><td>13 bits</td><td>Posición del fragmento, en unidades de 8 bytes.</td></tr>
+      <tr><td>TTL</td><td>8 bits</td><td>Limita la duración del datagrama en la red.</td></tr>
+      <tr><td>Protocolo</td><td>8 bits</td><td>Protocolo de transporte encapsulado (TCP, UDP).</td></tr>
+      <tr><td>Checksum</td><td>16 bits</td><td>Errores solo del encabezado.</td></tr>
+      <tr><td>IP de origen / destino</td><td>32 + 32 bits</td><td>Direcciones de los extremos.</td></tr>
+      <tr><td>Opciones</td><td>0 a 40 bytes</td><td>Funcionalidades avanzadas.</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="r99-ipv6">IPv6</h4>
+  <p>Motivado por la escasez de direcciones IPv4 y por simplificar el encabezado para rutear más rápido. Cambios principales respecto de IPv4:</p>
+  <table>
+    <thead><tr><th>Aspecto</th><th>IPv4</th><th>IPv6</th></tr></thead>
+    <tbody>
+      <tr><td>Direcciones</td><td>32 bits</td><td>128 bits</td></tr>
+      <tr><td>Encabezado</td><td>20 a 60 bytes, con opciones</td><td>Fijo, 40 bytes, sin opciones</td></tr>
+      <tr><td>Checksum</td><td>Sí, en el encabezado</td><td>Eliminado</td></tr>
+      <tr><td>Calidad de servicio</td><td>Tipo de servicio</td><td>Etiqueta de flujo (identifica flujos)</td></tr>
+      <tr><td>Fragmentación</td><td>Routers intermedios pueden fragmentar</td><td>Solo el emisor fragmenta</td></tr>
+    </tbody>
+  </table>
+  <p>Campos del encabezado IPv6: versión (4 bits), clase de tráfico (8 bits, análogo al TOS), etiqueta de flujo (20 bits), longitud del payload (16 bits), próximo encabezado (8 bits, indica el protocolo de transporte), límite de saltos o Hop Limit (8 bits, análogo al TTL), y direcciones de origen y destino de 128 bits cada una.</p>
+
+  <h4 id="r99-conectividad">Conectividad</h4>
+  <table>
+    <thead><tr><th>Modo</th><th>Alcance</th></tr></thead>
+    <tbody>
+      <tr><td>Unicast</td><td>Uno a uno: un emisor a un receptor específico, vía socket.</td></tr>
+      <tr><td>Broadcast</td><td>Uno a todos los nodos de la red, sin distinción.</td></tr>
+      <tr><td>Multicast</td><td>Uno a un grupo seleccionado de receptores.</td></tr>
+      <tr><td>Anycast</td><td>Uno a una dirección compartida por varios receptores; la red entrega al más cercano o eficiente.</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="r99-middleboxes">Middleboxes</h4>
+  <p>Dispositivos intermedios que hacen algo más que enrutar:</p>
+  <table>
+    <thead><tr><th>Tipo</th><th>Función</th></tr></thead>
+    <tbody>
+      <tr><td>NAT</td><td>Traduce direcciones privadas a públicas y viceversa.</td></tr>
+      <tr><td>Security Services</td><td>Filtra tráfico no deseado, protege contra amenazas.</td></tr>
+      <tr><td>Performance Enhancement</td><td>Compresión, cacheo, balanceo de carga.</td></tr>
+    </tbody>
+  </table>
+  <div class="warn">NAT es el middlebox más criticado en la bibliografía: rompe el principio de que las direcciones identifican hosts y los puertos identifican procesos, y obliga a los routers a inspeccionar contenido que en el diseño original de IP no les correspondía mirar.</div>
+
+  <p class="nota">Con este repaso cierran las cuatro capas vistas en la materia: aplicación, transporte y red con sus protocolos concretos, sobre el panorama de Internet y sus métricas de rendimiento como marco común.</p>
+</section>
