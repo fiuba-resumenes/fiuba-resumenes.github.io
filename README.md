@@ -39,22 +39,32 @@ revisa cada fragmento contra `fuentes/contrato-fragmento.md`.
 ## Sincronizar entre dispositivos
 
 `fuentes/sync.html` es un módulo que los builders inyectan antes de `</body>`.
-Agrega el botón "Sincronizar" al panel lateral y guarda los resaltados, las
-notas y los temas marcados en **un gist secreto de la cuenta de GitHub del
-propio lector**. No hay servidor de este sitio en el medio y no hay estado
-compartido: cada uno usa su token, nadie ve lo de nadie, y el que no conecta
-nada sigue con todo en localStorage como siempre.
+Agrega el botón "Sincronizar" al panel lateral.
+
+**Sin cuenta ni login**, modelo tipo Brave: se genera una frase de 12 palabras
+que es identidad y clave a la vez. De esa frase salen, por derivaciones
+independientes, la clave AES-GCM y el identificador del registro. El endpoint
+(`sync-worker/`, un Worker de Cloudflare) solo ve un identificador y un blob
+cifrado: no puede leer nada. Cada lector tiene su frase, así que no hay estado
+compartido, y el que no configura nada sigue con todo en localStorage.
 
 - Se sincroniza contenido, no interfaz. La regla es por sufijo
   (`-highlights-v1`, `-study-notes-v1`, `-prepared-topics-v1`), así que una
-  materia nueva entra sola sin tocar el módulo. El tema y los paneles plegados
-  quedan por dispositivo.
+  materia nueva entra sola. El tema y los paneles plegados quedan por
+  dispositivo.
 - Gana la versión más nueva, clave por clave, con marca de tiempo propia. Antes
-  de pisar algo local se guarda una copia y el diálogo ofrece "Deshacer".
+  de pisar algo local se guarda una copia y el diálogo ofrece "Deshacer", que
+  toca solo ese dispositivo y deja el servidor intacto.
 - La primera vez en un dispositivo que ya tenía notas, pregunta cuál lado
   conservar en vez de elegir solo.
-- Sin cuenta hay copia a un archivo JSON, que además es el respaldo que antes
-  no existía.
+- Sin nada configurado hay copia a un archivo JSON, que además es el respaldo
+  que si no no existe.
+- `fuentes/lista-frases.txt` son las 256 palabras. Cambiarla invalida las
+  frases ya repartidas.
+
+Mientras `ENDPOINT` en `fuentes/sync.html` diga `SIN_CONFIGURAR`, el diálogo
+avisa que no está configurado y ofrece solo la copia en archivo. Para
+habilitarlo, ver `sync-worker/README.md`.
 
 Está en los cuatro apuntes, incluido el de Aprendizaje Automático, que vive en
 su repo y lo lleva inyectado en el HTML porque no tiene build.

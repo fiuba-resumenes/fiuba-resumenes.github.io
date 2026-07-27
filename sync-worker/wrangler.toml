@@ -1,0 +1,8 @@
+name = "apuntes-sync"
+main = "worker.js"
+compatibility_date = "2025-09-01"
+
+# El id sale de `npx wrangler kv namespace create DATOS` (ver README.md).
+[[kv_namespaces]]
+binding = "DATOS"
+id = "PEGAR_ACA_EL_ID_DEL_NAMESPACE"
