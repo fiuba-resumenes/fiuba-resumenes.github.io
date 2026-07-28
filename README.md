@@ -69,6 +69,26 @@ habilitarlo, ver `sync-worker/README.md`.
 Está en los cuatro apuntes, incluido el de Aprendizaje Automático, que vive en
 su repo y lo lleva inyectado en el HTML porque no tiene build.
 
+## Elegir qué se imprime
+
+`fuentes/imprimir.html`, inyectado igual que el módulo de sincronización. El
+botón PDF abre un diálogo con un tilde por capítulo, agrupados como la barra
+lateral, con la estimación de páginas de cada uno y del total. Lo destildado se
+oculta solo en `@media print`: la pantalla no se toca.
+
+Arregla además un defecto que tenía la impresión. El CSS del shell trata de
+mostrar el contenido de los `<details>` cerrados con
+`details:not([open]) > .details-body { display: block }`, y Chrome ya no lo
+respeta, así que la autoevaluación de Sistemas Distribuidos salía impresa con
+las 71 preguntas y **ninguna** respuesta: 3.574 palabras en lugar de 45.000. El
+módulo los abre de verdad en `beforeprint` y los cierra en `afterprint`. Por eso
+el apunte pasó de 214 a 300 páginas impresas: antes faltaban las respuestas.
+
+Los coeficientes de la estimación salen de imprimir los tres apuntes con Chrome
+y ajustar por mínimos cuadrados (496 palabras por página de texto, 0,271 páginas
+por figura o tabla). Error medido: +0,1%, +4,6% y -5,6%. **Si se toca el CSS de
+impresión hay que volver a medirlos.**
+
 ## Colores
 
 Cada materia tiene su acento, el mismo en la portada y en su apunte, en versión

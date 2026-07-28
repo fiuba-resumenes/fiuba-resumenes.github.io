@@ -20,7 +20,8 @@ from materias import MATERIAS
 BASE = Path(__file__).resolve().parent
 REPO = BASE.parent
 SHELL = BASE / "shell.html"
-SYNC = BASE / "sync.html"
+# Modulos que se inyectan antes de </body>, en este orden.
+MODULOS = [BASE / "sync.html", BASE / "imprimir.html"]
 
 # vocabulario propio de los fragmentos -> callouts del shell
 CLASES = {
@@ -293,16 +294,20 @@ def armar(cfg: dict) -> int:
     # El reemplazo va como lambda y no como string: re.sub interpreta las
     # secuencias de escape del reemplazo, y convertiria los \n del JavaScript
     # en saltos de linea reales, partiendo los literales de texto al medio.
-    sync = SYNC.read_text(encoding="utf-8")
-    # Si el shell ya lo trae (paso, por ejemplo, cuando se refresca
-    # shell-aa.html desde el apunte de Aprendizaje Automatico, que ya lo tiene
-    # inyectado), no se duplica.
-    n = 1 if "sync-dialog" in doc else 0
-    if not n:
-        doc, n = re.subn(r"</body>", lambda _: sync + "</body>", doc, count=1)
-    if not n:
-        print("!! no se encontro </body> para inyectar sync.html", file=sys.stderr)
-        return 1
+    for modulo in MODULOS:
+        cuerpo = modulo.read_text(encoding="utf-8")
+        marca = re.search(r'id="([a-z]+-dialog)"', cuerpo).group(1)
+        # Si el shell ya lo trae (pasa cuando se refresca shell-aa.html desde el
+        # apunte de Aprendizaje Automatico, que ya lo tiene inyectado), no se
+        # duplica. El reemplazo va como lambda: re.sub interpreta los escapes
+        # del string de reemplazo y convertiria los \n del JavaScript en saltos
+        # de linea reales, partiendo los literales de texto al medio.
+        if marca in doc:
+            continue
+        doc, n = re.subn(r"</body>", lambda _, c=cuerpo: c + "</body>", doc, count=1)
+        if not n:
+            print(f"!! no se encontro </body> para inyectar {modulo.name}", file=sys.stderr)
+            return 1
 
     out = REPO / cfg["salida"]
     out.parent.mkdir(parents=True, exist_ok=True)
