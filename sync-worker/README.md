@@ -8,9 +8,16 @@ distintas, con derivaciones independientes: la clave de cifrado y el
 identificador del registro. Acá llega el identificador y un blob AES-GCM. No hay
 cuentas, ni sesiones, ni forma de listar registros ajenos.
 
-## Deploy
+## Estado
 
-Hace falta una cuenta de Cloudflare, gratis. Tres comandos:
+Desplegado en **https://apuntes-sync.flopeztancredi.workers.dev**, cuenta
+`b363001b04e9e88b1c6e64566df1bf6e`, namespace KV `DATOS`
+(`7486e87fdd7d48baab2bc6c246d5b271`). Esa URL ya está en `ENDPOINT`, en
+`fuentes/sync.html`.
+
+## Volver a desplegar
+
+Tres comandos:
 
 ```
 npx wrangler login
@@ -21,10 +28,8 @@ npx wrangler deploy
 El segundo imprime un `id`: copialo a `wrangler.toml`, en `kv_namespaces`, antes
 de correr el tercero.
 
-Al final `wrangler deploy` imprime la URL, algo como
-`https://apuntes-sync.TU-SUBDOMINIO.workers.dev`. **Esa URL va en
-`fuentes/sync.html`**, en la constante `ENDPOINT`, y después se rearman los
-apuntes:
+Si cambiara la URL, va en `fuentes/sync.html`, en la constante `ENDPOINT`, y
+después se rearman los apuntes:
 
 ```
 python3 fuentes/armar.py
