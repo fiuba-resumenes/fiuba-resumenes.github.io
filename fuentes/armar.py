@@ -15,6 +15,7 @@ import sys
 import unicodedata
 from pathlib import Path
 
+import autoria
 from materias import MATERIAS
 
 BASE = Path(__file__).resolve().parent
@@ -277,6 +278,13 @@ def armar(cfg: dict) -> int:
         doc = doc.replace(s, "rgba(20, 20, 20, .18)")
     doc = doc.replace('content="#167e9e"', f'content="{cfg["theme_color"]}"')
     doc = doc.replace("</style>", CSS_EXTRA + "  </style>", 1)
+
+    # 5 bis. firma de autoria al pie de la barra lateral
+    try:
+        doc = autoria.inyectar(doc, cfg.get("autores"))
+    except ValueError as e:
+        print(f"!! autoria de {cfg['clave']}: {e}", file=sys.stderr)
+        return 1
 
     # 6. PWA y botones de la otra materia
     doc = re.sub(r'\s*<link rel="manifest"[^>]*>', "", doc)

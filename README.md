@@ -7,12 +7,12 @@ autocontenido: sin build en el servidor, sin dependencias, sin CDN.
 
 ## Qué hay
 
-| materia | se lee en | vive en |
-|---|---|---|
-| Sistemas Distribuidos (75.74) | [/sistemas-distribuidos](https://flopeztancredi.github.io/sistemas-distribuidos/) | repo [sistemas-distribuidos](https://github.com/flopeztancredi/sistemas-distribuidos) |
-| Aprendizaje Automático (75.06) | [/aprendizaje-automatico](https://flopeztancredi.github.io/aprendizaje-automatico/) | repo [aprendizaje-automatico](https://github.com/flopeztancredi/aprendizaje-automatico) |
-| Redes (75.43) | [/redes](https://flopeztancredi.github.io/redes/) | este repo |
-| Empresas de Base Tecnológica 1 | [/empresas-de-base-tecnologica](https://flopeztancredi.github.io/empresas-de-base-tecnologica/) | este repo |
+| materia | se lee en | vive en | lo escribió |
+|---|---|---|---|
+| Sistemas Distribuidos (75.74) | [/sistemas-distribuidos](https://flopeztancredi.github.io/sistemas-distribuidos/) | repo [sistemas-distribuidos](https://github.com/flopeztancredi/sistemas-distribuidos) | flopeztancredi |
+| Aprendizaje Automático (75.06) | [/aprendizaje-automatico](https://flopeztancredi.github.io/aprendizaje-automatico/) | repo [aprendizaje-automatico](https://github.com/flopeztancredi/aprendizaje-automatico) | flopeztancredi |
+| Redes (75.43) | [/redes](https://flopeztancredi.github.io/redes/) | este repo | flopeztancredi |
+| Empresas de Base Tecnológica 1 | [/empresas-de-base-tecnologica](https://flopeztancredi.github.io/empresas-de-base-tecnologica/) | este repo | flopeztancredi |
 
 Redes y EBT eran markdown servido con just-the-docs. Se convirtieron al mismo
 formato que los otros dos: un solo HTML por materia, con buscador, resaltador,
@@ -88,6 +88,28 @@ Los coeficientes de la estimación salen de imprimir los tres apuntes con Chrome
 y ajustar por mínimos cuadrados (496 palabras por página de texto, 0,271 páginas
 por figura o tabla). Error medido: +0,1%, +4,6% y -5,6%. **Si se toca el CSS de
 impresión hay que volver a medirlos.**
+
+## Quién escribió cada apunte
+
+No todos los apuntes son de la misma persona, así que la portada no firma por
+nadie: cada uno lleva la firma al pie de su barra lateral, el logo de GitHub y
+el usuario, enlazado al perfil. Nada más, y en gris.
+
+`fuentes/autoria.py` arma ese bloque y lo inyecta, y es el mismo módulo en los
+tres builders para que el markup no se separe. Los autores de una materia son
+una lista de usuarios de GitHub en su entrada de `fuentes/materias.py`:
+
+```python
+"autores": ["flopeztancredi"],       # uno o varios, en orden
+```
+
+**No es opcional**: si una materia no los declara, el build falla. Ese es el
+punto, que no se publique nada sin decir quién lo escribió. El usuario se
+valida contra el formato de GitHub antes de entrar a la URL.
+
+Los otros dos apuntes viven en sus repos: Sistemas Distribuidos lo declara en
+`AUTORES`, arriba de `fuentes/adaptar_estetica.py`, y Aprendizaje Automático,
+que no tiene build, lo lleva escrito en el HTML.
 
 ## Colores
 

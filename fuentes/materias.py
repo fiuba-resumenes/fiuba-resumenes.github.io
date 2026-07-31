@@ -8,10 +8,15 @@ La paleta usa los mismos nombres de token que el shell, asi que su CSS
 funciona sin tocarlo. Los neutros (ink) se mantienen parejos entre materias;
 lo que cambia es el acento y el tinte del fondo, para que cada apunte se
 reconozca de un vistazo sin dejar de ser la misma familia.
+
+"autores" son usuarios de GitHub, uno o varios, y no es opcional: cada apunte
+firma quien lo escribio, que no siempre es quien publica el sitio. El build
+falla si falta (ver autoria.py).
 """
 
 REDES = {
     "clave": "redes",
+    "autores": ["flopeztancredi"],
     "salida": "redes/index.html",
     "prefijo_ls": "rd",          # namespace de localStorage
     "titulo_tab": "Redes (75.43) - Apunte completo",
@@ -96,6 +101,7 @@ REDES = {
 
 EBT = {
     "clave": "ebt",
+    "autores": ["flopeztancredi"],
     # La URL escribe el nombre entero, como las otras tres. /ebt/ queda como
     # redireccion. El prefijo de localStorage sigue siendo "ebt" a proposito:
     # es el mismo origen, asi que mover la ruta no le borra las notas a nadie.
