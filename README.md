@@ -89,27 +89,25 @@ y ajustar por mínimos cuadrados (496 palabras por página de texto, 0,271 pági
 por figura o tabla). Error medido: +0,1%, +4,6% y -5,6%. **Si se toca el CSS de
 impresión hay que volver a medirlos.**
 
-## Quién escribió cada apunte
+## Autores
 
-No todos los apuntes son de la misma persona, así que la portada no firma por
-nadie: cada uno lleva la firma al pie de su barra lateral, el logo de GitHub y
-el usuario, enlazado al perfil. Nada más, y en gris.
+Cada apunte firma al pie de su barra lateral: logo de GitHub y usuario,
+enlazado al perfil. La portada no firma.
 
-`fuentes/autoria.py` arma ese bloque y lo inyecta, y es el mismo módulo en los
-tres builders para que el markup no se separe. Los autores de una materia son
-una lista de usuarios de GitHub en su entrada de `fuentes/materias.py`:
+`fuentes/autoria.py` arma el bloque y lo inyecta, y es el mismo módulo en los
+tres builders. Los autores van en la entrada de la materia, en
+`fuentes/materias.py`:
 
 ```python
 "autores": ["flopeztancredi"],       # uno o varios, en orden
 ```
 
-**No es opcional**: si una materia no los declara, el build falla. Ese es el
-punto, que no se publique nada sin decir quién lo escribió. El usuario se
-valida contra el formato de GitHub antes de entrar a la URL.
+Si falta, el build falla. El usuario se valida contra el formato de GitHub
+antes de entrar a la URL.
 
-Los otros dos apuntes viven en sus repos: Sistemas Distribuidos lo declara en
-`AUTORES`, arriba de `fuentes/adaptar_estetica.py`, y Aprendizaje Automático,
-que no tiene build, lo lleva escrito en el HTML.
+En los otros dos repos: `AUTORES`, arriba de `fuentes/adaptar_estetica.py`
+para Sistemas Distribuidos, y escrito en el HTML para Aprendizaje Automático,
+que no tiene build.
 
 ## Colores
 

@@ -9,9 +9,7 @@ funciona sin tocarlo. Los neutros (ink) se mantienen parejos entre materias;
 lo que cambia es el acento y el tinte del fondo, para que cada apunte se
 reconozca de un vistazo sin dejar de ser la misma familia.
 
-"autores" son usuarios de GitHub, uno o varios, y no es opcional: cada apunte
-firma quien lo escribio, que no siempre es quien publica el sitio. El build
-falla si falta (ver autoria.py).
+"autores" son usuarios de GitHub, uno o varios. Sin eso el build falla.
 """
 
 REDES = {

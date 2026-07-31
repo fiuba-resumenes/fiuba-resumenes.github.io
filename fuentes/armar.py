@@ -279,7 +279,7 @@ def armar(cfg: dict) -> int:
     doc = doc.replace('content="#167e9e"', f'content="{cfg["theme_color"]}"')
     doc = doc.replace("</style>", CSS_EXTRA + "  </style>", 1)
 
-    # 5 bis. firma de autoria al pie de la barra lateral
+    # 5 bis. autores
     try:
         doc = autoria.inyectar(doc, cfg.get("autores"))
     except ValueError as e:
