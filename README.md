@@ -11,8 +11,8 @@ autocontenido: sin build en el servidor, sin dependencias, sin CDN.
 |---|---|---|---|
 | Sistemas Distribuidos (75.74) | [/sistemas-distribuidos](https://flopeztancredi.github.io/sistemas-distribuidos/) | repo [sistemas-distribuidos](https://github.com/flopeztancredi/sistemas-distribuidos) | flopeztancredi |
 | Aprendizaje Automático (75.06) | [/aprendizaje-automatico](https://flopeztancredi.github.io/aprendizaje-automatico/) | repo [aprendizaje-automatico](https://github.com/flopeztancredi/aprendizaje-automatico) | flopeztancredi |
-| Redes (75.43) | [/redes](https://flopeztancredi.github.io/redes/) | este repo | flopeztancredi |
-| Empresas de Base Tecnológica 1 | [/empresas-de-base-tecnologica](https://flopeztancredi.github.io/empresas-de-base-tecnologica/) | este repo | flopeztancredi |
+| Redes (75.43) | [/redes](https://flopeztancredi.github.io/redes/) | este repo | echepereza, flopeztancredi |
+| Empresas de Base Tecnológica 1 | [/empresas-de-base-tecnologica](https://flopeztancredi.github.io/empresas-de-base-tecnologica/) | este repo | echepereza, flopeztancredi |
 
 Redes y EBT eran markdown servido con just-the-docs. Se convirtieron al mismo
 formato que los otros dos: un solo HTML por materia, con buscador, resaltador,
@@ -99,11 +99,15 @@ tres builders. Los autores van en la entrada de la materia, en
 `fuentes/materias.py`:
 
 ```python
-"autores": ["flopeztancredi"],       # uno o varios, en orden
+"autores": ["echepereza", "flopeztancredi"],
 ```
 
 Si falta, el build falla. El usuario se valida contra el formato de GitHub
 antes de entrar a la URL.
+
+Se ordenan alfabéticamente al armar, así que da igual cómo se declaren: ninguno
+es más autor que el otro. Si alguien le agrega algo a un resumen existente, se
+suma a la lista.
 
 En los otros dos repos: `AUTORES`, arriba de `fuentes/adaptar_estetica.py`
 para Sistemas Distribuidos, y escrito en el HTML para Aprendizaje Automático,
