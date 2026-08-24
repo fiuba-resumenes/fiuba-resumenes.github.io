@@ -13,26 +13,31 @@ autocontenido: sin build en el servidor, sin dependencias, sin CDN.
 | Aprendizaje Automático (75.06) | [/aprendizaje-automatico](https://flopeztancredi.github.io/aprendizaje-automatico/) | repo [aprendizaje-automatico](https://github.com/flopeztancredi/aprendizaje-automatico) | flopeztancredi |
 | Redes (75.43) | [/redes](https://flopeztancredi.github.io/redes/) | este repo | echepereza, flopeztancredi |
 | Empresas de Base Tecnológica 1 | [/empresas-de-base-tecnologica](https://flopeztancredi.github.io/empresas-de-base-tecnologica/) | este repo | echepereza, flopeztancredi |
-| Empresas de Base Tecnológica 2 | [echepereza.github.io/empresas-base-tecnologica-II](https://echepereza.github.io/empresas-base-tecnologica-II/) | repo [empresas-base-tecnologica-II](https://github.com/echepereza/empresas-base-tecnologica-II) | echepereza |
+| Empresas de Base Tecnológica 2 | [/empresas-de-base-tecnologica-2](https://flopeztancredi.github.io/empresas-de-base-tecnologica-2/) | este repo | echepereza, flopeztancredi |
 | Programación Concurrente | [echepereza.github.io/programacion-concurrente](https://echepereza.github.io/programacion-concurrente/) | repo [programacion-concurrente](https://github.com/echepereza/programacion-concurrente) | echepereza |
-| Ciencia de Datos | [echepereza.github.io/ciencia-de-datos-martinelli](https://echepereza.github.io/ciencia-de-datos-martinelli/) | repo [ciencia-de-datos-martinelli](https://github.com/echepereza/ciencia-de-datos-martinelli) | echepereza |
+| Ciencia de Datos | [/ciencia-de-datos](https://flopeztancredi.github.io/ciencia-de-datos/) | este repo | echepereza, flopeztancredi |
 
 Redes y EBT eran markdown servido con just-the-docs. Se convirtieron al mismo
 formato que los otros dos: un solo HTML por materia, con buscador, resaltador,
 panel de notas y diagramas SVG propios (las 11 imágenes que había se redibujaron).
 Las URLs viejas siguen vivas: `docs/redes/` y `docs/ebt/` son redirecciones.
+EBT 2 y Ciencia de Datos se portaron después desde los repos de echepereza al
+mismo formato, con sus figuras redibujadas sobre los tokens de cada materia.
 
 ## Cómo se arma
 
 ```
 python3 fuentes/armar.py redes    # -> redes/index.html
 python3 fuentes/armar.py ebt      # -> empresas-de-base-tecnologica/index.html
+python3 fuentes/armar.py ebt2     # -> empresas-de-base-tecnologica-2/index.html
+python3 fuentes/armar.py cdd      # -> ciencia-de-datos/index.html
 ```
 
 - `fuentes/shell.html`: el cascarón compartido (CSS, buscador, notas, temas).
 - `fuentes/materias.py`: lo único que cambia por materia (identidad, paleta,
   agrupación de capítulos). Agregar una materia es agregar una entrada.
-- `fuentes/redes/`, `fuentes/ebt/`: un fragmento HTML por capítulo.
+- `fuentes/redes/`, `fuentes/ebt/`, `fuentes/ebt2/`, `fuentes/cdd/`: un
+  fragmento HTML por capítulo.
 - `fuentes/md/`: el markdown original, conservado como fuente.
 
 Dos carpetas opcionales por materia extienden los fragmentos sin tocar el
@@ -100,7 +105,7 @@ Mientras `ENDPOINT` en `fuentes/sync.html` diga `SIN_CONFIGURAR`, el diálogo
 avisa que no está configurado y ofrece solo la copia en archivo. Para
 habilitarlo, ver `sync-worker/README.md`.
 
-Está en los cuatro apuntes, incluido el de Aprendizaje Automático, que vive en
+Está en todos los apuntes, incluido el de Aprendizaje Automático, que vive en
 su repo y lo lleva inyectado en el HTML porque no tiene build.
 
 ## Elegir qué se imprime

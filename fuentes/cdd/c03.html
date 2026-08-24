@@ -1,0 +1,157 @@
+<section class="unidad" id="c03" data-titulo="Map-Reduce y Spark">
+  <h2>C03. Map-Reduce y Spark</h2>
+  <p class="intro">Cuando los datos no entran en una sola máquina, el cómputo se reparte entre los nodos de un cluster. Map-Reduce es el modelo de programación que hace eso escalable: un map que se paraleliza registro a registro, un shuffle &amp; sort que junta las claves iguales (la etapa más costosa) y un reduce que combina. Apache Spark implementa la idea con un driver que define tareas y ejecutores que trabajan sobre RDDs particionados. La distinción central del capítulo, y la más preguntada, es transformación (lazy, devuelve RDD) contra acción (dispara la ejecución, devuelve un valor al driver).</p>
+
+  <div class="def"><b>Modelo Map-Reduce.</b> Modelo de programación para el <b>procesamiento distribuido</b> de grandes volúmenes de datos de forma <b>escalable</b>.</div>
+  <div class="def"><b>Cluster.</b> Conjunto de computadoras que trabajan de forma conjunta y que puede verse como un <b>sistema único</b>.</div>
+  <div class="def"><b>Nodo.</b> Cada computadora del cluster. Se encargan de procesar <b>sus</b> datos y producir <b>resultados parciales</b>.</div>
+
+  <h3 id="c03-map">Map</h3>
+  <p>Recibe un par de claves <code>(k, v)</code> y devuelve pares intermedios <code>(k', v')</code>. Al aplicarse <b>registro a registro</b>, puede ser <b>paralelizada y distribuida</b> entre los distintos nodos.</p>
+
+  <h3 id="c03-reduce">Reduce</h3>
+  <p>Combina los valores asociados a una <b>misma clave</b> de los resultados intermedios del <code>map</code>. La función aplicada debe ser <b>conmutativa</b> y <b>asociativa</b>.</p>
+  <div class="warn"><b>Shuffle &amp; sort:</b> para poder ejecutar el reduce, se deben <b>enviar todos los resultados con misma clave a un mismo nodo</b>. Es la <b>etapa más costosa</b>.</div>
+  <figure class="diag">
+    <svg viewBox="0 0 860 280" role="img" aria-label="Flujo Map-Reduce: los datos particionados pasan por map en cada nodo, el shuffle y sort junta las claves iguales en un mismo nodo y el reduce produce el resultado">
+      <defs>
+        <marker id="c03-flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--linea)"/>
+        </marker>
+      </defs>
+      <rect x="15" y="103" width="125" height="54" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="195" y="30" width="120" height="40" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="195" y="110" width="120" height="40" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="195" y="190" width="120" height="40" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="375" y="70" width="130" height="120" rx="8" fill="none" stroke="var(--acc)" stroke-width="2"/>
+      <rect x="565" y="60" width="130" height="40" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="565" y="160" width="130" height="40" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="745" y="110" width="100" height="40" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <g stroke="var(--linea)" stroke-width="1.5" fill="none" marker-end="url(#c03-flecha)">
+        <line x1="140" y1="115" x2="190" y2="55"/>
+        <line x1="140" y1="130" x2="190" y2="130"/>
+        <line x1="140" y1="145" x2="190" y2="205"/>
+        <line x1="315" y1="50" x2="370" y2="95"/>
+        <line x1="315" y1="130" x2="370" y2="130"/>
+        <line x1="315" y1="210" x2="370" y2="165"/>
+        <line x1="505" y1="110" x2="560" y2="85"/>
+        <line x1="505" y1="150" x2="560" y2="175"/>
+        <line x1="695" y1="80" x2="740" y2="122"/>
+        <line x1="695" y1="180" x2="740" y2="138"/>
+      </g>
+      <g fill="currentColor" font-size="13" text-anchor="middle">
+        <text x="77" y="126">Datos</text>
+        <text x="77" y="144">particionados</text>
+        <text x="255" y="55"><tspan font-family="monospace">map</tspan> en nodo 1</text>
+        <text x="255" y="135"><tspan font-family="monospace">map</tspan> en nodo 2</text>
+        <text x="255" y="215"><tspan font-family="monospace">map</tspan> en nodo 3</text>
+        <text x="630" y="85"><tspan font-family="monospace">reduce</tspan> clave A</text>
+        <text x="630" y="185"><tspan font-family="monospace">reduce</tspan> clave B</text>
+        <text x="795" y="135">Resultado</text>
+      </g>
+      <g text-anchor="middle">
+        <text x="440" y="118" fill="var(--acc)" font-size="14" font-weight="bold">Shuffle &amp; sort</text>
+        <text x="440" y="140" fill="var(--acc2)" font-size="11">misma clave,</text>
+        <text x="440" y="156" fill="var(--acc2)" font-size="11">mismo nodo</text>
+        <text x="440" y="212" fill="var(--acc2)" font-size="12">etapa más costosa</text>
+      </g>
+    </svg>
+    <figcaption>Map se paraleliza registro a registro; el cuello de botella es el <b>shuffle &amp; sort</b>, que junta los resultados de una misma clave en un mismo nodo antes del reduce.</figcaption>
+  </figure>
+  <div class="warn"><b>Por qué la función de reduce debe ser conmutativa y asociativa:</b> porque los valores de una misma clave llegan de <b>nodos distintos y en orden arbitrario</b>, y se combinan de a pares en cualquier agrupamiento. Si el resultado dependiera del orden, cada corrida daría algo distinto.</div>
+
+  <h3 id="c03-apache-spark">Apache Spark</h3>
+  <div class="def"><b>Apache Spark.</b> API de alto nivel en la que se cuenta con un <b>driver</b> (cabeza que define las tareas) y <b>ejecutores</b> (nodos), que devuelven los resultados al driver.</div>
+  <div class="def"><b>RDD.</b> Colección de datos <b>particionada y distribuida</b> entre los distintos nodos.</div>
+  <figure class="diag">
+    <svg viewBox="0 0 620 250" role="img" aria-label="Arquitectura de Spark: el driver define las tareas y las reparte entre ejecutores, uno por particion del RDD, que le devuelven los resultados">
+      <defs>
+        <marker id="c03-flecha2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--linea)"/>
+        </marker>
+        <marker id="c03-flecha3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--acc2)"/>
+        </marker>
+      </defs>
+      <rect x="225" y="20" width="170" height="52" rx="8" fill="none" stroke="var(--acc)" stroke-width="2"/>
+      <rect x="40" y="160" width="150" height="52" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="235" y="160" width="150" height="52" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="430" y="160" width="150" height="52" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <g stroke="var(--linea)" stroke-width="1.5" fill="none" marker-end="url(#c03-flecha2)">
+        <line x1="262" y1="72" x2="128" y2="155"/>
+        <line x1="303" y1="72" x2="303" y2="155"/>
+        <line x1="358" y1="72" x2="492" y2="155"/>
+      </g>
+      <g stroke="var(--acc2)" stroke-width="1.5" stroke-dasharray="5 4" fill="none" marker-end="url(#c03-flecha3)">
+        <line x1="102" y1="160" x2="236" y2="77"/>
+        <line x1="330" y1="160" x2="330" y2="77"/>
+        <line x1="518" y1="160" x2="384" y2="77"/>
+      </g>
+      <g fill="currentColor" font-size="13" text-anchor="middle">
+        <text x="310" y="42" fill="var(--acc)" font-weight="bold" font-size="15">Driver</text>
+        <text x="310" y="60" fill="var(--acc2)" font-size="11">define las tareas</text>
+        <text x="115" y="182">Ejecutor</text>
+        <text x="115" y="200" fill="var(--acc2)" font-size="11">partición 1</text>
+        <text x="310" y="182">Ejecutor</text>
+        <text x="310" y="200" fill="var(--acc2)" font-size="11">partición 2</text>
+        <text x="505" y="182">Ejecutor</text>
+        <text x="505" y="200" fill="var(--acc2)" font-size="11">partición 3</text>
+        <text x="160" y="105" fill="var(--acc2)" font-size="11">tareas</text>
+        <text x="365" y="120" fill="var(--acc2)" font-size="11">resultados</text>
+      </g>
+    </svg>
+    <figcaption>El driver reparte trabajo sobre las particiones del RDD y recibe de vuelta el resultado de cada ejecutor.</figcaption>
+  </figure>
+
+  <h3 id="c03-transformaciones">Transformaciones</h3>
+  <div class="def"><b>Transformación.</b> Operación que toma uno o más RDDs y <b>produce un nuevo RDD</b>. Son <b>lazy</b>: no se ejecutan hasta que se invoca una <b>acción</b>.</div>
+  <ul>
+    <li><code>map()</code></li>
+    <li><code>filter()</code></li>
+    <li><code>flatMap()</code></li>
+    <li><code>reduceByKey()</code></li>
+    <li><code>groupByKey()</code></li>
+    <li><code>distinct()</code></li>
+  </ul>
+
+  <h3 id="c03-acciones">Acciones</h3>
+  <div class="def"><b>Acción.</b> Operación que <b>desencadena la ejecución</b> de las transformaciones acumuladas y <b>devuelve un valor al driver</b>.</div>
+  <ul>
+    <li><code>count()</code></li>
+    <li><code>take(n)</code></li>
+    <li><code>collect()</code></li>
+    <li><code>first()</code></li>
+    <li><code>takeOrdered(n, f)</code></li>
+    <li><code>sample(withReplacement, fraction)</code></li>
+    <li><code>reduce(f)</code></li>
+    <li><code>countByKey()</code></li>
+  </ul>
+  <div class="examen">La distinción que más se pregunta: una <b>transformación</b> devuelve otro RDD y no ejecuta nada (lazy); una <b>acción</b> devuelve un <i>valor al driver</i> y es la que dispara todo el cómputo acumulado. Si dan una operación y hay que clasificarla: ¿devuelve RDD? Transformación. ¿Devuelve un número, una lista o escribe a disco? Acción.</div>
+
+  <h3 id="c03-operaciones-de-conjunto">Operaciones de conjunto</h3>
+  <ul>
+    <li><code>union()</code></li>
+    <li><code>intersection()</code></li>
+    <li><code>join()</code></li>
+    <li><code>substract()</code></li>
+    <li><code>broadcast join</code></li>
+  </ul>
+
+  <h3 id="c03-transformaciones-sobre-particiones">Transformaciones sobre particiones</h3>
+  <ul>
+    <li><code>glom()</code></li>
+    <li><code>mapPartitions(f)</code></li>
+    <li><code>repartition(n)</code></li>
+    <li><code>coalesce(n)</code></li>
+    <li><code>repartitionAndSortWithinPartitions()</code></li>
+  </ul>
+
+  <h3 id="c03-persistencia-y-cache">Persistencia y caché</h3>
+  <ul>
+    <li><code>cache()</code></li>
+    <li><code>saveAsTextFile()</code></li>
+    <li><code>saveAsPickleFile()</code></li>
+  </ul>
+
+  <div class="examen">En el final: definir Map-Reduce, cluster y nodo; saber que el <b>shuffle &amp; sort es la etapa más costosa</b> y por qué; que la función de reduce debe ser <b>conmutativa y asociativa</b>; y la arquitectura de Spark (<b>driver más ejecutores</b>, RDD particionado). Sobre todo: <b>clasificar cada operación como transformación (lazy, devuelve RDD) o acción (dispara la ejecución, devuelve valor al driver)</b>.</div>
+</section>

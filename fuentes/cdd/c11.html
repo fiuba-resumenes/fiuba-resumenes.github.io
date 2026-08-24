@@ -1,0 +1,106 @@
+<section class="unidad" id="c11" data-titulo="Textos y RAG">
+  <h2>C11. Textos y RAG</h2>
+  <p class="intro">El último eslabón del apunte lleva la ciencia de datos al texto: los sentence transformers convierten oraciones en embeddings que capturan su significado semántico, y sobre esa representación se busca por similitud con una función de distancia. Con esa pieza se arma RAG (Retrieval Augmented Generation), la técnica que le acerca a un LLM información actualizada y específica sin reentrenarlo: se recuperan los chunks más relevantes de una base de datos vectorial y se inyectan en el prompt como contexto extendido. Es el tema que ata embeddings, bases vectoriales y LLMs en un solo circuito.</p>
+
+  <h3 id="c11-sentence-transformers">Sentence transformers</h3>
+  <div class="def"><b>Sentence transformers.</b> Transformar texto en <b>representaciones vectoriales (embeddings)</b> que <b>capturan su significado semántico</b>.</div>
+  <ul>
+    <li><b>División del texto en chunks:</b> con <b>Langchain</b> (por caracteres) o con <b>Stanza</b> (por signos de puntuación).</li>
+    <li><b>Modelo sentence transformers:</b> genera los embeddings para una <b>dimensión determinada</b>.</li>
+  </ul>
+
+  <h4 id="c11-consulta">Consulta</h4>
+  <p>La pregunta o consulta se transforma en su <b>representación vectorial</b>, y a partir de una <b>función de distancia</b> se mide qué tan parecida es la pregunta a los vectores de texto guardados. El sistema devuelve los <b>chunks más similares</b> a la pregunta, <b>ordenados por relevancia</b>.</p>
+  <div class="idea">La ventaja frente a representaciones más simples: el <b>contexto queda en la representación del texto</b>, no solo las palabras sueltas.</div>
+
+  <h3 id="c11-rag">Retrieval Augmented Generation (RAG)</h3>
+  <div class="def"><b>RAG.</b> Técnica que mejora la capacidad de los LLMs al permitirles <b>acceder y utilizar información «anexada»</b> actualizada y específica, <b>superando las limitaciones de su entrenamiento inicial</b>.</div>
+
+  <h4 id="c11-problemas">Problemas que resuelve</h4>
+  <ul>
+    <li><b>Costo del fine-tuning</b></li>
+    <li><b>Información desactualizada</b></li>
+    <li><b>Alucinaciones y errores</b></li>
+  </ul>
+
+  <h4 id="c11-funcionamiento">Funcionamiento</h4>
+  <ol>
+    <li>Se crea y mantiene una <b>base de datos vectorial</b> donde se guarda la información relevante (por ejemplo, transcripciones de videos o documentos PDF).</li>
+    <li>Cuando un usuario hace una pregunta, esta se <b>convierte en un vector usando el mismo modelo de embedding</b>.</li>
+    <li>El vector de la pregunta se usa para <b>buscar los documentos más relevantes y cercanos semánticamente</b>.</li>
+    <li>Los documentos recuperados se <b>añaden a la pregunta original como contexto extendido</b>, a estilo de prompt para el LLM. Este prompt también puede incluir <b>instrucciones específicas</b> para el modelo.</li>
+    <li>El LLM <b>interpreta este contexto adicional junto con la pregunta</b> del usuario y genera una respuesta <b>más precisa, actualizada y relevante</b>.</li>
+  </ol>
+
+  <figure class="diag">
+    <svg viewBox="0 0 760 315" role="img" aria-label="Circuito RAG: los documentos se parten en chunks, se convierten en embeddings y se guardan en una base vectorial; la pregunta se vectoriza con el mismo modelo de embedding, se buscan los chunks mas cercanos y se arma un prompt con pregunta, contexto e instrucciones que el LLM usa para responder">
+      <rect x="15" y="20" width="160" height="48" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="205" y="20" width="160" height="48" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="395" y="20" width="160" height="48" rx="8" fill="none" stroke="var(--acc)" stroke-width="1.5"/>
+      <rect x="585" y="20" width="160" height="48" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="15" y="130" width="160" height="48" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="205" y="130" width="180" height="48" rx="8" fill="none" stroke="var(--acc)" stroke-width="1.5"/>
+      <rect x="405" y="130" width="160" height="48" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="595" y="130" width="150" height="48" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="110" y="250" width="230" height="48" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="390" y="250" width="90" height="48" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="530" y="250" width="215" height="48" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <g fill="currentColor" font-size="13" font-weight="bold" text-anchor="middle">
+        <text x="95" y="41">Documentos</text>
+        <text x="285" y="41">Chunks</text>
+        <text x="475" y="41">Embeddings</text>
+        <text x="665" y="38">Base de datos</text>
+        <text x="665" y="55">vectorial</text>
+        <text x="95" y="148">Pregunta</text>
+        <text x="95" y="164">del usuario</text>
+        <text x="295" y="148">Vector de la pregunta</text>
+        <text x="485" y="148">Búsqueda</text>
+        <text x="670" y="148">Chunks relevantes</text>
+        <text x="225" y="271">Prompt</text>
+        <text x="435" y="279">LLM</text>
+        <text x="637" y="271">Respuesta</text>
+      </g>
+      <g fill="var(--acc2)" font-size="11" text-anchor="middle">
+        <text x="95" y="58">PDF, transcripciones</text>
+        <text x="285" y="58">Langchain o Stanza</text>
+        <text x="475" y="58">sentence transformers</text>
+        <text x="295" y="166">mismo modelo de embedding</text>
+        <text x="485" y="166">cercanía semántica</text>
+        <text x="670" y="166">ordenados por relevancia</text>
+        <text x="225" y="288">pregunta + contexto + instrucciones</text>
+        <text x="637" y="288">más precisa, actualizada y relevante</text>
+      </g>
+      <g stroke="var(--linea)" stroke-width="1.5" fill="none">
+        <line x1="175" y1="44" x2="197" y2="44"/>
+        <line x1="365" y1="44" x2="387" y2="44"/>
+        <line x1="555" y1="44" x2="577" y2="44"/>
+        <line x1="175" y1="154" x2="197" y2="154"/>
+        <line x1="385" y1="154" x2="397" y2="154"/>
+        <line x1="565" y1="154" x2="587" y2="154"/>
+        <line x1="340" y1="274" x2="382" y2="274"/>
+        <line x1="480" y1="274" x2="522" y2="274"/>
+        <polyline points="665,68 665,100 485,100 485,120"/>
+        <polyline points="670,178 670,214 280,214 280,240"/>
+        <polyline points="95,178 95,274 100,274"/>
+      </g>
+      <g fill="var(--linea)">
+        <polygon points="197,39 205,44 197,49"/>
+        <polygon points="387,39 395,44 387,49"/>
+        <polygon points="577,39 585,44 577,49"/>
+        <polygon points="197,149 205,154 197,159"/>
+        <polygon points="397,149 405,154 397,159"/>
+        <polygon points="587,149 595,154 587,159"/>
+        <polygon points="382,269 390,274 382,279"/>
+        <polygon points="522,269 530,274 522,279"/>
+        <polygon points="480,120 485,128 490,120"/>
+        <polygon points="275,240 280,248 285,240"/>
+        <polygon points="100,269 108,274 100,279"/>
+      </g>
+    </svg>
+    <figcaption>El circuito completo de RAG. El detalle que se pregunta: la pregunta se vectoriza con el <b>mismo modelo de embedding</b> que los documentos, si no las distancias no son comparables.</figcaption>
+  </figure>
+
+  <div class="warn"><b>RAG vs. fine-tuning:</b> RAG <b>no reentrena el modelo</b>: le pasa la información en el prompt. Por eso resuelve el <b>costo</b> del fine-tuning y la <b>información desactualizada</b>, y reduce las <b>alucinaciones</b> al anclar la respuesta en documentos reales.</div>
+
+  <div class="examen">Definir <b>sentence transformers</b> (texto → embeddings que capturan significado semántico) y las dos formas de chunkear (Langchain por caracteres, Stanza por signos de puntuación). Explicar <b>RAG de punta a punta</b> nombrando la <b>base de datos vectorial</b>, que se usa el <b>mismo modelo de embedding</b> para la pregunta, y los <b>tres problemas que resuelve</b>: costo de fine-tuning, información desactualizada y alucinaciones.</div>
+</section>

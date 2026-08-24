@@ -1,0 +1,77 @@
+<section class="unidad" id="c12" data-titulo="Imágenes y difusión">
+  <h2>C12. Imágenes y difusión</h2>
+  <p class="intro">La generación de imágenes pasó por varios intentos con problemas serios (mapeo directo, autoencoders, GANs) antes de llegar a los modelos de difusión, el estado del arte actual. Este capítulo recorre esa evolución con el problema de cada etapa y explica la idea central de la difusión: aprender a predecir y eliminar ruido de forma iterativa. Después desarma el text-to-image en sus piezas (CLIP, UNet y VAE) y cierra mostrando cómo el mismo esquema se extiende a música, video y 3D.</p>
+
+  <h3 id="c12-modelos-iniciales">Modelos iniciales</h3>
+  <table>
+    <thead><tr><th>Modelo</th><th>Cómo funciona</th><th>Problema</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>Mapeo directo (prompt a imagen)</b></td>
+        <td>Se crea una imagen siguiendo las instrucciones del usuario</td>
+        <td>Siempre generaría <b>la misma imagen promedio</b> para un prompt</td>
+      </tr>
+      <tr>
+        <td><b>Autoencoders</b></td>
+        <td>Encoder + decoder. Algunos usan arquitectura <b>decoder-only</b></td>
+        <td>Generaban imágenes <b>deformes y poco realistas</b></td>
+      </tr>
+      <tr>
+        <td><b>GANs</b></td>
+        <td>Dos redes neuronales que <b>compiten mutuamente</b> en una especie de <b>juego de suma cero</b>. Aprendizaje no supervisado</td>
+        <td><b>Difíciles de entrenar</b> y con <b>resultados variables</b></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="def"><b>GAN (Generative Adversarial Network).</b> Clase de algoritmos de inteligencia artificial que se utilizan en el <b>aprendizaje no supervisado</b>, implementados por un sistema de <b>dos redes neuronales que compiten mutuamente</b> en una especie de <b>juego de suma cero</b>.</div>
+
+  <h3 id="c12-difusion">Modelos de difusión (estado del arte)</h3>
+  <div class="idea">La idea: aprender a <b>predecir y eliminar el ruido</b> de una imagen de <b>forma iterativa</b>.</div>
+  <p>Para <b>entrenar</b> se parte de una <b>imagen limpia</b> y se le va <b>agregando ruido de a poco</b>, enseñando al modelo las modificaciones que se le hacen y qué impacto tienen. El objetivo es que el modelo aprenda las <b>operaciones inversas</b> para "limpiar" la imagen.</p>
+  <figure class="diag">
+    <svg viewBox="0 0 700 200" role="img" aria-label="Entrenamiento de un modelo de difusion: de imagen limpia a ruido agregando ruido de a poco, y generacion en sentido inverso con operaciones iterativas">
+      <g fill="var(--acc2)" font-size="12" text-anchor="middle">
+        <text x="350" y="44">entrenamiento:</text>
+        <text x="350" y="61">agregar ruido de a poco</text>
+        <text x="350" y="156">generación:</text>
+        <text x="350" y="173">operaciones inversas, paso a paso</text>
+      </g>
+      <rect x="30" y="70" width="200" height="64" rx="10" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="470" y="70" width="200" height="64" rx="10" fill="none" stroke="var(--acc)" stroke-width="1.5"/>
+      <g font-size="15" font-weight="bold" text-anchor="middle">
+        <text x="130" y="107" fill="currentColor">Imagen limpia</text>
+        <text x="570" y="107" fill="var(--acc)">Ruido</text>
+      </g>
+      <line x1="238" y1="88" x2="450" y2="88" stroke="var(--linea)" stroke-width="1.5"/>
+      <polygon points="450,82 462,88 450,94" fill="var(--linea)"/>
+      <line x1="462" y1="116" x2="250" y2="116" stroke="var(--acc)" stroke-width="1.5"/>
+      <polygon points="250,110 238,116 250,122" fill="var(--acc)"/>
+    </svg>
+    <figcaption>Se entrena en el sentido "ensuciar" para poder generar en el sentido inverso: partir de ruido y limpiarlo paso a paso hasta obtener una imagen limpia generada.</figcaption>
+  </figure>
+
+  <h3 id="c12-text-to-image">Generación condicional (text-to-image)</h3>
+  <table>
+    <thead><tr><th>Componente</th><th>Qué aporta</th></tr></thead>
+    <tbody>
+      <tr><td><b>CLIP</b></td><td><b>Dos encoders</b> (texto e imagen) que generan embeddings <b>en el mismo espacio vectorial</b></td></tr>
+      <tr><td><b>UNet</b></td><td>Arquitectura de <b>Stable Diffusion</b>, con <b>conexiones residuales y atención</b></td></tr>
+      <tr><td><b>Costos computacionales</b></td><td><b>Muy elevados</b> por resolución y complejidad</td></tr>
+      <tr><td><b>VAE (Variational Autoencoder)</b></td><td><b>Reduce la dimensión antes de difundir</b> y luego <b>decodifica</b></td></tr>
+    </tbody>
+  </table>
+  <div class="warn">Por qué CLIP hace posible el text-to-image: al poner texto e imagen <b>en el mismo espacio vectorial</b>, se puede medir la distancia entre un prompt y una imagen, y usar eso para <b>condicionar</b> la difusión hacia la imagen que corresponde al texto. Y el <b>VAE</b> es lo que hace el costo manejable: se difunde en un espacio de <b>menor dimensión</b> (ver <a href="#c05">C05</a> y <a href="#c09">C09</a>) y recién al final se decodifica a píxeles.</div>
+
+  <h3 id="c12-mas-alla-imagenes">Más allá de las imágenes</h3>
+  <table>
+    <thead><tr><th>Modalidad</th><th>Cómo se lleva al terreno de las imágenes</th></tr></thead>
+    <tbody>
+      <tr><td><b>Música</b></td><td>Se convierte en <b>espectrogramas</b> (imágenes), que luego se pueden volver a convertir en audio</td></tr>
+      <tr><td><b>Video</b></td><td>Imágenes con <b>dimensión temporal</b> y <b>movimiento de cámara codificado</b></td></tr>
+      <tr><td><b>3D</b></td><td>Desde <b>mapas de profundidad</b> hasta <b>reconstrucciones completas con vistas múltiples</b></td></tr>
+    </tbody>
+  </table>
+
+  <div class="examen">Se pregunta la <b>evolución histórica</b> con el problema de cada etapa: mapeo directo (siempre la <i>misma imagen promedio</i>) → autoencoders (imágenes <i>deformes</i>) → GANs (<i>difíciles de entrenar</i>, suma cero) → <b>difusión</b> (estado del arte). Explicar la difusión como <b>aprender a quitar ruido iterativamente</b>, entrenando en el sentido inverso. Y saber para qué está cada pieza del text-to-image: <b>CLIP</b> (mismo espacio vectorial para texto e imagen), <b>UNet</b> (Stable Diffusion, residuales + atención) y <b>VAE</b> (reducir dimensión antes de difundir).</div>
+</section>

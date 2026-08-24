@@ -1,0 +1,253 @@
+<section class="unidad" id="b09" data-titulo="Evaluación de negocio">
+  <h2>B09. Evaluación de negocio</h2>
+  <p class="intro">Detectada la oportunidad, falta decidir si el negocio se sostiene y cómo se lo arma. Este capítulo junta las herramientas de evaluación y diseño: la cruz de Porter para leer la estructura competitiva de la industria, el Business Model Canvas para pensar el modelo de negocio en nueve bloques (con TAM, SAM y SOM para dimensionar el mercado), la estrategia del océano azul para escapar de la competencia y el plan de negocio para bajarlo al papel. Cierra con los números que sostienen todo lo anterior: costeo por absorción y variable, punto de equilibrio, margen de seguridad, VAN y período de repago.</p>
+
+  <h3 id="b09-cruz-de-porter">Cruz de Porter (5 fuerzas)</h3>
+  <p><b>Objetivo:</b> evaluar la estructura competitiva de una industria y comprender los factores que afectan su rentabilidad potencial.</p>
+  <figure class="diag">
+    <svg viewBox="0 0 560 330" role="img" aria-label="Cruz de Porter: cuatro fuerzas externas empujan sobre la rivalidad de la industria en el centro">
+      <rect x="185" y="16" width="190" height="52" rx="10" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="185" y="262" width="190" height="52" rx="10" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="10" y="136" width="160" height="52" rx="10" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="390" y="136" width="160" height="52" rx="10" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="205" y="130" width="150" height="64" rx="10" fill="none" stroke="var(--acc)" stroke-width="2"/>
+      <g fill="currentColor" font-size="13" text-anchor="middle">
+        <text x="280" y="38">Amenaza de nuevos</text>
+        <text x="280" y="56">competidores</text>
+        <text x="280" y="284">Amenaza de</text>
+        <text x="280" y="302">sustitutos</text>
+        <text x="90" y="158">Poder de los</text>
+        <text x="90" y="176">proveedores</text>
+        <text x="470" y="158">Poder de los</text>
+        <text x="470" y="176">clientes</text>
+      </g>
+      <g fill="var(--acc)" font-size="14" font-weight="bold" text-anchor="middle">
+        <text x="280" y="157">Rivalidad de</text>
+        <text x="280" y="176">la industria</text>
+      </g>
+      <g stroke="var(--linea)" stroke-width="1.5">
+        <line x1="280" y1="68" x2="280" y2="118"/>
+        <line x1="280" y1="262" x2="280" y2="206"/>
+        <line x1="170" y1="162" x2="195" y2="162"/>
+        <line x1="390" y1="162" x2="365" y2="162"/>
+      </g>
+      <g fill="var(--linea)">
+        <polygon points="274,118 286,118 280,128"/>
+        <polygon points="274,206 286,206 280,196"/>
+        <polygon points="195,156 195,168 205,162"/>
+        <polygon points="365,156 365,168 355,162"/>
+      </g>
+    </svg>
+    <figcaption>Cruz de Porter: las cinco fuerzas competitivas convergen en la rivalidad del sector.</figcaption>
+  </figure>
+  <ul>
+    <li><b>Rivalidad entre competidores:</b> intensidad de la competencia. A mayor rivalidad, precios más bajos y menor margen.</li>
+    <li><b>Amenaza de nuevos competidores:</b> facilidad de entrada. A menores barreras, mayor amenaza.</li>
+    <li><b>Poder de los proveedores:</b> capacidad de influir en precios y condiciones. Menos proveedores → más poder.</li>
+    <li><b>Poder de los clientes:</b> influencia de los compradores sobre precios y condiciones de venta.</li>
+    <li><b>Amenaza de sustitutos:</b> riesgo de que el cliente opte por alternativas que satisfacen la misma necesidad.</li>
+  </ul>
+
+  <h3 id="b09-business-model-canvas">Business Model Canvas</h3>
+  <p>Herramienta para visualizar el modelo de negocio en <b>9 bloques</b>: da visualización clara, análisis integral y planificación estratégica.</p>
+  <figure class="diag">
+    <svg viewBox="-4 -4 708 368" role="img" aria-label="Business Model Canvas: los nueve bloques en su disposición clásica">
+      <g fill="none" stroke="var(--linea)" stroke-width="1.5">
+        <rect x="0" y="0" width="140" height="240"/>
+        <rect x="140" y="0" width="140" height="120"/>
+        <rect x="140" y="120" width="140" height="120"/>
+        <rect x="420" y="0" width="140" height="120"/>
+        <rect x="420" y="120" width="140" height="120"/>
+        <rect x="560" y="0" width="140" height="240"/>
+        <rect x="0" y="240" width="350" height="120"/>
+        <rect x="350" y="240" width="350" height="120"/>
+      </g>
+      <rect x="280" y="0" width="140" height="240" fill="none" stroke="var(--acc)" stroke-width="2"/>
+      <g fill="var(--acc2)" font-size="12" font-weight="bold" text-anchor="middle">
+        <text x="70" y="88">8</text>
+        <text x="210" y="40">7</text>
+        <text x="210" y="160">6</text>
+        <text x="350" y="88">2</text>
+        <text x="490" y="40">4</text>
+        <text x="490" y="160">3</text>
+        <text x="630" y="88">1</text>
+        <text x="175" y="278">9</text>
+        <text x="525" y="278">5</text>
+      </g>
+      <g fill="currentColor" font-size="13" font-weight="bold" text-anchor="middle">
+        <text x="70" y="112">Alianzas</text>
+        <text x="70" y="130">clave</text>
+        <text x="210" y="62">Actividades</text>
+        <text x="210" y="80">clave</text>
+        <text x="210" y="182">Recursos</text>
+        <text x="210" y="200">clave</text>
+        <text x="350" y="112">Propuesta</text>
+        <text x="350" y="130">de valor</text>
+        <text x="490" y="62">Relación con</text>
+        <text x="490" y="80">el cliente</text>
+        <text x="490" y="186">Canales</text>
+        <text x="630" y="112">Segmento</text>
+        <text x="630" y="130">de cliente</text>
+        <text x="175" y="300">Estructura</text>
+        <text x="175" y="318">de costos</text>
+        <text x="525" y="300">Fuentes</text>
+        <text x="525" y="318">de ingresos</text>
+      </g>
+    </svg>
+    <figcaption>Los 9 bloques del Business Model Canvas. Leído por zonas: la mitad izquierda responde <b>qué ofrecemos</b>, la derecha <b>a quién se lo ofrecemos</b> y la base <b>cómo nos financiamos</b>.</figcaption>
+  </figure>
+  <ol>
+    <li><b>Segmento de cliente (mercado):</b> ¿para quién creamos valor? <b>B2B, B2C o B2B2C</b>. El tamaño se dimensiona con las fracciones de mercado TAM, SAM y SOM (siguiente sección).</li>
+    <li><b>Propuesta de valor:</b> ¿qué valor entregamos, qué problema resolvemos? Tiene que ser <i>clara, específica y real</i>. Se diseña observando <i>beneficios esperados, dolores y tareas</i> del cliente, y creando bienes y servicios que generen esos beneficios y alivien esos dolores.</li>
+    <li><b>Canales:</b> cómo llegamos al cliente. <i>Directo o indirecto</i>, <i>propio o de socio</i>.</li>
+    <li><b>Relaciones con clientes:</b> asistencia personal (incluso exclusiva), autoservicio, servicios automáticos, comunidades, creación colectiva.</li>
+    <li><b>Fuentes de ingresos:</b> venta de activos, cuotas por uso, suscripción, préstamo o alquiler, licencias, comisiones, publicidad.</li>
+    <li><b>Recursos clave:</b> físicos, intelectuales (patentes, marcas), humanos, financieros.</li>
+    <li><b>Actividades clave:</b> acciones necesarias para que el modelo funcione.</li>
+    <li><b>Alianzas clave:</b> empresas no competidoras (complementarios), coopetición, joint ventures, clientes.</li>
+    <li><b>Estructura de costos:</b> según costes (recortar gastos) o según valor (foco en crear valor). Costos fijos y variables, de adquisición de clientes, de desarrollo, operativos.</li>
+  </ol>
+
+  <h4 id="b09-tam-sam-som">Segmento de cliente: fracciones de mercado</h4>
+  <figure class="diag">
+    <svg viewBox="0 0 260 240" role="img" aria-label="Círculos concéntricos de las fracciones de mercado: TAM contiene a SAM, que contiene a SOM">
+      <circle cx="130" cy="118" r="104" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <circle cx="130" cy="154" r="66" fill="none" stroke="var(--acc2)" stroke-width="1.5"/>
+      <circle cx="130" cy="184" r="34" fill="none" stroke="var(--acc)" stroke-width="2"/>
+      <text x="130" y="40" fill="currentColor" font-size="15" font-weight="bold" text-anchor="middle">TAM</text>
+      <text x="130" y="112" fill="var(--acc2)" font-size="14" font-weight="bold" text-anchor="middle">SAM</text>
+      <text x="130" y="189" fill="var(--acc)" font-size="13" font-weight="bold" text-anchor="middle">SOM</text>
+    </svg>
+    <figcaption>Fracciones de mercado: cada círculo es un subconjunto del anterior.</figcaption>
+  </figure>
+  <ul>
+    <li><b>TAM</b> (Total Addressable Market): todo el mercado si captás el 100%. Dimensiona la oportunidad.</li>
+    <li><b>SAM</b> (Serviceable Available Market): la parte del TAM a la que podés llegar con tu producto. Fija metas de crecimiento.</li>
+    <li><b>SOM</b> (Serviceable Obtainable Market): la captura realista a corto o mediano plazo.</li>
+  </ul>
+  <div class="ej"><b>TAM, SAM y SOM para talleres de IA para PYMEs.</b>
+    <ul>
+      <li><b>TAM:</b> todas las PYMEs activas en América Latina (~25 millones) × ticket promedio de formación en IA (USD 200) → <b>≈ USD 5.000 millones</b>.</li>
+      <li><b>SAM:</b> PYMEs de Argentina, Chile y Uruguay (~3 millones) × USD 200 → <b>≈ USD 600 millones</b>.</li>
+      <li><b>SOM:</b> PYMEs con liderazgo activo en digitalización (~5%) × USD 200 → <b>≈ USD 30 millones</b>.</li>
+    </ul>
+  </div>
+
+  <h4 id="b09-cliente-ideal">¿Para quién creamos valor? Público objetivo vs. cliente ideal</h4>
+  <table>
+    <thead><tr><th>Público objetivo</th><th>Cliente ideal</th></tr></thead>
+    <tbody>
+      <tr><td>Idea más abstracta</td><td>Lo humanizamos y lo entendemos</td></tr>
+      <tr><td>Solo datos demográficos</td><td>Datos concretos</td></tr>
+      <tr><td>Varios tipos de clientes ideales</td><td>Define necesidades</td></tr>
+      <tr><td>Grupo sin identidad propia</td><td>Con identidad propia</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="b09-propuesta-de-valor">Propuesta de valor: observar y diseñar</h4>
+  <p>El mapa de valor tiene dos mitades que se espejan: primero se <b>observa</b> al cliente, después se <b>diseña</b> la propuesta que le responde punto por punto.</p>
+  <table>
+    <thead><tr><th>Observar al cliente</th><th>Diseñar la propuesta</th></tr></thead>
+    <tbody>
+      <tr><td><b>Tareas</b> (customer jobs): lo que el cliente intenta resolver</td><td><b>Bienes y servicios</b> que le sirven para esas tareas</td></tr>
+      <tr><td><b>Dolores</b> (pains): lo que le molesta o le sale mal</td><td><b>Aliviadores de dolores</b></td></tr>
+      <tr><td><b>Beneficios esperados</b> (gains): lo que le gustaría lograr</td><td><b>Generadores de alegrías</b></td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="b09-relaciones-clientes">Relaciones con los clientes</h4>
+  <p>La relación con el cliente se caracteriza en tres dimensiones, cada una con sus dos extremos:</p>
+  <table>
+    <thead><tr><th>Dimensión</th><th>Un extremo</th><th>El otro</th></tr></thead>
+    <tbody>
+      <tr><td><b>Tipo de relación</b></td><td><b>Indirecto:</b> un yogur que se vende por el canal, sin trato con la marca</td><td><b>Directo:</b> una cafetería que atiende en su propia sucursal</td></tr>
+      <tr><td><b>Intimidad de la relación</b></td><td><b>Transaccional:</b> compra puntual, sin continuidad</td><td><b>Largo plazo:</b> membresías y consumo recurrente (estilo Nespresso)</td></tr>
+      <tr><td><b>Vínculo establecido</b></td><td><b>Automático:</b> plataforma sin humanos (estilo Amazon)</td><td><b>Personal:</b> atención con ejecutivos (estilo banco)</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="b09-composicion-precio">Estructura de costos: composición del precio de venta</h4>
+  <figure class="diag">
+    <svg viewBox="0 0 460 250" role="img" aria-label="Composición del precio de venta: capas de costos apiladas desde las materias primas hasta administración e impuestos">
+      <text x="230" y="20" fill="var(--acc)" font-size="15" font-weight="bold" text-anchor="middle">Precio de venta</text>
+      <line x1="40" y1="30" x2="420" y2="30" stroke="var(--acc2)" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <g fill="none" stroke="var(--linea)" stroke-width="1.5">
+        <rect x="40" y="38" width="380" height="34" rx="4"/>
+        <rect x="58" y="76" width="344" height="34" rx="4"/>
+        <rect x="76" y="114" width="308" height="34" rx="4"/>
+        <rect x="94" y="152" width="272" height="34" rx="4"/>
+        <rect x="112" y="190" width="236" height="34" rx="4"/>
+      </g>
+      <g fill="currentColor" font-size="13" text-anchor="middle">
+        <text x="230" y="59">Admin, impuestos y otros</text>
+        <text x="230" y="97">Logística out</text>
+        <text x="230" y="135">Manufactura</text>
+        <text x="230" y="173">Logística in</text>
+        <text x="230" y="211">Materias primas</text>
+      </g>
+    </svg>
+    <figcaption>El precio se construye apilando costos de abajo hacia arriba, de las materias primas hasta el margen. Sobre la pila se definen precio al público, precio al canal y márgenes.</figcaption>
+  </figure>
+  <table>
+    <thead><tr><th>Capa (de la base a la cima)</th><th>Qué incluye</th></tr></thead>
+    <tbody>
+      <tr><td><b>Materias primas</b></td><td>Materias primas y materiales</td></tr>
+      <tr><td><b>Logística in</b></td><td>Fletes internacionales y locales, seguros, aduanas</td></tr>
+      <tr><td><b>Manufactura</b></td><td>Costos de manufactura (MOD, MOI y ST), gastos indirectos de fabricación, amortizaciones, desperdicios, MOQ</td></tr>
+      <tr><td><b>Logística out</b></td><td>Almacenamiento, fletes internacionales y locales, seguros</td></tr>
+      <tr><td><b>Admin, impuestos y otros</b></td><td>Gastos administrativos y generales, impuestos, seguros de cobranza, costos financieros y de cobertura</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="b09-oceano-azul">Estrategia del Océano Azul</h3>
+  <div class="idea">Salir de mercados saturados ("océanos rojos") para <b>crear espacios de mercado nuevos, sin competencia directa</b>. No competir por la misma torta: <i>crear una categoría nueva</i> donde la competencia sea irrelevante.</div>
+  <table>
+    <thead><tr><th>Océano rojo</th><th>Océano azul</th></tr></thead>
+    <tbody>
+      <tr><td>Competencia feroz</td><td>No hay competencia al inicio</td></tr>
+      <tr><td>Guerra de precios</td><td>Creación de nuevo valor</td></tr>
+      <tr><td>Reglas existentes</td><td>Reglas nuevas</td></tr>
+      <tr><td>Demanda conocida</td><td>Demanda creada</td></tr>
+      <tr><td>Valor y costo en tensión</td><td>Valor alto con costo bajo (innovación en valor)</td></tr>
+    </tbody>
+  </table>
+  <p><b>Principios:</b> reconstruir las fronteras del mercado; enfocarse en el panorama global (no en los números); ir más allá de la demanda existente; diseñar la estrategia pensando en la ejecución; superar obstáculos organizacionales; construir implementación y adopción en simultáneo.</p>
+
+  <h3 id="b09-plan-de-negocio">Plan de negocio</h3>
+  <p>Resumen ejecutivo y hoja de ruta que le da a inversores una idea clara de por qué apoyar el negocio. Es el <b>desarrollo detallado del modelo de negocio</b>. <b>Objetivos:</b> guiar la acción, reducir incertidumbre, comunicar el proyecto y medir desempeño.</p>
+  <ul>
+    <li><b>Resumen ejecutivo:</b> misión, visión, propuesta de valor general, objetivos de largo plazo.</li>
+    <li><b>Análisis competitivo y estratégico:</b> FODA más mapa competitivo.</li>
+    <li><b>Propuesta de valor:</b> TAM, SAM y SOM, cliente ideal, modelo Canvas.</li>
+    <li><b>Plan de marketing y ventas:</b> <b>4P</b> (Producto, Precio, Plaza, Promoción) y <b>4C</b> (Cliente, Costo, Conveniencia, Comunicación).</li>
+    <li><b>Plan de operaciones:</b> detalles operativos de la propuesta.</li>
+    <li><b>Plan de capital humano:</b> organigrama, roles, competencias, incorporación y retención, capacitación, cultura, presupuesto de personal.</li>
+    <li><b>Plan económico-financiero:</b> proyecciones, viabilidad económica, sostenibilidad financiera.</li>
+    <li><b>Plan de contingencia:</b> el "plan B" ante escenarios imprevistos.</li>
+  </ul>
+
+  <h3 id="b09-costeo">Costeo</h3>
+  <div class="def"><b>Costeo por absorción.</b> Incluye <b>todos</b> los costos de producción: los costos fijos se reparten entre las unidades producidas y forman parte del inventario hasta que se venden.</div>
+  <div class="def"><b>Costeo variable.</b> Incluye <b>solo</b> los costos variables de producción en el costo unitario.</div>
+  <p>El modelo de costeo elegido impacta en cómo se calcula el margen de ganancia (resultado bruto).</p>
+
+  <h4 id="b09-punto-equilibrio">Punto de equilibrio</h4>
+  <div class="formula">PE (unidades) = C<sub>f</sub> / (P<sub>v</sub> − C<sub>v</sub>)</div>
+  <div class="formula">PE (valor monetario) = C<sub>f</sub> / (1 − C<sub>v</sub>/P<sub>v</sub>)</div>
+  <p>Con <b>C<sub>f</sub></b> = costos fijos, <b>P<sub>v</sub></b> = precio de venta y <b>C<sub>v</sub></b> = costos variables.</p>
+  <ul>
+    <li><b>Margen de seguridad</b> = (Ventas actuales − Ventas de equilibrio) / Ventas actuales. Cuánto por ciento pueden caer las ventas sin entrar en pérdidas.</li>
+    <li><b>Capacidad en punto de equilibrio</b> = Ventas de equilibrio / Ventas actuales.</li>
+  </ul>
+
+  <h4 id="b09-decisiones-financieras">Decisiones financieras y evaluación de proyectos</h4>
+  <p>Las decisiones financieras son de <i>operación</i> (flujo de caja diario), de <i>inversión</i> (maximizar valor a largo plazo), de <i>financiamiento</i> (elegir fuentes) y de <i>política de dividendos</i> (cómo repartir ganancias).</p>
+  <div class="formula">VAN = Σ [ CashFlow<sub>t</sub> / (1 + r)<sup>t</sup> ] − Inversión inicial</div>
+  <ul>
+    <li><b>VAN:</b> determina si un proyecto es viable económicamente: si es positivo, crea valor.</li>
+    <li><b>Cashflow:</b> mide los movimientos en efectivo para evitar el quiebre de caja; solo considera los movimientos propios del proyecto.</li>
+    <li><b>Período de repago</b> = Inversión inicial / Cashflow anual. Tiempo para recuperar el costo inicial.</li>
+  </ul>
+
+  <div class="examen">Es el capítulo más "de diseño" del apunte: hay que saber aplicar las <b>5 fuerzas de Porter</b> a una industria concreta, armar un <b>Canvas</b> con TAM, SAM y SOM, distinguir <b>océano azul</b> de competir en un océano rojo, y calcular <b>punto de equilibrio, margen de seguridad y VAN</b>. No confundir modelo de negocio (qué y cómo) con plan de negocio (su desarrollo detallado): la distinción viene del <a href="#b02">capítulo de empresa</a>.</div>
+</section>

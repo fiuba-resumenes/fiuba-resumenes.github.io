@@ -1,0 +1,133 @@
+<section class="unidad" id="c09" data-titulo="Reducción de dimensiones">
+  <h2>C09. Reducción de dimensiones</h2>
+  <p class="intro">Los datasets reales suelen tener muchas más dimensiones de las que de verdad necesitan: la teoría de manifold dice que la dimensión real no coincide con la aparente. Este capítulo recorre los algoritmos para bajar de M a K dimensiones: los lineales (PCA y su equivalencia con SVD, MDS) y los no lineales (Laplacian Eigenmaps, t-SNE y UMAP), con las claves para leer un biplot y elegir cuántas componentes conservar. Cierra con un cuadro general que compara todos los métodos, la comparación t-SNE vs UMAP incluida, que es material fijo de final.</p>
+
+  <div class="def"><b>Reducción de dimensiones.</b> Reducir las <b>M dimensiones</b> de N datos a <b>K features</b>, con <b>K menor a M</b>.</div>
+  <div class="formula">A ∈ R<sup>n×m</sup> &nbsp;→&nbsp; A° ∈ R<sup>n×k</sup>, con k &lt; m</div>
+
+  <h3 id="c09-motivaciones">Motivaciones</h3>
+  <ul>
+    <li><b>Visualización de datos</b></li>
+    <li><b>Performance</b></li>
+    <li><b>Esencia</b> (teoría de manifold): las <b>dimensiones reales no suelen ser iguales a las aparentes</b></li>
+    <li><b>Algoritmos de reducción</b></li>
+  </ul>
+
+  <h3 id="c09-svd">SVD</h3>
+  <div class="def"><b>SVD.</b> Método de <b>descomposición de matrices</b> que permite obtener <b>tres matrices distintas</b>, obteniendo <b>ejes y componentes principales</b> de los datos.</div>
+
+  <h3 id="c09-pca">Análisis de componentes principales (PCA)</h3>
+  <div class="def"><b>PCA.</b> <b>Método lineal</b> que encuentra componentes que <b>maximizan la varianza</b> de los datos. Con <b>M</b> dimensiones originales se obtienen <b>M componentes ortogonales</b> entre sí, ordenadas según la cantidad de varianza que maximizan. Para reducir a <b>K</b> dimensiones se toman las <b>primeras K componentes</b>, proyectando los vectores.</div>
+
+  <h4 id="c09-pca-calculo">Cálculo de las componentes principales</h4>
+  <ol>
+    <li><b>Centrar los datos</b> (restar el promedio) y dividir por la desviación estándar (opcional)</li>
+    <li>Encontrar los <b>autovectores de la matriz de covarianza</b> de los datos</li>
+    <li>Obtener las <b>K componentes deseadas</b> (ya ortogonales), ordenando autovectores <b>según autovalores</b></li>
+  </ol>
+  <div class="formula">matriz de covarianza = (1 / (N − 1)) × X<sup>T</sup>X</div>
+
+  <h4 id="c09-pca-graficos">Interpretación de gráficos</h4>
+  <table>
+    <thead><tr><th>Elemento</th><th>Cómo se lee</th></tr></thead>
+    <tbody>
+      <tr><td><b>Biplot</b></td><td>Gráfico de <b>puntos</b> y de las <b>dimensiones originales como vectores</b> en el espacio reducido</td></tr>
+      <tr><td><b>Cercanía de dos puntos</b></td><td>Datos <b>relacionados o similares</b></td></tr>
+      <tr><td><b>Cercanía de vectores originales (ejes)</b></td><td>Features <b>correlacionados</b></td></tr>
+      <tr><td><b>Cercanía de un punto a un vector original</b></td><td>Punto <b>importante para esa dimensión</b>, bien explicado por ella</td></tr>
+      <tr><td><b>Limitación</b></td><td>A <b>menor dimensión</b>, la lejanía entre vectores es <b>menos precisa</b></td></tr>
+      <tr><td><b>Método del codo</b></td><td>Quedarse con los <b>K componentes principales</b> según el método del codo</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="c09-pca-equivalencia-svd">Equivalencia con SVD</h4>
+  <p>Con <b>X centrada</b>, <b>SVD es igual a PCA</b>. Las <b>columnas de V</b> son los <b>autovectores de X<sup>T</sup>X</b>, que son los componentes principales de PCA. En la práctica, <b>PCA realiza internamente SVD</b>, al ser numéricamente <b>más estable y eficiente</b>.</p>
+
+  <h3 id="c09-mds">Multidimensional Scaling (MDS)</h3>
+  <p>Utilizando una <b>matriz de distancias B</b>:</p>
+  <ol>
+    <li>Elevar <b>B al cuadrado</b></li>
+    <li><b>Centrar filas y columnas</b> para que tengan promedio 0</li>
+    <li>Calcular <b>SVD</b>. Las columnas de <b>U</b> dan las <b>coordenadas de los puntos reducidos</b></li>
+  </ol>
+
+  <h3 id="c09-laplacian-eigenmaps">Laplacian Eigenmaps (LE)</h3>
+  <p>Cálculo de la <b>matriz laplaciana (L)</b>:</p>
+  <div class="formula">L = D − A</div>
+  <p>siendo <b>D</b> la <b>matriz de grados</b> (diagonal, con el grado de cada nodo en su diagonal) y <b>A</b> la <b>matriz de adyacencia</b>.</p>
+
+  <h4 id="c09-le-propiedades">Propiedades</h4>
+  <ul>
+    <li>El <b>autovalor más chico es siempre 0</b></li>
+    <li>La <b>multiplicidad del autovalor 0</b> indica el <b>número de componentes conexas</b> del grafo</li>
+    <li>Se le puede asignar un valor a cada nodo del grafo con el <b>autovector asociado al autovalor más chico</b>, el que después de ordenar daría una manera de establecer <b>el corte más disperso entre dos grupos</b></li>
+  </ul>
+
+  <h4 id="c09-le-funcionamiento">Funcionamiento</h4>
+  <ol>
+    <li><b>Conecta cada dato original con sus vecinos más cercanos</b></li>
+    <li>Transformar la matriz de adyacencia en <b>matriz de pesos</b>, calculando un <b>kernel</b> entre cada punto y sus vecinos</li>
+    <li>Calcular la <b>matriz laplaciana</b> con la matriz ponderada</li>
+    <li><b>Descomposición espectral</b>, y tomar los <b>K autovectores más chicos, ignorando el autovalor 0</b></li>
+    <li>Asignar a nodos</li>
+  </ol>
+
+  <div class="idea">Este es exactamente el primer paso del <b>clustering espectral</b> (ver <a href="#c06">C06</a>): reducir con Laplacian Eigenmaps para que los clusters no lineales se vuelvan separables, y recién ahí correr K-Means.</div>
+
+  <h3 id="c09-t-sne">t-SNE (t-Distributed Stochastic Neighbor Embedding)</h3>
+  <p>Ataca la <b>dificultad de PCA con estructuras no lineales</b> o gradientes internos dentro de los clusters.</p>
+  <ul>
+    <li>Usa <b>softmax</b> para generar vectores de probabilidad cuya <b>suma dé 1</b></li>
+    <li>Usa la <b>divergencia de Kullback-Leibler</b> para medir la distancia entre <b>dos distribuciones de probabilidad con el mismo dominio</b></li>
+  </ul>
+
+  <h4 id="c09-t-sne-funcionamiento">Funcionamiento</h4>
+  <ol>
+    <li>Define la <b>disimilitud</b> entre dos puntos, calculando la <b>probabilidad de que dos puntos sean vecinos</b>, dividida por un factor <b>σ<sub>i</sub></b> que actúa como <b>radio</b> en el que el punto <i>i</i> cuenta con <i>k</i> vecinos (<b>perplexity</b>)</li>
+    <li>Se <b>inicializan aleatoriamente</b> los puntos del nuevo espacio de baja dimensión y se calculan las probabilidades de que los puntos sean vecinos</li>
+    <li>Se busca que las probabilidades de la baja dimensión sean <b>lo más similares posibles</b> a las de la dimensión original, minimizándolas por <b>descenso del gradiente</b></li>
+  </ol>
+
+  <h4 id="c09-t-sne-mejoras-sne">Mejoras sobre SNE</h4>
+  <ul>
+    <li>Usa <b>t-student</b> en vez de distribución gaussiana, para resolver el <b>crowding problem</b>, donde puntos de alta dimensión alejados terminan <b>en el centro</b> del espacio de baja dimensión</li>
+    <li><b>t-SNE promedia las probabilidades condicionales</b> para hacerlas <b>simétricas</b></li>
+  </ul>
+
+  <h4 id="c09-t-sne-consecuencias">Consecuencias</h4>
+  <ul>
+    <li><b>Estocástico:</b> depende de la inicialización aleatoria</li>
+    <li><b>No extensible a nuevos puntos</b></li>
+    <li>Costo computacional <b>O(N²)</b>: conviene aplicar <b>PCA/SVD</b> antes para reducir dimensiones a un número manejable</li>
+    <li><b>Bueno para visualización</b></li>
+  </ul>
+
+  <h3 id="c09-umap">UMAP (Uniform Manifold Approximation and Projection)</h3>
+  <div class="def"><b>UMAP.</b> Construye un <b>simplicial complex</b> en el espacio de alta dimensión. Se incorporan <b>fuerzas de repulsión</b> que contribuyen a que los grupos queden <b>más separados</b>.</div>
+
+  <h4 id="c09-umap-vs-t-sne">Comparación vs t-SNE</h4>
+  <table>
+    <thead><tr><th>Aspecto</th><th>t-SNE</th><th>UMAP</th></tr></thead>
+    <tbody>
+      <tr><td>Nuevos puntos</td><td><b>No extensible</b></td><td><b>Usable en nuevos puntos</b></td></tr>
+      <tr><td>Velocidad y escala</td><td>O(N²)</td><td><b>Más rápido y escalable</b></td></tr>
+      <tr><td>Calidad de visualización</td><td>Buena</td><td><b>Mejor</b></td></tr>
+      <tr><td>Dimensión de salida</td><td>Pensado para 2-3D</td><td><b>Puede ser mayor a 3 dimensiones</b></td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="c09-cuadro-general">Cuadro general</h3>
+  <table>
+    <thead><tr><th>Algoritmo</th><th>Lineal / No lineal</th><th>En qué se basa</th></tr></thead>
+    <tbody>
+      <tr><td><b>PCA</b></td><td><b>Lineal</b></td><td>Autovectores de la matriz de covarianza; maximiza varianza. Internamente usa SVD</td></tr>
+      <tr><td><b>MDS</b></td><td>Lineal</td><td>Matriz de distancias al cuadrado, centrada, más SVD</td></tr>
+      <tr><td><b>Laplacian Eigenmaps</b></td><td>No lineal</td><td>Grafo de vecinos → matriz laplaciana L = D − A → descomposición espectral</td></tr>
+      <tr><td><b>t-SNE</b></td><td>No lineal</td><td>Probabilidades de vecindad más divergencia KL, minimizadas por descenso del gradiente</td></tr>
+      <tr><td><b>UMAP</b></td><td>No lineal</td><td>Simplicial complex más fuerzas de repulsión</td></tr>
+      <tr><td><b>Autoencoder</b></td><td>No lineal</td><td>El <b>encoder</b> hasta el bottleneck (ver <a href="#c05">C05</a>)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="examen">Saber que <b>PCA es lineal</b> y qué maximiza (varianza), cómo se calcula (autovectores de la covarianza, ordenados por autovalor) y su <b>equivalencia con SVD</b> cuando X está centrada; leer un <b>biplot</b>; escribir <b>L = D − A</b> y decir que el autovalor 0 y su multiplicidad dan las componentes conexas; y la comparación <b>t-SNE vs UMAP</b> punto por punto, incluyendo que t-SNE es <b>estocástico</b>, <b>no extensible a nuevos puntos</b> y <b>O(N²)</b>, y por qué usa <b>t-student</b> (crowding problem).</div>
+</section>

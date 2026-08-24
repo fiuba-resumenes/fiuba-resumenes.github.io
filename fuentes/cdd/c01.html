@@ -1,0 +1,132 @@
+<section class="unidad" id="c01" data-titulo="Pandas">
+  <h2>C01. Pandas</h2>
+  <p class="intro">Antes de cualquier modelo hay que poder mirar y manipular los datos, y en la materia eso se hace con pandas. Este capítulo presenta las dos estructuras centrales (DataFrame y Series) y organiza las operaciones en grupos: atributos, indexamiento, funciones, manipulación de labels, estadísticas, ordenamiento y reshape, y combinación. El foco está en saber para qué sirve cada operación y en distinguir las parejas que se confunden: <code>apply</code> vs <code>map</code>, <code>agg</code> vs <code>transform</code>, <code>pivot</code> vs <code>pivot_table</code>, <code>join</code> vs <code>merge</code>.</p>
+
+  <div class="def"><b>DataFrame.</b> Estructura por excelencia de la librería pandas. Se puede pensar como una <b>tabla</b> que tiene <b>filas</b>, <b>columnas</b> e <b>índices</b>.</div>
+  <ul>
+    <li><b>Tipo por defecto:</b> <code>object</code>, aunque pandas <b>intenta inferir</b> el tipo de dato de la columna.</li>
+    <li><b>Series:</b> listas indexables, con comportamiento similar a los <code>dataframes</code>. Una columna de un DataFrame es una Series.</li>
+  </ul>
+
+  <figure class="diag">
+    <svg viewBox="0 0 660 240" role="img" aria-label="El DataFrame es una tabla formada por Series, con indices, filas (observaciones) y columnas (features)">
+      <rect x="20" y="20" width="160" height="60" rx="10" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="250" y="20" width="160" height="60" rx="10" fill="none" stroke="var(--acc)" stroke-width="2"/>
+      <rect x="20" y="160" width="190" height="50" rx="10" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="235" y="160" width="190" height="50" rx="10" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="450" y="160" width="190" height="50" rx="10" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <g text-anchor="middle">
+        <text x="100" y="46" fill="currentColor" font-size="15" font-weight="bold">Series</text>
+        <text x="100" y="68" fill="var(--acc2)" font-size="12">lista indexable</text>
+        <text x="330" y="46" fill="var(--acc)" font-size="15" font-weight="bold">DataFrame</text>
+        <text x="330" y="68" fill="var(--acc2)" font-size="12">tabla</text>
+        <text x="115" y="191" fill="currentColor" font-size="13">índices</text>
+        <text x="330" y="191" fill="currentColor" font-size="13">filas (observaciones)</text>
+        <text x="545" y="191" fill="currentColor" font-size="13">columnas (features)</text>
+      </g>
+      <line x1="185" y1="50" x2="238" y2="50" stroke="var(--linea)" stroke-width="1.5"/>
+      <polygon points="238,44 250,50 238,56" fill="var(--linea)"/>
+      <line x1="330" y1="85" x2="330" y2="120" stroke="var(--linea)" stroke-width="1.5"/>
+      <line x1="115" y1="120" x2="545" y2="120" stroke="var(--linea)" stroke-width="1.5"/>
+      <line x1="115" y1="120" x2="115" y2="148" stroke="var(--linea)" stroke-width="1.5"/>
+      <line x1="330" y1="120" x2="330" y2="148" stroke="var(--linea)" stroke-width="1.5"/>
+      <line x1="545" y1="120" x2="545" y2="148" stroke="var(--linea)" stroke-width="1.5"/>
+      <polygon points="109,148 115,160 121,148" fill="var(--linea)"/>
+      <polygon points="324,148 330,160 336,148" fill="var(--linea)"/>
+      <polygon points="539,148 545,160 551,148" fill="var(--linea)"/>
+    </svg>
+    <figcaption>El DataFrame es una colección de Series que comparten índice.</figcaption>
+  </figure>
+
+  <h3 id="c01-atributos">Atributos y datos subyacentes</h3>
+  <table>
+    <thead><tr><th>Operación</th><th>Qué devuelve</th></tr></thead>
+    <tbody>
+      <tr><td><code>index</code></td><td>Índices del dataframe</td></tr>
+      <tr><td><code>columns</code></td><td>Columnas del dataframe</td></tr>
+      <tr><td><code>dtypes</code></td><td>Tipos de las columnas del dataframe</td></tr>
+      <tr><td><code>info()</code></td><td>Para cada columna: su <b>tipo</b> y <b>cantidad de valores no nulos</b></td></tr>
+      <tr><td><code>size</code></td><td><code>fil * col</code></td></tr>
+      <tr><td><code>shape</code></td><td><code>(fil, col)</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="c01-indexamiento">Indexamiento e iteración</h3>
+  <table>
+    <thead><tr><th>Operación</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><code>head(n)</code></td><td>Devuelve las primeras <code>n</code> filas</td></tr>
+      <tr><td><code>loc[]</code></td><td>Accede a un grupo de filas y columnas <b>por label</b>: <code>df.loc[&lt;fil&gt;, &lt;col&gt;]</code> o <code>df.loc[&lt;cond&gt;]</code></td></tr>
+      <tr><td><code>df[cols]</code></td><td>Selecciona columnas</td></tr>
+      <tr><td><code>df[cond]</code></td><td>Selecciona las filas que cumplan con la condición</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="c01-funciones">Funciones</h3>
+  <table>
+    <thead><tr><th>Operación</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><code>add, sub, mul, div, mod, pow</code></td><td>Aritmética elemento a elemento</td></tr>
+      <tr><td><code>apply()</code></td><td>Aplica una función <b>a lo largo de un eje</b>. Lo más común: ejecutar funciones accediendo a <b>múltiples columnas de una fila</b></td></tr>
+      <tr><td><code>map()</code></td><td>Aplica una función <b>sobre una columna</b>. Más óptimo para transformaciones simples</td></tr>
+      <tr><td><code>agg()</code></td><td>Aplica una o varias <b>funciones de agregación</b> sobre un eje</td></tr>
+      <tr><td><code>transform()</code></td><td>Aplica una función a cada grupo o elemento <b>manteniendo el mismo tamaño</b> que el original (groupby sin reducir tamaño)</td></tr>
+      <tr><td><code>groupby()</code></td><td>Agrupa filas según criterio sobre columnas específicas, aplicando funciones de agregación</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn"><b><code>apply()</code> vs <code>map()</code>:</b> <code>map()</code> trabaja sobre <b>una columna</b> y es más eficiente para transformaciones simples; <code>apply()</code> sirve cuando la función necesita <b>varias columnas de la misma fila</b>.</div>
+  <div class="idea"><b><code>agg()</code> vs <code>transform()</code>:</b> <code>agg()</code> <b>reduce</b> (un valor por grupo); <code>transform()</code> <b>no reduce</b>: devuelve un resultado del mismo tamaño que el original, alineado fila a fila.</div>
+
+  <h3 id="c01-labels">Manipulación de labels</h3>
+  <table>
+    <thead><tr><th>Operación</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><code>drop()</code></td><td>Elimina labels o columnas específicas</td></tr>
+      <tr><td><code>filter()</code></td><td>Filtra por una condición, permitiendo usar <b>expresiones regulares</b></td></tr>
+      <tr><td><code>reset_index()</code></td><td>Restablece el índice del dataframe por sus valores por defecto</td></tr>
+      <tr><td><code>set_index()</code></td><td>Establece 1+ columnas como índice del dataframe</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="c01-estadisticas">Estadísticas</h3>
+  <table>
+    <thead><tr><th>Operación</th><th>Qué devuelve</th></tr></thead>
+    <tbody>
+      <tr><td><code>corr()</code> / <code>cov()</code></td><td>Matriz de <b>correlación</b> / <b>covarianza</b> entre variables numéricas</td></tr>
+      <tr><td><code>count()</code></td><td>Conteo de celdas <b>no nulas</b> para cada columna</td></tr>
+      <tr><td><code>describe()</code></td><td>Estadísticas descriptivas de las columnas numéricas</td></tr>
+      <tr><td><code>nunique()</code></td><td>Cantidad de valores únicos</td></tr>
+      <tr><td><code>value_counts()</code></td><td>Frecuencia de cada valor único</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="c01-reshape">Ordenamiento y reshape</h3>
+  <table>
+    <thead><tr><th>Operación</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><code>droplevel()</code></td><td>Elimina índice o nivel de la columna</td></tr>
+      <tr><td><code>pivot()</code></td><td>Define nuevo dataframe seleccionando índices, columnas y valores</td></tr>
+      <tr><td><code>pivot_table()</code></td><td>Lo mismo que <code>pivot</code>, pero permite además aplicar una <b>función de agregación</b> + groupby</td></tr>
+      <tr><td><code>sort_values()</code> / <code>sort_index()</code></td><td>Ordena el dataframe</td></tr>
+      <tr><td><code>nlargest()</code> / <code>nsmallest()</code></td><td>Muestras ordenadas según lo solicitado</td></tr>
+      <tr><td><code>stack()</code></td><td>Columna a índice</td></tr>
+      <tr><td><code>unstack()</code></td><td>Índice a columna</td></tr>
+      <tr><td><code>T</code></td><td>Transpone el dataframe</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="c01-combinacion">Combinación</h3>
+  <table>
+    <thead><tr><th>Operación</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><code>assign()</code></td><td>Define nuevas columnas</td></tr>
+      <tr><td><code>join()</code></td><td>Combina dataframes usando <b>índices</b> como clave</td></tr>
+      <tr><td><code>merge()</code></td><td>Combina dataframes con <b>las uniones indicadas</b> (como <code>JOIN</code> en SQL)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn"><b>Ojo con join vs merge:</b> <code>join()</code> usa los <b>índices</b>; <code>merge()</code> permite elegir columnas y tipo de unión (inner, left, right, outer), igual que SQL. Es la diferencia que más se pregunta.</div>
+
+  <div class="examen">Saber para qué sirve cada operación y, sobre todo, las <b>parejas que se confunden</b>: <code>apply</code> vs <code>map</code>, <code>agg</code> vs <code>transform</code>, <code>pivot</code> vs <code>pivot_table</code>, <code>join</code> vs <code>merge</code>, <code>stack</code> vs <code>unstack</code>. Y que el tipo por defecto es <code>object</code> pero pandas <i>intenta inferir</i>.</div>
+</section>

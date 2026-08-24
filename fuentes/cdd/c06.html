@@ -1,0 +1,116 @@
+<section class="unidad" id="c06" data-titulo="Clustering">
+  <h2>C06. Clustering</h2>
+  <p class="intro">Primer capítulo de aprendizaje no supervisado: agrupar puntos en clusters sin conocer de antemano ni los grupos ni cuántos son. Recorre las cinco familias de algoritmos (jerárquico, K-Means con sus variantes ++ y online, espectral, DBScan y HDBScan) y la lógica que las encadena: cada algoritmo existe para resolver una falla del anterior. Cierra con un cuadro comparativo que resume criterio de agrupamiento, necesidad de fijar <i>k</i>, manejo de outliers y formas no lineales.</p>
+
+  <div class="def"><b>Clustering.</b> Algoritmos de tipo <b>aprendizaje no supervisado</b>, en el que <b>no se conoce de antemano ni los grupos ni la cantidad de grupos</b> que existen en los datos. El objetivo es <b>agrupar automáticamente</b> elementos en clusters.</div>
+
+  <h3 id="c06-jerarquico">Clustering jerárquico</h3>
+  <p>Generar una <b>jerarquía de clusters</b> uniendo en cada iteración los puntos <b>más cercanos</b> hasta llegar a un único grupo (o <i>k</i> grupos).</p>
+
+  <h4 id="c06-jerarquico-funcionamiento">Funcionamiento</h4>
+  <ol>
+    <li>Cada punto es un <b>cluster individual</b>.</li>
+    <li>Se calculan las <b>distancias entre todos los clusters</b>.</li>
+    <li>Se unen los <b>dos clusters más cercanos</b>, según el criterio de <i>linkage</i>:
+      <ul>
+        <li><b>Single linkage</b></li>
+        <li><b>Complete linkage</b></li>
+        <li><b>Average linkage</b></li>
+        <li><b>Median linkage</b></li>
+      </ul>
+    </li>
+    <li>Repetir.</li>
+  </ol>
+
+  <p>Como resultado sale un <b>dendograma</b>.</p>
+
+  <!--FIG:dendograma-->
+
+  <h3 id="c06-kmeans">K-Means</h3>
+  <div class="warn">Minimizar la sumatoria de las distancias de cada punto al <b>centroide</b> de su cluster para los <i>k</i> clusters es un problema <b>NP-Hard</b>, por lo que K-Means usa <b>heurísticas</b>.</div>
+  <ol>
+    <li><b>Inicializar:</b> se eligen <b><i>k</i> puntos iniciales al azar</b>.</li>
+    <li><b>Asignar:</b> cada punto se asigna al <b>centroide más cercano</b>.</li>
+    <li><b>Recalcular:</b> se <b>recalculan los centroides</b>.</li>
+    <li><b>Repetir:</b> volver al paso 2 <b>hasta converger</b>.</li>
+  </ol>
+
+  <p>El resultado es una división de los clusters a partir de <b>líneas rectas</b>: un <b>diagrama de Voronoi</b>.</p>
+
+  <!--FIG:voronoi-->
+  <!--FIG:codo-->
+
+  <div class="warn"><b>Consecuencia de las fronteras rectas:</b> K-Means <b>no puede encontrar clusters con formas no lineales</b>. Ese es exactamente el problema que ataca el <a href="#c06-espectral">clustering espectral</a>.</div>
+
+  <h4 id="c06-kmeans-pp">K-Means++</h4>
+  <p>Ataca el <b>problema de la inicialización</b>, eligiendo mejor los <i>k</i> puntos iniciales:</p>
+  <ol>
+    <li>Elige el <b>primer centroide al azar</b>.</li>
+    <li>Para los siguientes, elige un punto con <b>probabilidad proporcional a la distancia</b> con el centroide: <b>a mayor distancia, mayor probabilidad</b>.</li>
+    <li>Repetir hasta elegir los <i>k</i> centroides.</li>
+  </ol>
+
+  <h4 id="c06-kmeans-online">K-Means Online</h4>
+  <p>Diseñado para trabajar con <b>cantidades ilimitadas de puntos que llegan en forma de stream</b>. El costo en memoria es de <b>O(k)</b>.</p>
+  <ol>
+    <li>Se inicializan <i>k</i> centroides y un <b>contador</b> para cada cluster.</li>
+    <li>Cuando llega un nuevo dato, se le asigna el <b>centroide más cercano</b> y se <b>incrementa el contador</b> de ese cluster.</li>
+    <li>Se actualiza el centroide <b>moviéndolo proporcionalmente hacia el nuevo punto</b>. La proporción se ajusta según el contador.</li>
+  </ol>
+
+  <h4 id="c06-kmeans-aplicaciones">Aplicaciones</h4>
+  <ul>
+    <li><b>Compresión de imágenes:</b> se agrupan los <b>colores</b> en <i>k</i> clusters.</li>
+    <li><b>Reducción de dimensiones:</b> se define a cada punto como las <b>distancias a los <i>k</i> clusters</b>.</li>
+  </ul>
+
+  <h3 id="c06-espectral">Clustering espectral</h3>
+  <p>Tiene como objetivo solucionar la <b>incapacidad de K-Means de encontrar clusters con formas no lineales</b>.</p>
+  <ol>
+    <li>Ejecutar <b>Laplacian Eigenmaps</b> (matriz <i>L</i>, autovalores, autovectores) reduciendo el espacio de dimensiones, en donde los clusters no lineales se vuelven <b>más separables</b> (ver <a href="#c09">C09</a>).</li>
+    <li>Aplicar <b>K-Means</b> sobre el resultado.</li>
+  </ol>
+  <div class="warn"><b>Limitaciones:</b> <b>no escala bien</b> y tiene <b>problemas con outliers</b>.</div>
+
+  <h3 id="c06-dbscan">DBScan</h3>
+  <p>Clusteriza a partir de la <b>densidad</b>. También es capaz de <b>identificar y manejar outliers de forma explícita</b>.</p>
+
+  <table>
+    <thead><tr><th>Tipo de punto</th><th>Definición</th></tr></thead>
+    <tbody>
+      <tr><td><b>Núcleo</b></td><td>Su vecindario <b>ε</b> tiene <i>k</i> puntos</td></tr>
+      <tr><td><b>Borde</b></td><td><b>No es núcleo</b>, pero está en el vecindario de uno</td></tr>
+      <tr><td><b>Ruido</b></td><td>El resto</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="c06-hdbscan">HDBScan</h3>
+  <p>Tiene como objetivo solucionar las fallas de DBScan: <b>evitar definir un ε</b> y lograr el <b>manejo de clusters de densidades variables</b>.</p>
+
+  <h4 id="c06-hdbscan-funcionamiento">Funcionamiento</h4>
+  <ol>
+    <li>Grafo con distancias <b>de accesibilidad mutua</b> como pesos.</li>
+    <li><b>MST</b> (árbol generador mínimo).</li>
+    <li><b>Dendograma jerárquico</b>.</li>
+    <li>Se <b>descarta el ruido</b> si luego de un corte no cumple con el <code>min_cluster_size</code>.</li>
+    <li><b>Extracción de clusters estables:</b> un cluster es estable si su <b>estabilidad</b> (suma de diferencias de distancias entre nacimiento y caída por punto) es <b>mayor a la suma de la de sus hijos</b>.</li>
+  </ol>
+
+  <h4 id="c06-accesibilidad-mutua">Distancia de accesibilidad mutua</h4>
+  <div class="formula">mrd(a,b) = max { core<sub>k</sub>(a), core<sub>k</sub>(b), d(a,b) }</div>
+  <p>siendo <b>core<sub>k</sub>(i) = d(i, v<sub>i</sub>)</b> con <i>v<sub>i</sub></i> el <i>k</i>-vecino más cercano a <i>i</i>. De esta forma se <b>corrigen distancias</b> para entender si los nodos están cerca unos de otros <b>dentro del cluster</b>.</p>
+
+  <h3 id="c06-comparativo">Cuadro comparativo</h3>
+  <table>
+    <thead><tr><th>Algoritmo</th><th>Criterio de agrupamiento</th><th>Hay que fijar <i>k</i></th><th>Maneja outliers</th><th>Formas no lineales</th></tr></thead>
+    <tbody>
+      <tr><td><b>Jerárquico</b></td><td>Distancia entre clusters (linkage)</td><td>No (se corta el dendograma)</td><td>No explícitamente</td><td>Depende del linkage</td></tr>
+      <tr><td><b>K-Means</b></td><td>Distancia al centroide</td><td><b>Sí</b></td><td>No</td><td><b>No</b> (fronteras rectas, Voronoi)</td></tr>
+      <tr><td><b>Espectral</b></td><td>Laplacian Eigenmaps + K-Means</td><td>Sí</td><td><b>Problemas con outliers</b></td><td><b>Sí</b> (para eso existe)</td></tr>
+      <tr><td><b>DBScan</b></td><td><b>Densidad</b> (vecindario ε)</td><td>No (se fija ε)</td><td><b>Sí, explícitamente</b></td><td>Sí</td></tr>
+      <tr><td><b>HDBScan</b></td><td>Densidad, jerárquico sobre accesibilidad mutua</td><td>No (ni ε)</td><td><b>Sí</b></td><td>Sí, con <b>densidades variables</b></td></tr>
+    </tbody>
+  </table>
+
+  <div class="examen">La cadena de <b>por qué existe cada algoritmo</b> es la respuesta que buscan. K-Means es <b>NP-Hard</b> y por eso usa heurísticas → su inicialización es mala, y por eso existe <b>K-Means++</b> → sus fronteras son <b>rectas</b> (Voronoi) y no captura formas no lineales, por eso existe el <b>clustering espectral</b> → el espectral no escala y sufre con outliers, y DBScan agrupa por <b>densidad</b> manejando el ruido explícitamente → DBScan obliga a fijar <b>ε</b> y falla con densidades variables, por eso existe <b>HDBScan</b>. Sabé también los tres tipos de punto de DBScan y el <b>método del codo</b> para elegir <i>k</i>.</div>
+</section>

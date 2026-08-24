@@ -1,0 +1,76 @@
+<section class="unidad" id="c02" data-titulo="Visualizaciones">
+  <h2>C02. Visualizaciones</h2>
+  <p class="intro">Visualizar no es decorar: una buena visualización combina datos, historia, objetivo y metáfora visual, y si falta alguno de los cuatro el resultado se cae. Este capítulo define qué hace exitosa a una visualización y recorre el catálogo de gráficos agrupados según el tipo de dato que muestran: distribuciones continuas y discretas, relaciones entre variables, series de tiempo y algunos extras. La habilidad central es elegir el gráfico correcto para cada tipo de dato.</p>
+
+  <div class="def"><b>Visualización exitosa.</b> Una visualización es exitosa si cuenta con estos <b>cuatro elementos</b>: <b>datos</b>, <b>historia</b>, <b>objetivo</b> y <b>metáfora visual</b>.</div>
+
+  <table>
+    <thead><tr><th>Elemento</th><th>En el diagrama del apunte</th><th>Qué aporta</th></tr></thead>
+    <tbody>
+      <tr><td><b>Datos</b></td><td><i>information (data)</i></td><td>Integridad: exactitud, consistencia, honestidad</td></tr>
+      <tr><td><b>Historia</b></td><td><i>story (concept)</i></td><td>Interés: relevante, significativo, nuevo</td></tr>
+      <tr><td><b>Objetivo</b></td><td><i>goal (function)</i></td><td>Utilidad: usable, adecuado, eficiente</td></tr>
+      <tr><td><b>Metáfora visual</b></td><td><i>visual form (metaphor)</i></td><td>Belleza: estructura, apariencia, armonía</td></tr>
+    </tbody>
+  </table>
+
+  <figure class="diag">
+    <img src="img/venn-visualizacion-exitosa.png" alt="Diagrama de Venn de cuatro elipses: information (data), story (concept), goal (function) y visual form (metaphor); la intersección de las cuatro es la successful visualization. Faltando alguna se cae en boring, useless, eye candy o mero data art.">
+    <figcaption>Los cuatro elementos de una visualización exitosa. Si falta alguno, el resultado cae en <i>boring</i>, <i>useless</i> o <i>eye candy</i>: la intersección de los cuatro es la <i>successful visualization</i>.</figcaption>
+  </figure>
+
+  <h3 id="c02-la-visualizacion-debe">La visualización debe</h3>
+  <ul>
+    <li>Ser <b>explicable por sí misma</b></li>
+    <li>Interesante</li>
+    <li>Clara</li>
+    <li>Con <b>buena selección de colores</b></li>
+  </ul>
+
+  <h3 id="c02-plots">Plots</h3>
+  <p>Objetivo y datos <b>bien definidos</b>, con metáforas simples. El apunte agrupa los gráficos según <b>qué tipo de dato</b> se quiere mostrar.</p>
+
+  <table>
+    <thead><tr><th>Familia</th><th>Gráficos</th><th>Cuándo usarlo</th></tr></thead>
+    <tbody>
+      <tr><td><b>Distribución continua</b></td><td>Box plot, violin plot</td><td>Ver la forma, el rango y los outliers de una variable numérica, comparando entre grupos</td></tr>
+      <tr><td><b>Distribución discreta</b></td><td>Pie chart, stacked bar chart</td><td>Composición: cómo se reparte un total entre categorías</td></tr>
+      <tr><td><b>De relación</b></td><td>Scatter plot (continua vs continua), heatmap (discreta vs discreta vs continua)</td><td>Ver cómo se relacionan dos (o tres) variables entre sí</td></tr>
+      <tr><td><b>Series de tiempo</b></td><td>Line plot, lollipop plot</td><td>Evolución de una magnitud a lo largo del tiempo</td></tr>
+      <tr><td><b>Extras</b></td><td>Sankey plot, Venn diagram, word cloud, radar chart</td><td>Flujos, intersecciones de conjuntos, frecuencia de términos y perfiles multi-atributo</td></tr>
+    </tbody>
+  </table>
+
+  <p class="nota">Pasá el mouse por cualquier elemento de los gráficos de acá abajo para ver el valor exacto.</p>
+
+  <h4 id="c02-distribucion-continua">Distribución continua</h4>
+  <!--FIG:box-plot-->
+  <!--FIG:violin-->
+
+  <h4 id="c02-distribucion-discreta">Distribución discreta</h4>
+  <!--FIG:pie-->
+  <!--FIG:stacked-bar-->
+
+  <h4 id="c02-de-relacion">De relación</h4>
+  <!--FIG:scatter-->
+  <!--FIG:heatmap-->
+
+  <h4 id="c02-series-de-tiempo">Series de tiempo</h4>
+  <!--FIG:line-->
+  <!--FIG:lollipop-->
+
+  <h4 id="c02-extras">Extras</h4>
+  <!--FIG:venn-->
+  <!--FIG:radar-->
+
+  <figure class="diag">
+    <img src="img/sankey-fuentes-trafico.png" alt="Sankey plot: flujos de ancho proporcional que se bifurcan desde siete fuentes de tráfico hacia tres sitios web.">
+    <figcaption><b>Sankey plot:</b> flujos y transferencias entre nodos; el ancho de cada cinta es proporcional al volumen.</figcaption>
+  </figure>
+  <figure class="diag">
+    <img src="img/word-cloud-terminos.png" alt="Word cloud: nube de palabras sobre visualización de datos, con el tamaño de fuente proporcional a la frecuencia de cada término.">
+    <figcaption><b>Word cloud:</b> frecuencia de términos codificada en el tamaño de la fuente.</figcaption>
+  </figure>
+
+  <div class="examen">Se pregunta por los cuatro elementos de una visualización exitosa (<b>datos, historia, objetivo, metáfora visual</b>) y por saber <b>elegir el gráfico correcto según el tipo de dato</b>. Si te dan "dos variables continuas" la respuesta es scatter; "dos discretas y una continua", heatmap; "una continua por grupos", box o violin; "composición de un total", pie o stacked bar; "evolución temporal", line o lollipop.</div>
+</section>
