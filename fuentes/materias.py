@@ -115,6 +115,9 @@ EBT = {
     "descripcion": "Apunte completo de Empresas de Base Tecnológica 1 (FIUBA).",
     "theme_color": "#33704b",
     "favicon_hex": "33704b",
+    # Los uids no son correlativos con el numero de display: e11 y e12 llegaron
+    # despues (merge con el apunte de echepereza) y las notas de los lectores
+    # viven en localStorage bajo el uid, asi que renumerar uids las borraria.
     "grupos": [
         ("Economía", [
             ("e01", "01", "Contexto y conceptos económicos"),
@@ -122,15 +125,18 @@ EBT = {
             ("e03", "03", "Contabilidad"),
             ("e04", "04", "Finanzas y valor tiempo del dinero"),
             ("e05", "05", "Evaluación de proyectos"),
+            ("e11", "06", "Costos y rentabilidad"),
         ]),
         ("Derecho", [
-            ("e06", "06", "Derecho: conceptos y ramas"),
-            ("e07", "07", "Vínculos y actos jurídicos"),
-            ("e08", "08", "Contratos"),
-            ("e09", "09", "Sociedades"),
-            ("e10", "10", "Regímenes de promoción"),
+            ("e06", "07", "Derecho: conceptos y ramas"),
+            ("e07", "08", "Vínculos y actos jurídicos"),
+            ("e08", "09", "Contratos"),
+            ("e09", "10", "Sociedades"),
+            ("e10", "11", "Regímenes de promoción"),
+            ("e12", "12", "Derecho laboral"),
         ]),
         ("Para el final", [
+            ("e98", "R", "Repaso final y machete"),
             ("e99", "P", "Ejercicios resueltos"),
         ]),
     ],

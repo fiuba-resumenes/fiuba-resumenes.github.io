@@ -13,6 +13,9 @@ autocontenido: sin build en el servidor, sin dependencias, sin CDN.
 | Aprendizaje Automático (75.06) | [/aprendizaje-automatico](https://flopeztancredi.github.io/aprendizaje-automatico/) | repo [aprendizaje-automatico](https://github.com/flopeztancredi/aprendizaje-automatico) | flopeztancredi |
 | Redes (75.43) | [/redes](https://flopeztancredi.github.io/redes/) | este repo | echepereza, flopeztancredi |
 | Empresas de Base Tecnológica 1 | [/empresas-de-base-tecnologica](https://flopeztancredi.github.io/empresas-de-base-tecnologica/) | este repo | echepereza, flopeztancredi |
+| Empresas de Base Tecnológica 2 | [echepereza.github.io/empresas-base-tecnologica-II](https://echepereza.github.io/empresas-base-tecnologica-II/) | repo [empresas-base-tecnologica-II](https://github.com/echepereza/empresas-base-tecnologica-II) | echepereza |
+| Programación Concurrente | [echepereza.github.io/programacion-concurrente](https://echepereza.github.io/programacion-concurrente/) | repo [programacion-concurrente](https://github.com/echepereza/programacion-concurrente) | echepereza |
+| Ciencia de Datos | [echepereza.github.io/ciencia-de-datos-martinelli](https://echepereza.github.io/ciencia-de-datos-martinelli/) | repo [ciencia-de-datos-martinelli](https://github.com/echepereza/ciencia-de-datos-martinelli) | echepereza |
 
 Redes y EBT eran markdown servido con just-the-docs. Se convirtieron al mismo
 formato que los otros dos: un solo HTML por materia, con buscador, resaltador,
@@ -32,8 +35,25 @@ python3 fuentes/armar.py ebt      # -> empresas-de-base-tecnologica/index.html
 - `fuentes/redes/`, `fuentes/ebt/`: un fragmento HTML por capítulo.
 - `fuentes/md/`: el markdown original, conservado como fuente.
 
+Dos carpetas opcionales por materia extienden los fragmentos sin tocar el
+build (hoy las usa EBT; cualquier materia puede sumarlas):
+
+- `fuentes/<materia>/figuras/`: figuras generadas por script (gráficos con
+  datos, tarjetas, tablas calculadas). Un fragmento las inserta con el
+  marcador `<!--FIG:nombre-->` y `armar.py` inyecta
+  `figuras/nombre.html` en ese lugar. Se generan con
+  `fuentes/gen_figuras_<materia>.py` y el resultado va commiteado: el script
+  se corre solo cuando se cambia una figura. Los SVG usan los alias de
+  tokens del contrato (nada de colores fijos), así que heredan la paleta de
+  la materia y el modo oscuro.
+- `fuentes/<materia>/attachments/`: imágenes (PNG con nombre descriptivo).
+  Los fragmentos las referencian como `<img src="img/nombre.png">` y el
+  build copia a `<salida>/img/` solo las que se usan.
+
 El build valida antes de escribir: ids únicos, anclas que resuelven, todo
-`var(--token)` definido, cero recursos externos. `fuentes/lint_fragmentos.py`
+`var(--token)` definido, cero recursos externos, cada `<!--FIG:-->` con su
+archivo (sin colores hardcodeados y con SVG accesible) y cada `<img>` con su
+archivo en `attachments/` (avisa si sobran). `fuentes/lint_fragmentos.py`
 revisa cada fragmento contra `fuentes/contrato-fragmento.md`.
 
 ## Sincronizar entre dispositivos

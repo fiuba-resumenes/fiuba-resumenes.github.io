@@ -1007,15 +1007,69 @@
       background: var(--surface);
       text-align: center;
     }
-    /* Alias que usan los SVG de los fragmentos (ver contrato-fragmento.md).
-       --linea no apunta a --line: ese token es un borde decorativo de 1.2:1 y
-       como trazo de diagrama no se veria. Las flechas necesitan --muted. */
+    /* Alias que usan los SVG de los fragmentos y las figuras generadas (ver
+       contrato-fragmento.md). --linea no apunta a --line: ese token es un
+       borde decorativo de 1.2:1 y como trazo de diagrama no se veria. Las
+       flechas necesitan --muted. --grid si es --line: las reticulas de los
+       graficos tienen que ser mas tenues que los ejes. --acc3 y --acc4 son
+       series extra para graficos con mas de dos curvas. */
     :root, html[data-theme="dark"] {
       --linea: var(--muted);
       --acc: var(--accent);
       --acc2: var(--blue);
+      --acc3: var(--warm);
+      --acc4: var(--danger);
+      --grid: var(--line);
     }
     figure.diag svg { max-width: 100%; height: auto; color: var(--ink); }
+    /* Los PNG importados (capturas de Notion) traen texto oscuro sobre fondo
+       transparente: sin este fondo claro serian ilegibles en modo oscuro. */
+    figure.diag img {
+      display: block;
+      box-sizing: border-box;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+      padding: 10px;
+      border-radius: 10px;
+      background: #fff;
+    }
+    /* Leyenda de series de las figuras generadas (gen_figuras_*.py). */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 18px;
+      justify-content: center;
+      margin: 10px 0 2px;
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+    .legend i {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-right: 6px;
+      border-radius: 3px;
+      vertical-align: -1px;
+    }
+    /* Tarjetas de elasticidad (figuras elast-*). */
+    .elast-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+      gap: 10px;
+      margin: 16px 0 22px;
+    }
+    .elast-card {
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface-2);
+      text-align: center;
+    }
+    .elast-card svg { display: block; width: 100%; height: auto; margin-bottom: 8px; color: var(--ink); }
+    .elast-card b { display: block; font-size: 12.5px; color: var(--accent-ink); line-height: 1.25; }
+    .elast-card .ep { display: block; font-size: 17px; font-weight: 800; margin: 4px 0 2px; }
+    .elast-card small { display: block; color: var(--muted); font-size: 11.5px; line-height: 1.35; }
     figure.diag figcaption {
       margin-top: 12px;
       color: var(--muted);
@@ -1108,17 +1162,20 @@
       <a href="#e03"><span>03</span>Contabilidad</a>
       <a href="#e04"><span>04</span>Finanzas y valor tiempo del dinero</a>
       <a href="#e05"><span>05</span>Evaluación de proyectos</a>
+      <a href="#e11"><span>06</span>Costos y rentabilidad</a>
     </nav>
     <div class="nav-title">Derecho</div>
     <nav class="toc" aria-label="Derecho">
-      <a href="#e06"><span>06</span>Derecho: conceptos y ramas</a>
-      <a href="#e07"><span>07</span>Vínculos y actos jurídicos</a>
-      <a href="#e08"><span>08</span>Contratos</a>
-      <a href="#e09"><span>09</span>Sociedades</a>
-      <a href="#e10"><span>10</span>Regímenes de promoción</a>
+      <a href="#e06"><span>07</span>Derecho: conceptos y ramas</a>
+      <a href="#e07"><span>08</span>Vínculos y actos jurídicos</a>
+      <a href="#e08"><span>09</span>Contratos</a>
+      <a href="#e09"><span>10</span>Sociedades</a>
+      <a href="#e10"><span>11</span>Regímenes de promoción</a>
+      <a href="#e12"><span>12</span>Derecho laboral</a>
     </nav>
     <div class="nav-title">Para el final</div>
     <nav class="toc" aria-label="Para el final">
+      <a href="#e98"><span>R</span>Repaso final y machete</a>
       <a href="#e99"><span>P</span>Ejercicios resueltos</a>
     </nav>
 
@@ -1360,6 +1417,46 @@
       </ul>
     </li>
   </ul>
+  <figure class="diag">
+    <svg viewBox="0 0 770 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Arbol de tipos y ramas de la economia: positiva (descriptiva y teoria economica, que se divide en micro y macro) y normativa (politica economica: fiscal, monetaria, exterior y de rentas)">
+    <rect x="10" y="131" width="120" height="34" rx="8" fill="none" stroke="var(--acc)" stroke-width="1.5" />
+    <text x="70" y="152" font-size="13" fill="currentColor" text-anchor="middle">Economía</text>
+    <rect x="170" y="43" width="170" height="34" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5" />
+    <text x="255" y="64" font-size="13" fill="currentColor" text-anchor="middle">Economía positiva</text>
+    <rect x="170" y="220" width="170" height="34" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5" />
+    <text x="255" y="241" font-size="13" fill="currentColor" text-anchor="middle">Economía normativa</text>
+    <rect x="380" y="13" width="170" height="34" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5" />
+    <text x="465" y="34" font-size="13" fill="currentColor" text-anchor="middle">Economía descriptiva</text>
+    <rect x="380" y="73" width="170" height="34" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5" />
+    <text x="465" y="94" font-size="13" fill="currentColor" text-anchor="middle">Teoría económica</text>
+    <rect x="380" y="220" width="170" height="34" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5" />
+    <text x="465" y="241" font-size="13" fill="currentColor" text-anchor="middle">Política económica</text>
+    <rect x="590" y="50" width="170" height="34" rx="8" fill="none" stroke="var(--acc2)" stroke-width="1.5" />
+    <text x="675" y="71" font-size="13" fill="currentColor" text-anchor="middle">Microeconomía</text>
+    <rect x="590" y="96" width="170" height="34" rx="8" fill="none" stroke="var(--acc2)" stroke-width="1.5" />
+    <text x="675" y="117" font-size="13" fill="currentColor" text-anchor="middle">Macroeconomía</text>
+    <rect x="590" y="151" width="170" height="34" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5" />
+    <text x="675" y="172" font-size="13" fill="currentColor" text-anchor="middle">Política fiscal</text>
+    <rect x="590" y="197" width="170" height="34" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5" />
+    <text x="675" y="218" font-size="13" fill="currentColor" text-anchor="middle">Política monetaria</text>
+    <rect x="590" y="243" width="170" height="34" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5" />
+    <text x="675" y="264" font-size="13" fill="currentColor" text-anchor="middle">Política exterior</text>
+    <rect x="590" y="289" width="170" height="34" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5" />
+    <text x="675" y="310" font-size="13" fill="currentColor" text-anchor="middle">Política de rentas</text>
+    <line x1="130" y1="148" x2="170" y2="60" stroke="var(--linea)" fill="none" />
+    <line x1="130" y1="148" x2="170" y2="237" stroke="var(--linea)" fill="none" />
+    <line x1="340" y1="60" x2="380" y2="30" stroke="var(--linea)" fill="none" />
+    <line x1="340" y1="60" x2="380" y2="90" stroke="var(--linea)" fill="none" />
+    <line x1="340" y1="237" x2="380" y2="237" stroke="var(--linea)" fill="none" />
+    <line x1="550" y1="90" x2="590" y2="67" stroke="var(--linea)" fill="none" />
+    <line x1="550" y1="90" x2="590" y2="113" stroke="var(--linea)" fill="none" />
+    <line x1="550" y1="237" x2="590" y2="168" stroke="var(--linea)" fill="none" />
+    <line x1="550" y1="237" x2="590" y2="214" stroke="var(--linea)" fill="none" />
+    <line x1="550" y1="237" x2="590" y2="260" stroke="var(--linea)" fill="none" />
+    <line x1="550" y1="237" x2="590" y2="306" stroke="var(--linea)" fill="none" />
+  </svg>
+    <figcaption>El árbol completo: la economía se abre en positiva (describe y explica: de ahí salen la descriptiva y la teoría económica, con la micro y la macro) y normativa (prescribe: la política económica y sus cuatro políticas).</figcaption>
+  </figure>
 
   <h3 id="e01-costo-oportunidad-fpp">Costo de oportunidad y frontera de posibilidades de producción</h3>
   <div class="callout"><b>Costo de oportunidad.</b> Valor del mejor uso alternativo al que se renuncia al tomar una decisión económica.</div>
@@ -1425,6 +1522,14 @@
     <li><b>PBI a precios corrientes</b>: valor monetario sin ajustar por inflación.</li>
     <li><b>PBI a precios constantes</b>: valor ajustado por inflación, lo que permite comparar entre distintos períodos.</li>
   </ul>
+  <figure class="diag">
+    <img src="img/pbi-nominal.png" alt="Fórmula del PBI a precios corrientes o nominal.">
+    <figcaption>PBI a precios corrientes (nominal): no contempla la inflación.</figcaption>
+  </figure>
+  <figure class="diag">
+    <img src="img/pbi-real.png" alt="Fórmula del PBI a precios constantes o real.">
+    <figcaption>PBI a precios constantes (real): toma precios de un período base.</figcaption>
+  </figure>
   <figure class="diag">
     <svg viewBox="0 0 640 300" role="img" aria-label="Evolucion del PBI cultural argentino 2004 a 2011, precios corrientes contra precios constantes">
       <g fill="currentColor" font-size="12" font-weight="bold" text-anchor="middle">
@@ -1590,8 +1695,211 @@
     <li><b>Ley de la oferta</b>: a mayor precio, mayor cantidad ofrecida; a menor precio, menor cantidad ofrecida (relación directa). En el gráfico P-Q, la curva de oferta tiene pendiente positiva.</li>
     <li><b>Equilibrio de mercado</b>: punto donde la cantidad demandada iguala a la cantidad ofrecida, determinando el precio y la cantidad de equilibrio. Un cambio en la oferta o en la demanda desplaza ese equilibrio.</li>
   </ul>
+  <p>El ejemplo clásico del mercado de helados muestra las dos leyes con números: una tabla de demanda y una de oferta, graficadas sobre los mismos ejes.</p>
+  <figure class="diag">
+    <svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Curvas de demanda y oferta de helados construidas con las tablas de la fuente">
+    <line x1="62.0" y1="352.0" x2="62.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="62.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">0</text>
+    <line x1="108.7" y1="352.0" x2="108.7" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="108.7" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">1</text>
+    <line x1="155.3" y1="352.0" x2="155.3" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="155.3" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">2</text>
+    <line x1="202.0" y1="352.0" x2="202.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="202.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">3</text>
+    <line x1="248.7" y1="352.0" x2="248.7" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="248.7" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">4</text>
+    <line x1="295.3" y1="352.0" x2="295.3" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="295.3" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">5</text>
+    <line x1="342.0" y1="352.0" x2="342.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="342.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">6</text>
+    <line x1="388.7" y1="352.0" x2="388.7" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="388.7" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">7</text>
+    <line x1="435.3" y1="352.0" x2="435.3" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="435.3" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">8</text>
+    <line x1="482.0" y1="352.0" x2="482.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="482.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">9</text>
+    <line x1="528.7" y1="352.0" x2="528.7" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="528.7" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">10</text>
+    <line x1="575.3" y1="352.0" x2="575.3" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="575.3" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">11</text>
+    <line x1="622.0" y1="352.0" x2="622.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="622.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">12</text>
+    <line x1="62.0" y1="352.0" x2="622.0" y2="352.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="356.0" font-size="11" fill="var(--linea)" text-anchor="end">0.00</text>
+    <line x1="62.0" y1="299.0" x2="622.0" y2="299.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="303.0" font-size="11" fill="var(--linea)" text-anchor="end">0.50</text>
+    <line x1="62.0" y1="246.0" x2="622.0" y2="246.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="250.0" font-size="11" fill="var(--linea)" text-anchor="end">1.00</text>
+    <line x1="62.0" y1="193.0" x2="622.0" y2="193.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="197.0" font-size="11" fill="var(--linea)" text-anchor="end">1.50</text>
+    <line x1="62.0" y1="140.0" x2="622.0" y2="140.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="144.0" font-size="11" fill="var(--linea)" text-anchor="end">2.00</text>
+    <line x1="62.0" y1="87.0" x2="622.0" y2="87.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="91.0" font-size="11" fill="var(--linea)" text-anchor="end">2.50</text>
+    <line x1="62.0" y1="34.0" x2="622.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="38.0" font-size="11" fill="var(--linea)" text-anchor="end">3.00</text>
+    <line x1="62.0" y1="34.0" x2="62.0" y2="352.0" stroke="currentColor" stroke-width="1.6" />
+    <line x1="62.0" y1="352.0" x2="622.0" y2="352.0" stroke="currentColor" stroke-width="1.6" />
+    <text x="622.0" y="386.0" font-size="12" fill="currentColor" text-anchor="end" font-weight="600">Cantidad de helados</text>
+    <text x="4" y="12" font-size="12" fill="currentColor" font-weight="600">Precio ($)</text>
+    <polyline points="622.0,352.0 528.7,299.0 435.3,246.0 342.0,193.0 248.7,140.0 155.3,87.0 62.0,34.0" fill="none" stroke="var(--acc2)" stroke-width="2.6" stroke-linecap="round" />
+    <polyline points="62.0,352.0 62.0,299.0 108.7,246.0 155.3,193.0 202.0,140.0 248.7,87.0 295.3,34.0" fill="none" stroke="var(--acc3)" stroke-width="2.6" stroke-linecap="round" />
+    <circle cx="622.0" cy="352.0" r="4.5" fill="var(--acc2)" />
+    <circle cx="528.7" cy="299.0" r="4.5" fill="var(--acc2)" />
+    <circle cx="435.3" cy="246.0" r="4.5" fill="var(--acc2)" />
+    <circle cx="342.0" cy="193.0" r="4.5" fill="var(--acc2)" />
+    <circle cx="248.7" cy="140.0" r="4.5" fill="var(--acc2)" />
+    <circle cx="155.3" cy="87.0" r="4.5" fill="var(--acc2)" />
+    <circle cx="62.0" cy="34.0" r="4.5" fill="var(--acc2)" />
+    <circle cx="62.0" cy="352.0" r="4.5" fill="var(--acc3)" />
+    <circle cx="62.0" cy="299.0" r="4.5" fill="var(--acc3)" />
+    <circle cx="108.7" cy="246.0" r="4.5" fill="var(--acc3)" />
+    <circle cx="155.3" cy="193.0" r="4.5" fill="var(--acc3)" />
+    <circle cx="202.0" cy="140.0" r="4.5" fill="var(--acc3)" />
+    <circle cx="248.7" cy="87.0" r="4.5" fill="var(--acc3)" />
+    <circle cx="295.3" cy="34.0" r="4.5" fill="var(--acc3)" />
+    <text x="510.0" y="286.3" font-size="13" fill="var(--acc2)" font-weight="700">Demanda</text>
+    <text x="276.7" y="63.7" font-size="13" fill="var(--acc3)" font-weight="700">Oferta</text>
+  </svg>
+    <figcaption>Tablas de demanda y de oferta de helados, graficadas sobre los mismos ejes. La demanda <b>baja</b> y la oferta <b>sube</b>: por eso se cruzan.</figcaption>
+  </figure>
+  <figure class="diag">
+    <svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Equilibrio del mercado de helados">
+    <line x1="62.0" y1="352.0" x2="62.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="62.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">0</text>
+    <line x1="102.0" y1="352.0" x2="102.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="102.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">1</text>
+    <line x1="142.0" y1="352.0" x2="142.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="142.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">2</text>
+    <line x1="182.0" y1="352.0" x2="182.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="182.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">3</text>
+    <line x1="222.0" y1="352.0" x2="222.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="222.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">4</text>
+    <line x1="262.0" y1="352.0" x2="262.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="262.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">5</text>
+    <line x1="302.0" y1="352.0" x2="302.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="302.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">6</text>
+    <line x1="342.0" y1="352.0" x2="342.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="342.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">7</text>
+    <line x1="382.0" y1="352.0" x2="382.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="382.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">8</text>
+    <line x1="422.0" y1="352.0" x2="422.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="422.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">9</text>
+    <line x1="462.0" y1="352.0" x2="462.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="462.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">10</text>
+    <line x1="502.0" y1="352.0" x2="502.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="502.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">11</text>
+    <line x1="542.0" y1="352.0" x2="542.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="542.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">12</text>
+    <line x1="582.0" y1="352.0" x2="582.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="582.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">13</text>
+    <line x1="622.0" y1="352.0" x2="622.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="622.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">14</text>
+    <line x1="62.0" y1="352.0" x2="622.0" y2="352.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="356.0" font-size="11" fill="var(--linea)" text-anchor="end">0</text>
+    <line x1="62.0" y1="272.5" x2="622.0" y2="272.5" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="276.5" font-size="11" fill="var(--linea)" text-anchor="end">1</text>
+    <line x1="62.0" y1="193.0" x2="622.0" y2="193.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="197.0" font-size="11" fill="var(--linea)" text-anchor="end">2</text>
+    <line x1="62.0" y1="113.5" x2="622.0" y2="113.5" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="117.5" font-size="11" fill="var(--linea)" text-anchor="end">3</text>
+    <line x1="62.0" y1="34.0" x2="622.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="38.0" font-size="11" fill="var(--linea)" text-anchor="end">4</text>
+    <line x1="62.0" y1="34.0" x2="62.0" y2="352.0" stroke="currentColor" stroke-width="1.6" />
+    <line x1="62.0" y1="352.0" x2="622.0" y2="352.0" stroke="currentColor" stroke-width="1.6" />
+    <text x="622.0" y="386.0" font-size="12" fill="currentColor" text-anchor="end" font-weight="600">Cantidad de helados</text>
+    <text x="4" y="12" font-size="12" fill="currentColor" font-weight="600">Precio ($)</text>
+    <polyline points="102.0,272.5 622.0,100.2" fill="none" stroke="var(--acc3)" stroke-width="2.6" stroke-linecap="round" />
+    <text x="590.0" y="100.9" font-size="13" fill="var(--acc3)" font-weight="700" text-anchor="end">Oferta</text>
+    <polyline points="102.0,121.5 622.0,276.5" fill="none" stroke="var(--acc2)" stroke-width="2.6" stroke-linecap="round" />
+    <text x="606.0" y="287.7" font-size="13" fill="var(--acc2)" font-weight="700" text-anchor="end">Demanda</text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title>
+    <line x1="342.0" y1="193.0" x2="342.0" y2="352.0" stroke="var(--acc)" stroke-width="1.2" stroke-dasharray="3 3" />
+    <line x1="62.0" y1="193.0" x2="342.0" y2="193.0" stroke="var(--acc)" stroke-width="1.2" stroke-dasharray="3 3" />
+    <circle cx="342.0" cy="193.0" r="6" fill="var(--acc)" />
+    <text x="354.0" y="183.0" font-size="12" fill="currentColor" font-weight="700">Equilibrio inicial</text></g>
+    <rect x="62.0" y="59.7" width="560.0" height="52" fill="var(--acc3)" opacity="0.09" />
+    <text x="150.0" y="83.7" font-size="12.5" fill="var(--acc3)" font-weight="700">Exceso de OFERTA</text>
+    <text x="150.0" y="98.7" font-size="11" fill="var(--acc3)">sobra mercadería y el precio baja</text>
+    <rect x="62.0" y="266.4" width="560.0" height="52" fill="var(--acc2)" opacity="0.09" />
+    <text x="150.0" y="290.4" font-size="12.5" fill="var(--acc2)" font-weight="700">Exceso de DEMANDA</text>
+    <text x="150.0" y="305.4" font-size="11" fill="var(--acc2)">falta mercadería y el precio sube</text>
+  </svg>
+    <figcaption>El precio de equilibrio es <b>$2,00</b> y la cantidad de equilibrio, <b>7 helados</b>. Arriba del precio de equilibrio sobra mercadería y el precio tiende a bajar; abajo, falta y el precio sube.</figcaption>
+  </figure>
   <div class="callout warning">Demanda no es lo mismo que cantidad demandada: la demanda es toda la relación entre precio y cantidad (la curva completa), mientras que la cantidad demandada es un punto específico de esa relación, a un precio dado. Lo mismo aplica a oferta versus cantidad ofertada. Un cambio de precio mueve un punto sobre la curva; un cambio en cualquier otro factor desplaza la curva entera.</div>
   <p>La curva de demanda se desplaza cuando cambia algún factor distinto del precio: ingreso, gustos, precios de bienes relacionados, expectativas o número de compradores. La curva de oferta se desplaza cuando cambian los costos de producción, la tecnología, los impuestos o subsidios, las expectativas o el número de vendedores.</p>
+  <figure class="diag">
+    <svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Equilibrio del mercado de helados">
+    <line x1="62.0" y1="352.0" x2="62.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="62.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">0</text>
+    <line x1="102.0" y1="352.0" x2="102.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="102.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">1</text>
+    <line x1="142.0" y1="352.0" x2="142.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="142.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">2</text>
+    <line x1="182.0" y1="352.0" x2="182.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="182.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">3</text>
+    <line x1="222.0" y1="352.0" x2="222.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="222.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">4</text>
+    <line x1="262.0" y1="352.0" x2="262.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="262.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">5</text>
+    <line x1="302.0" y1="352.0" x2="302.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="302.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">6</text>
+    <line x1="342.0" y1="352.0" x2="342.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="342.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">7</text>
+    <line x1="382.0" y1="352.0" x2="382.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="382.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">8</text>
+    <line x1="422.0" y1="352.0" x2="422.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="422.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">9</text>
+    <line x1="462.0" y1="352.0" x2="462.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="462.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">10</text>
+    <line x1="502.0" y1="352.0" x2="502.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="502.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">11</text>
+    <line x1="542.0" y1="352.0" x2="542.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="542.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">12</text>
+    <line x1="582.0" y1="352.0" x2="582.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="582.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">13</text>
+    <line x1="622.0" y1="352.0" x2="622.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="622.0" y="368.0" font-size="11" fill="var(--linea)" text-anchor="middle">14</text>
+    <line x1="62.0" y1="352.0" x2="622.0" y2="352.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="356.0" font-size="11" fill="var(--linea)" text-anchor="end">0</text>
+    <line x1="62.0" y1="272.5" x2="622.0" y2="272.5" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="276.5" font-size="11" fill="var(--linea)" text-anchor="end">1</text>
+    <line x1="62.0" y1="193.0" x2="622.0" y2="193.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="197.0" font-size="11" fill="var(--linea)" text-anchor="end">2</text>
+    <line x1="62.0" y1="113.5" x2="622.0" y2="113.5" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="117.5" font-size="11" fill="var(--linea)" text-anchor="end">3</text>
+    <line x1="62.0" y1="34.0" x2="622.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="38.0" font-size="11" fill="var(--linea)" text-anchor="end">4</text>
+    <line x1="62.0" y1="34.0" x2="62.0" y2="352.0" stroke="currentColor" stroke-width="1.6" />
+    <line x1="62.0" y1="352.0" x2="622.0" y2="352.0" stroke="currentColor" stroke-width="1.6" />
+    <text x="622.0" y="386.0" font-size="12" fill="currentColor" text-anchor="end" font-weight="600">Cantidad de helados</text>
+    <text x="4" y="12" font-size="12" fill="currentColor" font-weight="600">Precio ($)</text>
+    <polyline points="102.0,272.5 622.0,100.2" fill="none" stroke="var(--acc3)" stroke-width="2.6" stroke-linecap="round" />
+    <text x="590.0" y="100.9" font-size="13" fill="var(--acc3)" font-weight="700" text-anchor="end">Oferta</text>
+    <polyline points="102.0,121.5 622.0,276.5" fill="none" stroke="var(--acc2)" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="6 5" />
+    <text x="606.0" y="287.7" font-size="12" fill="var(--acc2)" text-anchor="end">D<tspan dy="4" font-size="9">1</tspan></text>
+    <polyline points="102.0,45.9 622.0,201.0" fill="none" stroke="var(--acc2)" stroke-width="2.6" stroke-linecap="round" />
+    <text x="606.0" y="212.2" font-size="12" fill="var(--acc2)" font-weight="700" text-anchor="end">D<tspan dy="4" font-size="9">2</tspan></text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title>
+    <line x1="342.0" y1="193.0" x2="342.0" y2="352.0" stroke="var(--acc)" stroke-width="1.2" stroke-dasharray="3 3" />
+    <line x1="62.0" y1="193.0" x2="342.0" y2="193.0" stroke="var(--acc)" stroke-width="1.2" stroke-dasharray="3 3" />
+    <circle cx="342.0" cy="193.0" r="6" fill="var(--acc)" />
+    <text x="354.0" y="183.0" font-size="12" fill="currentColor" font-weight="700">Equilibrio inicial</text></g>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title>
+    <line x1="462.0" y1="153.2" x2="462.0" y2="352.0" stroke="var(--acc4)" stroke-width="1.2" stroke-dasharray="3 3" />
+    <line x1="62.0" y1="153.2" x2="462.0" y2="153.2" stroke="var(--acc4)" stroke-width="1.2" stroke-dasharray="3 3" />
+    <circle cx="462.0" cy="153.2" r="6" fill="var(--acc4)" />
+    <text x="474.0" y="143.2" font-size="12" fill="currentColor" font-weight="700">Nuevo equilibrio</text></g>
+  </svg>
+    <figcaption>Un verano caluroso desplaza la curva de <b>D1 a D2</b>: el equilibrio pasa de <b>$2,00 y 7 helados</b> a <b>$2,50 y 10 helados</b>. Suben <i>precio</i> y <i>cantidad</i>.</figcaption>
+  </figure>
+  <div class="callout blue">Cómo razonar cualquier desplazamiento: identificá <b>qué curva</b> se mueve y <b>hacia dónde</b>. Si se desplaza la <b>demanda</b>, precio y cantidad se mueven <b>en el mismo sentido</b>. Si se desplaza la <b>oferta</b>, se mueven <b>en sentidos opuestos</b>.</div>
+  <figure class="diag">
+    <img src="img/demanda-desplazamientos.png" alt="Desplazamientos de la curva de demanda hacia la derecha y hacia la izquierda.">
+    <img src="img/oferta-desplazamientos.png" alt="Desplazamientos de la curva de oferta hacia la derecha y hacia la izquierda.">
+    <figcaption>Los desplazamientos en ambos sentidos: aumento de la demanda (D1 a D2, a la derecha) y disminución (D1 a D3, a la izquierda); aumento de la oferta (S1 a S2, a la derecha) y disminución (S1 a S3, a la izquierda).</figcaption>
+  </figure>
   <div class="callout warning">¿Los costos sirven para fijar precios? No: los costos no fijan el precio de venta, que se determina por la interacción de oferta y demanda en el mercado. Los costos sí determinan cuánto margen (markup) le queda a la empresa una vez que el mercado fijó el precio.</div>
   <p>Ambas relaciones pueden escribirse como funciones matemáticas:</p>
   <ul class="study-list">
@@ -1621,6 +1929,62 @@
     </li>
     <li><b>Elasticidad precio de la oferta (Eo)</b>: variación porcentual en la cantidad ofrecida (Qo) ante una variación porcentual en el precio. Eo = (%ΔQo) / (%ΔP), con una interpretación análoga a la de la demanda.</li>
   </ul>
+  <p>Los cinco casos de la demanda de un vistazo: cuanto <b>más horizontal</b> la curva, <b>más elástica</b>.</p>
+  <div class="elast-row" id="elast-d">
+  <div class="elast-card">
+    <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><line x1="14" y1="6" x2="14" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="14" y1="58" x2="96" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="50" y1="6" x2="50" y2="58" stroke="var(--acc2)" stroke-width="3" stroke-linecap="round" /></svg>
+    <b>Perfectamente inelástica</b><span class="ep">E<sub>p</sub> = 0</span>
+    <small>Var.% Q = 0<br />No varía<br /><em>ej.: Pan</em></small>
+  </div>
+  <div class="elast-card">
+    <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><line x1="14" y1="6" x2="14" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="14" y1="58" x2="96" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="24" y1="6" x2="46" y2="58" stroke="var(--acc2)" stroke-width="3" stroke-linecap="round" /></svg>
+    <b>Inelástica</b><span class="ep">0 &lt; E<sub>p</sub> &lt; 1</span>
+    <small>Var.% Q &lt; Var.% P<br />Varía menos que proporcional<br /><em>ej.: Electricidad</em></small>
+  </div>
+  <div class="elast-card">
+    <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><line x1="14" y1="6" x2="14" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="14" y1="58" x2="96" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="22" y1="6" x2="74" y2="58" stroke="var(--acc2)" stroke-width="3" stroke-linecap="round" /></svg>
+    <b>Unitaria</b><span class="ep">E<sub>p</sub> = 1</span>
+    <small>Var.% Q = Var.% P<br />Varía directamente proporcional<br /><em>ej.: Casos particulares</em></small>
+  </div>
+  <div class="elast-card">
+    <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><line x1="14" y1="6" x2="14" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="14" y1="58" x2="96" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="20" y1="20" x2="92" y2="50" stroke="var(--acc2)" stroke-width="3" stroke-linecap="round" /></svg>
+    <b>Elástica</b><span class="ep">1 &lt; E<sub>p</sub> &lt; ∞</span>
+    <small>Var.% Q &gt; Var.% P<br />Varía más que proporcional<br /><em>ej.: Pasajes de avión, golosinas</em></small>
+  </div>
+  <div class="elast-card">
+    <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><line x1="14" y1="6" x2="14" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="14" y1="58" x2="96" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="18" y1="30" x2="96" y2="30" stroke="var(--acc2)" stroke-width="3" stroke-linecap="round" /></svg>
+    <b>Perfectamente elástica</b><span class="ep">E<sub>p</sub> = ∞</span>
+    <small>Var.% P = 0<br />Precio constante<br /><em>ej.: Frutas y verduras (ideal)</em></small>
+  </div>
+</div>
+  <p>Y los mismos cinco casos para la oferta, con curvas de pendiente positiva:</p>
+  <div class="elast-row" id="elast-o">
+  <div class="elast-card">
+    <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><line x1="14" y1="6" x2="14" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="14" y1="58" x2="96" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="50" y1="6" x2="50" y2="58" stroke="var(--acc3)" stroke-width="3" stroke-linecap="round" /></svg>
+    <b>Perfectamente inelástica</b><span class="ep">E<sub>p</sub> = 0</span>
+    <small>Var.% Q = 0<br />No varía</small>
+  </div>
+  <div class="elast-card">
+    <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><line x1="14" y1="6" x2="14" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="14" y1="58" x2="96" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="24" y1="58" x2="46" y2="6" stroke="var(--acc3)" stroke-width="3" stroke-linecap="round" /></svg>
+    <b>Inelástica</b><span class="ep">0 &lt; E<sub>p</sub> &lt; 1</span>
+    <small>Var.% Q &lt; Var.% P<br />Varía menos que proporcional</small>
+  </div>
+  <div class="elast-card">
+    <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><line x1="14" y1="6" x2="14" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="14" y1="58" x2="96" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="22" y1="58" x2="74" y2="6" stroke="var(--acc3)" stroke-width="3" stroke-linecap="round" /></svg>
+    <b>Unitaria</b><span class="ep">E<sub>p</sub> = 1</span>
+    <small>Var.% Q = Var.% P<br />Varía directamente proporcional</small>
+  </div>
+  <div class="elast-card">
+    <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><line x1="14" y1="6" x2="14" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="14" y1="58" x2="96" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="20" y1="50" x2="92" y2="20" stroke="var(--acc3)" stroke-width="3" stroke-linecap="round" /></svg>
+    <b>Elástica</b><span class="ep">1 &lt; E<sub>p</sub> &lt; ∞</span>
+    <small>Var.% Q &gt; Var.% P<br />Varía más que proporcional</small>
+  </div>
+  <div class="elast-card">
+    <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><line x1="14" y1="6" x2="14" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="14" y1="58" x2="96" y2="58" stroke="currentColor" stroke-width="1.5" /><line x1="18" y1="30" x2="96" y2="30" stroke="var(--acc3)" stroke-width="3" stroke-linecap="round" /></svg>
+    <b>Perfectamente elástica</b><span class="ep">E<sub>p</sub> = ∞</span>
+    <small>Var.% P = 0<br />Precio constante</small>
+  </div>
+</div>
   <p>Según cuántas empresas participan, qué tan homogéneo es el bien y qué tan altas son las barreras de entrada, se distinguen cuatro tipos de mercado:</p>
   <div class="table-wrap"><table>
     <thead><tr><th></th><th>Competencia perfecta</th><th>Monopolio</th><th>Oligopolio</th><th>Competencia monopólica</th></tr></thead>
@@ -1673,6 +2037,15 @@
     <li><b>Estructural</b>: la provocan desequilibrios de fondo en la estructura económica, como monopolios, rigideces laborales o problemas en la cadena de suministro.</li>
     <li><b>Por política monetaria</b>: la genera un exceso de emisión monetaria respecto del crecimiento económico, sin respaldo productivo.</li>
   </ul>
+  <figure class="diag">
+    <img src="img/inflacion-demanda.png" alt="Gráfico de oferta y demanda mostrando inflación de demanda.">
+    <img src="img/inflacion-costos.png" alt="Gráfico de oferta y demanda mostrando inflación de costos.">
+    <figcaption>Los dos tipos con gráfico propio: en la inflación de demanda se desplaza la demanda agregada; en la de costos, la oferta agregada.</figcaption>
+  </figure>
+  <figure class="diag">
+    <img src="img/espiral-inflacionaria.png" alt="Esquema de la espiral inflacionaria por expectativas.">
+    <figcaption>Inflación inercial: la espiral de la profecía autocumplida.</figcaption>
+  </figure>
   <p>Se mide con dos índices: el <b>Índice de Precios al Consumidor (IPC)</b>, que releva la variación porcentual del precio de una canasta representativa de bienes y servicios consumidos por los hogares, y el <b>Índice de Precios al Productor (IPP)</b>, que releva esa misma variación a nivel mayorista o productor.</p>
   <p>Entre sus efectos: reduce el poder adquisitivo del dinero, distorsiona la asignación de recursos, genera incertidumbre que afecta inversión y ahorro, y erosiona los salarios reales cuando no se ajustan a la par de los precios.</p>
   <div class="callout blue">Las soluciones para combatir la inflación atacan distintas causas a la vez: un pacto social entre agentes económicos para controlar precios y salarios, la corrección de precios relativos, metas de inflación realistas, evitar fluctuaciones bruscas del tipo de cambio, subir las tasas de interés y moderar la emisión monetaria. Ninguna funciona aislada si la inflación tiene más de una causa (por ejemplo, de costos y por política monetaria a la vez).</div>
@@ -2034,6 +2407,10 @@
     <li><b>Reservas:</b> utilidades retenidas para fortalecer el patrimonio.</li>
     <li><b>Resultados:</b> utilidades o pérdidas del ejercicio.</li>
   </ul>
+  <figure class="diag">
+    <img src="img/balance-ejemplo.png" alt="Balance de ejemplo con activo, pasivo y patrimonio neto y sus totales.">
+    <figcaption>Balance de ejemplo con números: el total del activo iguala al total de pasivo más patrimonio neto.</figcaption>
+  </figure>
 
   <h4 id="e03-estados-contables-resultados">Cuadro de resultados</h4>
   <div class="callout"><b>Cuadro de resultados.</b> Estado contable que presenta la rentabilidad de una entidad durante un período específico, mostrando sus ingresos, costos y gastos. El resultado final es la cuenta utilidades.</div>
@@ -2086,6 +2463,10 @@
       <tr><td>Utilidad neta</td><td>Ganancia final de la empresa.</td><td>Utilidad antes de impuestos menos impuesto a las ganancias.</td></tr>
     </tbody>
   </table></div>
+  <figure class="diag">
+    <img src="img/cuadro-resultados.png" alt="Cuadro de resultados de ejemplo desde ventas hasta utilidad neta.">
+    <figcaption>Cuadro de resultados de ejemplo con números: de ventas a utilidad neta, escalón por escalón.</figcaption>
+  </figure>
 
   <h4 id="e03-estados-contables-aspectos">Aspectos económicos y financieros</h4>
   <ul class="study-list">
@@ -2152,6 +2533,10 @@
       <tr><td>...</td><td>...</td></tr>
     </tbody>
   </table></div>
+  <figure class="diag">
+    <img src="img/plan-de-cuentas.png" alt="Ejemplo de plan de cuentas con su codificación jerárquica.">
+    <figcaption>Plan de cuentas completo de ejemplo: codificación jerárquica de las cuentas.</figcaption>
+  </figure>
 
   <p><b>Libro diario:</b> estado contable que registra todos los hechos económicos realizados por una entidad.</p>
   <ul>
@@ -2166,6 +2551,10 @@
       <tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
     </tbody>
   </table></div>
+  <figure class="diag">
+    <img src="img/libro-diario.png" alt="Ejemplo de asientos del libro diario con debe y haber.">
+    <figcaption>Libro diario de ejemplo: asientos en orden cronológico, con debe y haber.</figcaption>
+  </figure>
 
   <p><b>Libro mayor:</b> estado contable que registra los movimientos de cada una de las cuentas contables de una entidad.</p>
   <ul>
@@ -2179,6 +2568,10 @@
       <tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
     </tbody>
   </table></div>
+  <figure class="diag">
+    <img src="img/libro-mayor.png" alt="Ejemplo de libro mayor con cuentas en formato T.">
+    <figcaption>Libro mayor de ejemplo: una cuenta por hoja, con su saldo.</figcaption>
+  </figure>
 
   <div class="table-wrap"><table>
     <thead><tr><th></th><th>Libro diario</th><th>Libro mayor</th></tr></thead>
@@ -2189,6 +2582,34 @@
       <tr><td><b>Obligatorio</b></td><td>Sí</td><td>No</td></tr>
     </tbody>
   </table></div>
+  <figure class="diag">
+    <svg viewBox="0 0 790 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Circuito contable: el hecho economico se asienta en el libro diario, pasa al libro mayor y de ahi salen el balance y el cuadro de resultados, cuyo resultado alimenta el patrimonio neto">
+    <defs><marker id="fig-cc-flecha" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--linea)" /></marker></defs>
+    <rect x="10" y="68" width="150" height="44" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5" />
+    <text x="85" y="87" font-size="13" fill="currentColor" text-anchor="middle">Hecho económico</text>
+    <text x="85" y="103" font-size="10" fill="var(--linea)" text-anchor="middle">modifica el patrimonio</text>
+    <rect x="200" y="68" width="160" height="44" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5" />
+    <text x="280" y="87" font-size="13" fill="currentColor" text-anchor="middle">Libro diario</text>
+    <text x="280" y="103" font-size="10" fill="var(--linea)" text-anchor="middle">orden cronológico</text>
+    <rect x="400" y="68" width="160" height="44" rx="8" fill="none" stroke="var(--linea)" stroke-width="1.5" />
+    <text x="480" y="87" font-size="13" fill="currentColor" text-anchor="middle">Libro mayor</text>
+    <text x="480" y="103" font-size="10" fill="var(--linea)" text-anchor="middle">saldo por cuenta</text>
+    <rect x="600" y="20" width="170" height="44" rx="8" fill="none" stroke="var(--acc)" stroke-width="1.5" />
+    <text x="685" y="39" font-size="13" fill="currentColor" text-anchor="middle">Balance</text>
+    <text x="685" y="55" font-size="10" fill="var(--linea)" text-anchor="middle">A = P + PN</text>
+    <rect x="600" y="116" width="170" height="44" rx="8" fill="none" stroke="var(--acc)" stroke-width="1.5" />
+    <text x="685" y="135" font-size="13" fill="currentColor" text-anchor="middle">Cuadro de resultados</text>
+    <text x="685" y="151" font-size="10" fill="var(--linea)" text-anchor="middle">cuentas transitorias</text>
+    <line x1="160" y1="90" x2="196" y2="90" stroke="var(--linea)" fill="none" marker-end="url(#fig-cc-flecha)" />
+    <line x1="360" y1="90" x2="396" y2="90" stroke="var(--linea)" fill="none" marker-end="url(#fig-cc-flecha)" />
+    <line x1="560" y1="90" x2="596" y2="50" stroke="var(--linea)" fill="none" marker-end="url(#fig-cc-flecha)" />
+    <line x1="560" y1="90" x2="596" y2="130" stroke="var(--linea)" fill="none" marker-end="url(#fig-cc-flecha)" />
+    <line x1="685" y1="112" x2="685" y2="68" stroke="var(--linea)" fill="none" marker-end="url(#fig-cc-flecha)" />
+    <text x="700" y="94" font-size="10" fill="var(--linea)">el resultado</text>
+    <text x="700" y="106" font-size="10" fill="var(--linea)">pasa al PN</text>
+  </svg>
+    <figcaption>El circuito contable completo: el hecho económico se asienta en el libro diario, pasa al libro mayor, y de ahí salen el balance y el cuadro de resultados, cuyo resultado alimenta el patrimonio neto.</figcaption>
+  </figure>
 
   <h3 id="e03-iva">Impuesto al valor agregado (IVA)</h3>
   <div class="callout"><b>IVA.</b> Impuesto indirecto que grava el consumo de bienes y servicios, aplicado en cada etapa del proceso productivo y comercial.</div>
@@ -2393,6 +2814,48 @@ Vp = 1.000 x 10,908 = $10.907,51</code></pre>
   <pre><code>Interes:      Ii = Saldo Deudor Anterior x i
 Amortizacion: Ai = P - Ii</code></pre>
   <p>Donde <b>P</b> es la cuota constante (el pago periódico) e <b>Ii</b> el interés del período i, calculado sobre el saldo deudor que quedó del período anterior. La amortización Ai (la porción de capital que se cancela en esa cuota) es lo que sobra de la cuota una vez descontado el interés. A lo largo del préstamo, la suma de todas las amortizaciones devuelve el capital original: <code>Capital = Sum(Ai)</code>.</p>
+  <p>Para ver cómo se comporta cada sistema, las figuras que siguen usan un mismo préstamo de referencia: capital de <b>$1.000</b>, al <b>10%</b> por período, en <b>4</b> cuotas.</p>
+  <figure class="diag">
+    <div class="legend"><span><i style="background:var(--acc)"></i>Amortización</span><span><i style="background:var(--acc3)"></i>Interés</span></div>
+<svg viewBox="0 0 640 366" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Composición de cada cuota entre amortización e interés">
+    <line x1="58" y1="320.0" x2="622" y2="320.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="324.0" font-size="11" fill="var(--linea)" text-anchor="end">0</text>
+    <line x1="58" y1="272.3" x2="622" y2="272.3" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="276.3" font-size="11" fill="var(--linea)" text-anchor="end">200</text>
+    <line x1="58" y1="224.7" x2="622" y2="224.7" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="228.7" font-size="11" fill="var(--linea)" text-anchor="end">400</text>
+    <line x1="58" y1="177.0" x2="622" y2="177.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="181.0" font-size="11" fill="var(--linea)" text-anchor="end">600</text>
+    <line x1="58" y1="129.3" x2="622" y2="129.3" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="133.3" font-size="11" fill="var(--linea)" text-anchor="end">800</text>
+    <line x1="58" y1="81.7" x2="622" y2="81.7" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="85.7" font-size="11" fill="var(--linea)" text-anchor="end">1000</text>
+    <line x1="58" y1="34.0" x2="622" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="38.0" font-size="11" fill="var(--linea)" text-anchor="end">1200</text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title><rect x="91.8" y="268.6" width="73.3" height="51.4" fill="var(--acc)" rx="3" /><rect x="91.8" y="244.8" width="73.3" height="23.8" fill="var(--acc3)" rx="3" /><text x="128.5" y="237.8" font-size="11.5" fill="currentColor" text-anchor="middle" font-weight="700">315</text></g>
+    <text x="128.5" y="337.0" font-size="11.5" fill="var(--linea)" text-anchor="middle">n = 1</text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title><rect x="232.8" y="263.5" width="73.3" height="56.5" fill="var(--acc)" rx="3" /><rect x="232.8" y="244.8" width="73.3" height="18.7" fill="var(--acc3)" rx="3" /><text x="269.5" y="237.8" font-size="11.5" fill="currentColor" text-anchor="middle" font-weight="700">315</text></g>
+    <text x="269.5" y="337.0" font-size="11.5" fill="var(--linea)" text-anchor="middle">n = 2</text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title><rect x="373.8" y="257.9" width="73.3" height="62.1" fill="var(--acc)" rx="3" /><rect x="373.8" y="244.8" width="73.3" height="13.0" fill="var(--acc3)" rx="3" /><text x="410.5" y="237.8" font-size="11.5" fill="currentColor" text-anchor="middle" font-weight="700">315</text></g>
+    <text x="410.5" y="337.0" font-size="11.5" fill="var(--linea)" text-anchor="middle">n = 3</text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title><rect x="514.8" y="251.6" width="73.3" height="68.4" fill="var(--acc)" rx="3" /><rect x="514.8" y="244.8" width="73.3" height="6.8" fill="var(--acc3)" rx="3" /><text x="551.5" y="237.8" font-size="11.5" fill="currentColor" text-anchor="middle" font-weight="700">315</text></g>
+    <text x="551.5" y="337.0" font-size="11.5" fill="var(--linea)" text-anchor="middle">n = 4</text>
+    <line x1="58" y1="320" x2="622" y2="320" stroke="currentColor" stroke-width="1.6" />
+    <line x1="58" y1="34" x2="58" y2="320" stroke="currentColor" stroke-width="1.6" />
+    <text x="4" y="12" font-size="12" fill="currentColor" font-weight="600">Cuota ($)</text>
+  </svg>
+    <figcaption>Sistema Francés con el préstamo de referencia: la cuota total no cambia; adentro, el interés cae y la amortización sube.</figcaption>
+  </figure>
+  <div class="table-wrap"><table>
+<thead><tr><th>n</th><th>Cuota</th><th>Interés</th><th>Amortización</th><th>Saldo</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>$315,47</td><td>$100,00</td><td>$215,47</td><td>$784,53</td></tr>
+<tr><td>2</td><td>$315,47</td><td>$78,45</td><td>$237,02</td><td>$547,51</td></tr>
+<tr><td>3</td><td>$315,47</td><td>$54,75</td><td>$260,72</td><td>$286,79</td></tr>
+<tr><td>4</td><td>$315,47</td><td>$28,68</td><td>$286,79</td><td>$0,00</td></tr>
+<tr><td><b>Σ</b></td><td><b>$1.261,88</b></td><td><b>$261,88</b></td><td><b>$1.000,00</b></td><td></td></tr>
+</tbody>
+</table></div>
 
   <h4 id="e04-sistema-aleman">Sistema Alemán</h4>
   <p>Cuotas decrecientes, con amortización constante y una disminución progresiva de los intereses sobre saldos. Suele usarse en préstamos entre empresas.</p>
@@ -2400,6 +2863,47 @@ Amortizacion: Ai = P - Ii</code></pre>
 Interes:                Ii = Saldo Deudor Anterior x i
 Cuota:                  Pi = A + Ii</code></pre>
   <p>Acá <b>P</b> es el capital prestado y <b>n</b> el número de cuotas: la amortización A es siempre la misma, y la cuota Pi baja período a período porque el saldo deudor (y con él, el interés) disminuye.</p>
+  <figure class="diag">
+    <div class="legend"><span><i style="background:var(--acc)"></i>Amortización</span><span><i style="background:var(--acc3)"></i>Interés</span></div>
+<svg viewBox="0 0 640 366" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Composición de cada cuota entre amortización e interés">
+    <line x1="58" y1="320.0" x2="622" y2="320.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="324.0" font-size="11" fill="var(--linea)" text-anchor="end">0</text>
+    <line x1="58" y1="272.3" x2="622" y2="272.3" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="276.3" font-size="11" fill="var(--linea)" text-anchor="end">200</text>
+    <line x1="58" y1="224.7" x2="622" y2="224.7" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="228.7" font-size="11" fill="var(--linea)" text-anchor="end">400</text>
+    <line x1="58" y1="177.0" x2="622" y2="177.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="181.0" font-size="11" fill="var(--linea)" text-anchor="end">600</text>
+    <line x1="58" y1="129.3" x2="622" y2="129.3" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="133.3" font-size="11" fill="var(--linea)" text-anchor="end">800</text>
+    <line x1="58" y1="81.7" x2="622" y2="81.7" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="85.7" font-size="11" fill="var(--linea)" text-anchor="end">1000</text>
+    <line x1="58" y1="34.0" x2="622" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="38.0" font-size="11" fill="var(--linea)" text-anchor="end">1200</text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title><rect x="91.8" y="260.4" width="73.3" height="59.6" fill="var(--acc)" rx="3" /><rect x="91.8" y="236.6" width="73.3" height="23.8" fill="var(--acc3)" rx="3" /><text x="128.5" y="229.6" font-size="11.5" fill="currentColor" text-anchor="middle" font-weight="700">350</text></g>
+    <text x="128.5" y="337.0" font-size="11.5" fill="var(--linea)" text-anchor="middle">n = 1</text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title><rect x="232.8" y="260.4" width="73.3" height="59.6" fill="var(--acc)" rx="3" /><rect x="232.8" y="242.5" width="73.3" height="17.9" fill="var(--acc3)" rx="3" /><text x="269.5" y="235.5" font-size="11.5" fill="currentColor" text-anchor="middle" font-weight="700">325</text></g>
+    <text x="269.5" y="337.0" font-size="11.5" fill="var(--linea)" text-anchor="middle">n = 2</text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title><rect x="373.8" y="260.4" width="73.3" height="59.6" fill="var(--acc)" rx="3" /><rect x="373.8" y="248.5" width="73.3" height="11.9" fill="var(--acc3)" rx="3" /><text x="410.5" y="241.5" font-size="11.5" fill="currentColor" text-anchor="middle" font-weight="700">300</text></g>
+    <text x="410.5" y="337.0" font-size="11.5" fill="var(--linea)" text-anchor="middle">n = 3</text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title><rect x="514.8" y="260.4" width="73.3" height="59.6" fill="var(--acc)" rx="3" /><rect x="514.8" y="254.5" width="73.3" height="6.0" fill="var(--acc3)" rx="3" /><text x="551.5" y="247.5" font-size="11.5" fill="currentColor" text-anchor="middle" font-weight="700">275</text></g>
+    <text x="551.5" y="337.0" font-size="11.5" fill="var(--linea)" text-anchor="middle">n = 4</text>
+    <line x1="58" y1="320" x2="622" y2="320" stroke="currentColor" stroke-width="1.6" />
+    <line x1="58" y1="34" x2="58" y2="320" stroke="currentColor" stroke-width="1.6" />
+    <text x="4" y="12" font-size="12" fill="currentColor" font-weight="600">Cuota ($)</text>
+  </svg>
+    <figcaption>Sistema Alemán con el préstamo de referencia: amortización fija, cuota que baja período a período.</figcaption>
+  </figure>
+  <div class="table-wrap"><table>
+<thead><tr><th>n</th><th>Cuota</th><th>Interés</th><th>Amortización</th><th>Saldo</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>$350,00</td><td>$100,00</td><td>$250,00</td><td>$750,00</td></tr>
+<tr><td>2</td><td>$325,00</td><td>$75,00</td><td>$250,00</td><td>$500,00</td></tr>
+<tr><td>3</td><td>$300,00</td><td>$50,00</td><td>$250,00</td><td>$250,00</td></tr>
+<tr><td>4</td><td>$275,00</td><td>$25,00</td><td>$250,00</td><td>$0,00</td></tr>
+<tr><td><b>Σ</b></td><td><b>$1.250,00</b></td><td><b>$250,00</b></td><td><b>$1.000,00</b></td><td></td></tr>
+</tbody>
+</table></div>
 
   <div class="callout warning">La letra <b>P</b> cambia de significado entre sistemas: en el sistema Francés es la cuota constante (<code>Ai = P - Ii</code>); en el Alemán, el Bullet y el Directo es el capital prestado (<code>A = P / n</code>, <code>Ii = P x i</code>). Conviene revisar siempre a qué se refiere P antes de aplicar una fórmula: el ejemplo de abajo lo muestra con números concretos.</div>
 
@@ -2407,6 +2911,47 @@ Cuota:                  Pi = A + Ii</code></pre>
   <p>Pago único al final del plazo: durante el préstamo solo se pagan los intereses periódicos, y el capital se devuelve entero al vencimiento. Suele usarse en bonos.</p>
   <pre><code>Cuota periodica (solo interes): Ii = P x i
 Al final del plazo:             se paga el capital P</code></pre>
+  <figure class="diag">
+    <div class="legend"><span><i style="background:var(--acc)"></i>Amortización</span><span><i style="background:var(--acc3)"></i>Interés</span></div>
+<svg viewBox="0 0 640 366" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Composición de cada cuota entre amortización e interés">
+    <line x1="58" y1="320.0" x2="622" y2="320.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="324.0" font-size="11" fill="var(--linea)" text-anchor="end">0</text>
+    <line x1="58" y1="272.3" x2="622" y2="272.3" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="276.3" font-size="11" fill="var(--linea)" text-anchor="end">200</text>
+    <line x1="58" y1="224.7" x2="622" y2="224.7" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="228.7" font-size="11" fill="var(--linea)" text-anchor="end">400</text>
+    <line x1="58" y1="177.0" x2="622" y2="177.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="181.0" font-size="11" fill="var(--linea)" text-anchor="end">600</text>
+    <line x1="58" y1="129.3" x2="622" y2="129.3" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="133.3" font-size="11" fill="var(--linea)" text-anchor="end">800</text>
+    <line x1="58" y1="81.7" x2="622" y2="81.7" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="85.7" font-size="11" fill="var(--linea)" text-anchor="end">1000</text>
+    <line x1="58" y1="34.0" x2="622" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="38.0" font-size="11" fill="var(--linea)" text-anchor="end">1200</text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title><rect x="91.8" y="320.0" width="73.3" height="0.0" fill="var(--acc)" rx="3" /><rect x="91.8" y="296.2" width="73.3" height="23.8" fill="var(--acc3)" rx="3" /><text x="128.5" y="289.2" font-size="11.5" fill="currentColor" text-anchor="middle" font-weight="700">100</text></g>
+    <text x="128.5" y="337.0" font-size="11.5" fill="var(--linea)" text-anchor="middle">n = 1</text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title><rect x="232.8" y="320.0" width="73.3" height="0.0" fill="var(--acc)" rx="3" /><rect x="232.8" y="296.2" width="73.3" height="23.8" fill="var(--acc3)" rx="3" /><text x="269.5" y="289.2" font-size="11.5" fill="currentColor" text-anchor="middle" font-weight="700">100</text></g>
+    <text x="269.5" y="337.0" font-size="11.5" fill="var(--linea)" text-anchor="middle">n = 2</text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title><rect x="373.8" y="320.0" width="73.3" height="0.0" fill="var(--acc)" rx="3" /><rect x="373.8" y="296.2" width="73.3" height="23.8" fill="var(--acc3)" rx="3" /><text x="410.5" y="289.2" font-size="11.5" fill="currentColor" text-anchor="middle" font-weight="700">100</text></g>
+    <text x="410.5" y="337.0" font-size="11.5" fill="var(--linea)" text-anchor="middle">n = 3</text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title><rect x="514.8" y="81.7" width="73.3" height="238.3" fill="var(--acc)" rx="3" /><rect x="514.8" y="57.8" width="73.3" height="23.8" fill="var(--acc3)" rx="3" /><text x="551.5" y="50.8" font-size="11.5" fill="currentColor" text-anchor="middle" font-weight="700">1,100</text></g>
+    <text x="551.5" y="337.0" font-size="11.5" fill="var(--linea)" text-anchor="middle">n = 4</text>
+    <line x1="58" y1="320" x2="622" y2="320" stroke="currentColor" stroke-width="1.6" />
+    <line x1="58" y1="34" x2="58" y2="320" stroke="currentColor" stroke-width="1.6" />
+    <text x="4" y="12" font-size="12" fill="currentColor" font-weight="600">Cuota ($)</text>
+  </svg>
+    <figcaption>Sistema Bullet con el préstamo de referencia: sólo intereses hasta la última cuota, que carga toda la amortización de golpe.</figcaption>
+  </figure>
+  <div class="table-wrap"><table>
+<thead><tr><th>n</th><th>Cuota</th><th>Interés</th><th>Amortización</th><th>Saldo</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>$100,00</td><td>$100,00</td><td>$0,00</td><td>$1.000,00</td></tr>
+<tr><td>2</td><td>$100,00</td><td>$100,00</td><td>$0,00</td><td>$1.000,00</td></tr>
+<tr><td>3</td><td>$100,00</td><td>$100,00</td><td>$0,00</td><td>$1.000,00</td></tr>
+<tr><td>4</td><td>$1.100,00</td><td>$100,00</td><td>$1.000,00</td><td>$0,00</td></tr>
+<tr><td><b>Σ</b></td><td><b>$1.400,00</b></td><td><b>$400,00</b></td><td><b>$1.000,00</b></td><td></td></tr>
+</tbody>
+</table></div>
 
   <h4 id="e04-sistema-directo">Sistema Directo</h4>
   <p>Cuotas constantes de capital e intereses, pero calculados siempre sobre el capital inicial y no sobre el saldo deudor. Suelen ofrecerlo las entidades conocidas como "efectivo rápido".</p>
@@ -2414,6 +2959,47 @@ Al final del plazo:             se paga el capital P</code></pre>
 Interes:                Ii = P x i
 Cuota:                  Pi = A + Ii</code></pre>
   <p>La diferencia con el sistema Alemán es sutil pero importante: acá el interés Ii se calcula siempre sobre el capital inicial P, no sobre el saldo deudor restante, así que la cuota Pi también queda constante.</p>
+  <figure class="diag">
+    <div class="legend"><span><i style="background:var(--acc)"></i>Amortización</span><span><i style="background:var(--acc3)"></i>Interés</span></div>
+<svg viewBox="0 0 640 366" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Composición de cada cuota entre amortización e interés">
+    <line x1="58" y1="320.0" x2="622" y2="320.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="324.0" font-size="11" fill="var(--linea)" text-anchor="end">0</text>
+    <line x1="58" y1="272.3" x2="622" y2="272.3" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="276.3" font-size="11" fill="var(--linea)" text-anchor="end">200</text>
+    <line x1="58" y1="224.7" x2="622" y2="224.7" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="228.7" font-size="11" fill="var(--linea)" text-anchor="end">400</text>
+    <line x1="58" y1="177.0" x2="622" y2="177.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="181.0" font-size="11" fill="var(--linea)" text-anchor="end">600</text>
+    <line x1="58" y1="129.3" x2="622" y2="129.3" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="133.3" font-size="11" fill="var(--linea)" text-anchor="end">800</text>
+    <line x1="58" y1="81.7" x2="622" y2="81.7" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="85.7" font-size="11" fill="var(--linea)" text-anchor="end">1000</text>
+    <line x1="58" y1="34.0" x2="622" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="50" y="38.0" font-size="11" fill="var(--linea)" text-anchor="end">1200</text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title><rect x="91.8" y="260.4" width="73.3" height="59.6" fill="var(--acc)" rx="3" /><rect x="91.8" y="236.6" width="73.3" height="23.8" fill="var(--acc3)" rx="3" /><text x="128.5" y="229.6" font-size="11.5" fill="currentColor" text-anchor="middle" font-weight="700">350</text></g>
+    <text x="128.5" y="337.0" font-size="11.5" fill="var(--linea)" text-anchor="middle">n = 1</text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title><rect x="232.8" y="260.4" width="73.3" height="59.6" fill="var(--acc)" rx="3" /><rect x="232.8" y="236.6" width="73.3" height="23.8" fill="var(--acc3)" rx="3" /><text x="269.5" y="229.6" font-size="11.5" fill="currentColor" text-anchor="middle" font-weight="700">350</text></g>
+    <text x="269.5" y="337.0" font-size="11.5" fill="var(--linea)" text-anchor="middle">n = 2</text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title><rect x="373.8" y="260.4" width="73.3" height="59.6" fill="var(--acc)" rx="3" /><rect x="373.8" y="236.6" width="73.3" height="23.8" fill="var(--acc3)" rx="3" /><text x="410.5" y="229.6" font-size="11.5" fill="currentColor" text-anchor="middle" font-weight="700">350</text></g>
+    <text x="410.5" y="337.0" font-size="11.5" fill="var(--linea)" text-anchor="middle">n = 3</text>
+    <g><title>Empresas de Base Tecnológica 1 - Apunte completo</title><rect x="514.8" y="260.4" width="73.3" height="59.6" fill="var(--acc)" rx="3" /><rect x="514.8" y="236.6" width="73.3" height="23.8" fill="var(--acc3)" rx="3" /><text x="551.5" y="229.6" font-size="11.5" fill="currentColor" text-anchor="middle" font-weight="700">350</text></g>
+    <text x="551.5" y="337.0" font-size="11.5" fill="var(--linea)" text-anchor="middle">n = 4</text>
+    <line x1="58" y1="320" x2="622" y2="320" stroke="currentColor" stroke-width="1.6" />
+    <line x1="58" y1="34" x2="58" y2="320" stroke="currentColor" stroke-width="1.6" />
+    <text x="4" y="12" font-size="12" fill="currentColor" font-weight="600">Cuota ($)</text>
+  </svg>
+    <figcaption>Sistema Directo con el préstamo de referencia: el interés se calcula siempre sobre la deuda original, aunque el saldo ya haya bajado.</figcaption>
+  </figure>
+  <div class="table-wrap"><table>
+<thead><tr><th>n</th><th>Cuota</th><th>Interés</th><th>Amortización</th><th>Saldo</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>$350,00</td><td>$100,00</td><td>$250,00</td><td>$750,00</td></tr>
+<tr><td>2</td><td>$350,00</td><td>$100,00</td><td>$250,00</td><td>$500,00</td></tr>
+<tr><td>3</td><td>$350,00</td><td>$100,00</td><td>$250,00</td><td>$250,00</td></tr>
+<tr><td>4</td><td>$350,00</td><td>$100,00</td><td>$250,00</td><td>$0,00</td></tr>
+<tr><td><b>Σ</b></td><td><b>$1.400,00</b></td><td><b>$400,00</b></td><td><b>$1.000,00</b></td><td></td></tr>
+</tbody>
+</table></div>
 
   <div class="callout example"><b>Ejemplo.</b> Un préstamo de capital <b>P = $3.000</b>, a <b>i = 10%</b> por período, en <b>n = 3</b> cuotas.
     <p><b>Sistema Francés</b> (cuota constante = $1.206,34):</p>
@@ -2455,6 +3041,61 @@ Cuota:                  Pi = A + Ii</code></pre>
     <li><b>Sistema Bullet:</b> no se pagó nada de capital, solo intereses: el capital pendiente es siempre el total.</li>
     <li><b>Sistema Directo:</b> se pagó una cantidad constante de capital e intereses: el capital pendiente baja de forma lineal y previsible.</li>
   </ul>
+  <p>El gráfico compara el saldo de deuda de los cuatro sistemas con el préstamo de referencia ($1.000 al 10% en 4 cuotas): cuanto más abajo la línea, menos se debe a esa altura, y mejor parado se llega a una refinanciación.</p>
+  <figure class="diag">
+    <div class="legend"><span><i style="background:var(--acc)"></i>Francés</span><span><i style="background:var(--acc2)"></i>Alemán</span><span><i style="background:var(--acc4)"></i>Bullet</span><span><i style="background:var(--acc3)"></i>Directo (punteado)</span></div>
+<svg viewBox="0 0 680 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Saldo de deuda de los cuatro sistemas de amortización">
+    <line x1="62.0" y1="332.0" x2="62.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="62.0" y="348.0" font-size="11" fill="var(--linea)" text-anchor="middle">0</text>
+    <line x1="212.0" y1="332.0" x2="212.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="212.0" y="348.0" font-size="11" fill="var(--linea)" text-anchor="middle">1</text>
+    <line x1="362.0" y1="332.0" x2="362.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="362.0" y="348.0" font-size="11" fill="var(--linea)" text-anchor="middle">2</text>
+    <line x1="512.0" y1="332.0" x2="512.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="512.0" y="348.0" font-size="11" fill="var(--linea)" text-anchor="middle">3</text>
+    <line x1="662.0" y1="332.0" x2="662.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="662.0" y="348.0" font-size="11" fill="var(--linea)" text-anchor="middle">4</text>
+    <line x1="62.0" y1="332.0" x2="662.0" y2="332.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="336.0" font-size="11" fill="var(--linea)" text-anchor="end">0</text>
+    <line x1="62.0" y1="257.5" x2="662.0" y2="257.5" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="261.5" font-size="11" fill="var(--linea)" text-anchor="end">250</text>
+    <line x1="62.0" y1="183.0" x2="662.0" y2="183.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="187.0" font-size="11" fill="var(--linea)" text-anchor="end">500</text>
+    <line x1="62.0" y1="108.5" x2="662.0" y2="108.5" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="112.5" font-size="11" fill="var(--linea)" text-anchor="end">750</text>
+    <line x1="62.0" y1="34.0" x2="662.0" y2="34.0" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 4" />
+    <text x="54.0" y="38.0" font-size="11" fill="var(--linea)" text-anchor="end">1000</text>
+    <line x1="62.0" y1="34.0" x2="62.0" y2="332.0" stroke="currentColor" stroke-width="1.6" />
+    <line x1="62.0" y1="332.0" x2="662.0" y2="332.0" stroke="currentColor" stroke-width="1.6" />
+    <text x="662.0" y="366.0" font-size="12" fill="currentColor" text-anchor="end" font-weight="600">Período</text>
+    <text x="4" y="12" font-size="12" fill="currentColor" font-weight="600">Saldo de deuda ($)</text>
+    <polyline points="62.0,34.0 212.0,98.2 362.0,168.8 512.0,246.5 662.0,332.0" fill="none" stroke="var(--acc)" stroke-width="2.6" stroke-linecap="round" />
+    <circle cx="62.0" cy="34.0" r="4" fill="var(--acc)" />
+    <circle cx="212.0" cy="98.2" r="4" fill="var(--acc)" />
+    <circle cx="362.0" cy="168.8" r="4" fill="var(--acc)" />
+    <circle cx="512.0" cy="246.5" r="4" fill="var(--acc)" />
+    <circle cx="662.0" cy="332.0" r="4" fill="var(--acc)" />
+    <polyline points="62.0,34.0 212.0,108.5 362.0,183.0 512.0,257.5 662.0,332.0" fill="none" stroke="var(--acc2)" stroke-width="2.6" stroke-linecap="round" />
+    <circle cx="62.0" cy="34.0" r="4" fill="var(--acc2)" />
+    <circle cx="212.0" cy="108.5" r="4" fill="var(--acc2)" />
+    <circle cx="362.0" cy="183.0" r="4" fill="var(--acc2)" />
+    <circle cx="512.0" cy="257.5" r="4" fill="var(--acc2)" />
+    <circle cx="662.0" cy="332.0" r="4" fill="var(--acc2)" />
+    <polyline points="62.0,34.0 212.0,34.0 362.0,34.0 512.0,34.0 662.0,332.0" fill="none" stroke="var(--acc4)" stroke-width="2.6" stroke-linecap="round" />
+    <circle cx="62.0" cy="34.0" r="4" fill="var(--acc4)" />
+    <circle cx="212.0" cy="34.0" r="4" fill="var(--acc4)" />
+    <circle cx="362.0" cy="34.0" r="4" fill="var(--acc4)" />
+    <circle cx="512.0" cy="34.0" r="4" fill="var(--acc4)" />
+    <circle cx="662.0" cy="332.0" r="4" fill="var(--acc4)" />
+    <polyline points="62.0,34.0 212.0,108.5 362.0,183.0 512.0,257.5 662.0,332.0" fill="none" stroke="var(--acc3)" stroke-width="3.4" stroke-linecap="round" stroke-dasharray="7 5" />
+    <line x1="512.0" y1="34.0" x2="512.0" y2="332.0" stroke="currentColor" stroke-width="1.4" stroke-dasharray="5 4" />
+    <text x="504.0" y="48.0" font-size="11.5" fill="currentColor" text-anchor="end" font-weight="600">tras 3 de 4 cuotas</text>
+    <text x="84.5" y="25.0" font-size="11.5" fill="var(--acc4)" font-weight="700">bullet: seguís debiendo TODO</text>
+    <text x="521.0" y="249.5" font-size="11.5" fill="var(--acc2)" font-weight="700">alemán y directo: sólo $250</text>
+  </svg>
+    <figcaption>Saldo de deuda de los cuatro sistemas, con el mismo préstamo. El <b>bullet</b> se mantiene plano en $1.000 hasta el final; el <b>alemán</b> baja parejo.</figcaption>
+  </figure>
+  <div class="callout blue">El <b>alemán</b> y el <b>directo</b> dibujan exactamente la misma línea de saldos, porque los dos amortizan P/n por período (por eso el directo va punteado). La diferencia entre ellos no está en el saldo sino en el <b>interés</b>: el alemán lo calcula sobre el saldo que va quedando ($250 en total) y el directo siempre sobre la deuda original ($400 en total).</div>
 
   <h3 id="e04-inflacion-tipo-cambio">Inflación y tipo de cambio</h3>
   <p>El cálculo de las tasas de interés debe considerar la inflación para reflejar el valor real del dinero a lo largo del tiempo. La tasa efectiva es nominal respecto de la inflación (no la descuenta); la tasa real sí está ajustada por inflación.</p>
@@ -2597,6 +3238,10 @@ Cuota:                  Pi = A + Ii</code></pre>
       <tr><td>Fiscal</td><td>Impacto de los impuestos</td><td>Incorpora explícitamente deducciones fiscales y créditos tributarios a los flujos de caja del proyecto.</td></tr>
     </tbody>
   </table></div>
+  <figure class="diag">
+    <img src="img/flujo-de-fondos.png" alt="Tabla de flujo de fondos por período con inversiones, ventas y flujo neto.">
+    <figcaption>Flujo de fondos armado: cada columna es un período; la última fila es el flujo neto que después se descuenta en el VAN.</figcaption>
+  </figure>
 
   <h3 id="e05-ktop">Capital de Trabajo Operativo (KTOP)</h3>
   <div class="callout"><b>Capital de Trabajo Operativo (KTOP).</b> Diferencia entre los activos corrientes operativos y los pasivos corrientes operativos de una empresa: el capital necesario para financiar las operaciones diarias, sin contar los elementos financieros o no operativos.</div>
@@ -2663,9 +3308,212 @@ Cuota:                  Pi = A + Ii</code></pre>
 
     </section>
 
-    <section class="chapter" id="e06" data-title="derecho conceptos ramas concepto general del tradiciones ordenamiento juridico constitucional argentino division poderes checks and balances pesos contrapesos sistema republicano fuentes prelacion normativa piramide kelsen constitucionalizacion privado codigo civil comercial art aplicacion interpretacion ambito subjetivo obligatoriedad fases derechos subjetivos patrimoniales extrapatrimoniales principios para ejercicio los">
+    <section class="chapter" id="e11" data-title="costos rentabilidad costo gasto tipos produccion producto servicio actividad acumulacion tiempo triangulo hierro fernando dos santos claro objeto tres pares que confunden amortizaciones unitaria margen ganancia punto equilibrio roi">
       <div class="chapter-head">
         <div class="chapter-number">06</div>
+        <div><h2>Costos y rentabilidad</h2></div>
+      </div>
+  <p class="intro">Entre la contabilidad y la evaluación de proyectos falta una pieza: saber cuánto cuesta producir y cuánto queda de ganancia. Este capítulo define el costo, lo distingue del gasto (la pregunta más repetida del tema) y clasifica los costos en cinco dimensiones que conviven sobre un mismo costo. Cierra con las herramientas para saber si un producto o servicio deja plata: rentabilidad, margen de ganancia, punto de equilibrio y ROI, cada una con su fórmula y un ejemplo numérico.</p>
+
+  <div class="callout"><b>Costo.</b> Valor monetario de los <b>consumos de factores</b> que supone el ejercicio de una actividad económica destinada a la producción de un bien, servicio o actividad.</div>
+  <ul>
+    <li>Está ligado al <b>consumo o desgaste de factores</b>, es decir, al <b>sacrificio</b>.</li>
+    <li>Conlleva un componente de <b>subjetividad</b>.</li>
+  </ul>
+
+  <h3 id="e11-costo-vs-gasto">Costo vs. gasto</h3>
+  <div class="callout"><b>Gasto.</b> Bienes y servicios <b>adquiridos</b> para la actividad de una empresa. Asociado al <b>momento de adquisición</b>.</div>
+  <div class="callout"><b>Costo.</b> Gasto <b>consumido</b> en la actividad productiva. Vinculado al momento de <b>incorporación al proceso productivo</b>.</div>
+
+  <h3 id="e11-tipos">Tipos de costos</h3>
+
+  <h4 id="e11-tipos-produccion">De producción</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tipo</th><th>Definición</th><th>Ejemplo</th></tr></thead>
+    <tbody>
+      <tr><td><b>Variables</b></td><td>Directamente proporcionales con la cantidad producida o vendida</td><td>Publicidad</td></tr>
+      <tr><td><b>Fijos</b></td><td>Invariantes ante cambios de la cantidad producida o vendida</td><td>Alquiler de oficina</td></tr>
+      <tr><td><b>Mixtos</b></td><td>Un poco de cada uno</td><td>Energía eléctrica (parte fija, parte variable)</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4 id="e11-tipos-producto">De producto o servicio</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tipo</th><th>Definición</th><th>Ejemplo</th></tr></thead>
+    <tbody>
+      <tr><td><b>Directos</b></td><td>Rastreable su aplicación directa a un producto o servicio específico</td><td>Materia prima, mano de obra</td></tr>
+      <tr><td><b>Indirectos</b></td><td>No rastreables directamente; se distribuyen entre toda la producción y venta</td><td>Electricidad y refrigeración</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4 id="e11-tipos-actividad">De actividad</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tipo</th><th>Definición</th><th>Ejemplo</th></tr></thead>
+    <tbody>
+      <tr><td><b>Producción</b></td><td>Relacionados con la fabricación del producto o servicio</td><td>Herramientas y licencias de desarrollo</td></tr>
+      <tr><td><b>Operación</b></td><td>Gastos no productivos: administrativos, ventas, etc.</td><td>Salario de atención al cliente</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4 id="e11-tipos-acumulacion">De acumulación</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tipo</th><th>Definición</th><th>Ejemplo</th></tr></thead>
+    <tbody>
+      <tr><td><b>Órdenes de trabajo</b></td><td>La <b>demanda antecede</b> a la oferta</td><td>Reparación de un auto cuando se rompe</td></tr>
+      <tr><td><b>Proceso</b></td><td>La <b>oferta antecede</b> a la demanda</td><td>Proceso de fabricación del auto</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4 id="e11-tipos-tiempo">De tiempo</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tipo</th><th>Definición</th></tr></thead>
+    <tbody>
+      <tr><td><b>Históricos</b></td><td>Costos ya incurridos en el pasado</td></tr>
+      <tr><td><b>Reales</b></td><td>Costos del período actual</td></tr>
+      <tr><td><b>Predeterminados</b></td><td>Calculables a futuro en base a los históricos y reales</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 id="e11-triangulo-hierro">Triángulo de hierro</h3>
+  <p>Las tres restricciones de un proyecto que condicionan la <b>calidad</b> del resultado: si movés una, movés las otras.</p>
+  <figure class="diag">
+    <svg viewBox="0 0 460 300" role="img" aria-label="Triangulo de hierro: alcance, coste y tiempo en los vertices y calidad en el centro">
+      <polygon points="230,52 78,232 382,232" fill="none" stroke="var(--acc)" stroke-width="2"/>
+      <g fill="currentColor" font-size="15" font-weight="bold" text-anchor="middle">
+        <text x="230" y="36">Alcance</text>
+        <text x="70" y="258">Coste</text>
+        <text x="390" y="258">Tiempo</text>
+      </g>
+      <g fill="var(--acc2)" font-size="12" text-anchor="middle">
+        <text x="230" y="18">características, funcionalidad</text>
+        <text x="76" y="276">recursos, presupuesto</text>
+        <text x="386" y="276">planificación</text>
+      </g>
+      <text x="230" y="185" fill="var(--acc)" font-size="16" font-weight="bold" text-anchor="middle">Calidad</text>
+    </svg>
+    <figcaption>Triángulo de hierro: <b>alcance</b> (características, funcionalidad), <b>coste</b> (recursos, presupuesto) y <b>tiempo</b> (planificación), con la <b>calidad</b> en el centro.</figcaption>
+  </figure>
+
+  <h3 id="e11-dos-santos-claro">Fernando dos Santos Claro</h3>
+  <div class="callout"><b>Costo (según Fernando dos Santos Claro).</b> Sacrificio <b>económico y necesario</b> para obtener un producto determinado.</div>
+  <p>El fin del costo es <b>obtener un beneficio</b>.</p>
+
+  <h4 id="e11-objeto-costo">Objeto de costo</h4>
+  <div class="callout"><b>Objeto de costo.</b> Causa que <b>provoca el costo</b>.</div>
+  <div class="callout example">Si queremos saber cuánto cuesta mantener el área de producción, el objeto de costo es el <i>área de producción</i>, y las escobas son un <b>costo indirecto</b> asociado a ese objeto.</div>
+
+  <h4 id="e11-pares-confusos">Tres pares que se confunden</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Par</th><th>Distinción</th></tr></thead>
+    <tbody>
+      <tr><td><b>Costo vs. inversión</b></td><td><b>Costo:</b> inversión de corto plazo. <b>Inversión:</b> costo de largo plazo.</td></tr>
+      <tr><td><b>Valor vs. precio vs. costo</b></td><td><b>Valor:</b> estimación. <b>Precio:</b> importe. <b>Costo:</b> dinero erogado para la producción.</td></tr>
+      <tr><td><b>Costo vs. gasto</b></td><td><b>Gasto:</b> al adquirir. <b>Costo:</b> al consumir en el proceso productivo.</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="diag">
+    <svg viewBox="0 0 700 130" role="img" aria-label="El gasto, asociado a la adquisicion, se vuelve costo al consumirse en el proceso productivo">
+      <rect x="30" y="30" width="250" height="66" rx="10" fill="none" stroke="var(--linea)" stroke-width="1.5"/>
+      <rect x="420" y="30" width="250" height="66" rx="10" fill="none" stroke="var(--acc)" stroke-width="1.5"/>
+      <g text-anchor="middle">
+        <text x="155" y="58" fill="currentColor" font-size="15" font-weight="bold">Gasto</text>
+        <text x="155" y="80" fill="var(--acc2)" font-size="12">momento de adquisición</text>
+        <text x="545" y="58" fill="var(--acc)" font-size="15" font-weight="bold">Costo</text>
+        <text x="545" y="80" fill="var(--acc2)" font-size="12">incorporación al proceso productivo</text>
+        <text x="350" y="50" fill="var(--acc2)" font-size="12">se consume</text>
+      </g>
+      <line x1="285" y1="63" x2="404" y2="63" stroke="var(--linea)" stroke-width="1.5"/>
+      <polygon points="404,57 416,63 404,69" fill="var(--linea)"/>
+    </svg>
+    <figcaption>Costo frente a gasto según Fernando dos Santos Claro: el gasto nace al adquirir; se convierte en costo al consumirse en la producción.</figcaption>
+  </figure>
+  <ul class="study-list">
+    <li><b>Contabilidad de costos:</b> parte de la <i>contabilidad administrativa</i>.</li>
+    <li><b>Costos de producción:</b> parte de <i>empresas manufactureras</i>.</li>
+  </ul>
+
+  <h3 id="e11-amortizaciones">Amortizaciones</h3>
+  <div class="callout"><b>Amortización (definición económica).</b> <b>Pérdida del valor de un bien de uso</b> por el paso del tiempo o por el uso efectuado.</div>
+  <div class="callout"><b>Amortización (definición financiera).</b> <b>Pago periódico de un préstamo</b>.</div>
+  <p>Se refleja en los estados contables y <b>se descuenta a la utilidad antes de calcular los impuestos a la ganancia</b>: ayuda a pagar menos impuestos. Se rige por pautas de <b>AFIP</b>.</p>
+
+  <h3 id="e11-rentabilidad">Rentabilidad</h3>
+  <div class="formula">R = (G / C) × 100</div>
+  <ul class="study-list">
+    <li><b>G:</b> ganancia neta = Ingresos − Costos totales</li>
+    <li><b>C:</b> costos totales = costos asociados al producto o servicio</li>
+  </ul>
+  <div class="callout example"><b>Rentabilidad.</b>
+    <p>Servicio de mantenimiento de servidores:</p>
+    <ul>
+      <li>Ingresos por cliente: <b>$10.000</b></li>
+      <li>Costos totales por cliente: <b>$7.000</b></li>
+      <li>→ Ganancia neta = <b>$3.000</b></li>
+    </ul>
+    <div class="formula">Rentabilidad = (3.000 / 7.000) × 100 = 42,86%</div>
+    <p>Eso significa que <b>por cada peso que invertís, ganás 42,86 centavos</b>.</p>
+  </div>
+
+  <h4 id="e11-rentabilidad-unitaria">Rentabilidad unitaria</h4>
+  <div class="formula">R<sub>u</sub> = [ (P<sub>u</sub> − C<sub>u</sub>) / C<sub>u</sub> ] × 100</div>
+  <p>Con <b>P<sub>u</sub></b> = precio de venta unitario y <b>C<sub>u</sub></b> = costo unitario.</p>
+
+  <h4 id="e11-margen">Margen de ganancia</h4>
+  <div class="formula">M = (G / P<sub>u</sub>) × 100</div>
+  <div class="callout warning">Ojo con la confusión clásica: la <b>rentabilidad</b> se calcula sobre el <b>costo</b>; el <b>margen</b> se calcula sobre el <b>precio</b>. Mismo numerador, distinto denominador.</div>
+
+  <h4 id="e11-punto-equilibrio">Punto de equilibrio</h4>
+  <p>Mínimo de ventas necesario para solventar los gastos.</p>
+  <div class="formula">P<sub>eq</sub> = C<sub>f</sub> / (P<sub>u</sub> − C<sub>vu</sub>)</div>
+  <ul class="study-list">
+    <li><b>C<sub>f</sub>:</b> costos fijos</li>
+    <li><b>C<sub>vu</sub>:</b> costo variable unitario</li>
+  </ul>
+  <div class="callout example"><b>Punto de equilibrio.</b>
+    <ul>
+      <li>Desarrollar una app SaaS cuesta <b>USD 10.000</b> (costo fijo inicial)</li>
+      <li>Cada usuario cuesta <b>USD 2/mes</b> (servidores, soporte)</li>
+      <li>Se cobra <b>USD 10/mes</b> por usuario</li>
+    </ul>
+    <div class="formula">P<sub>eq</sub> = 10.000 / (10 − 2) = 1.250 usuarios</div>
+    <p>Recién a partir del <b>usuario 1.250</b> el proyecto empieza a dar ganancia.</p>
+  </div>
+
+  <h4 id="e11-roi">ROI</h4>
+  <div class="formula">ROI = (G / I) × 100 = (Ing − C) / I<sub>i</sub></div>
+  <ul class="study-list">
+    <li><b>I:</b> inversión total</li>
+    <li><b>Ing:</b> ingresos totales</li>
+    <li><b>I<sub>i</sub>:</b> inversión inicial</li>
+  </ul>
+  <div class="callout example"><b>ROI.</b>
+    <ul>
+      <li>Inversión inicial: <b>USD 15.000</b></li>
+      <li>Ingresos generados: <b>USD 25.000</b></li>
+      <li>→ Ganancia neta = 25.000 − 15.000 = <b>10.000</b></li>
+    </ul>
+    <div class="formula">ROI = (10.000 / 15.000) × 100 = 66,67%</div>
+  </div>
+
+  <p>Y con ese número, cómo se lo interpreta:</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>ROI</th><th>Interpretación</th></tr></thead>
+    <tbody>
+      <tr><td><b>&lt; 0%</b></td><td>Pérdida → <b>no viable</b></td></tr>
+      <tr><td><b>0% a 10%</b></td><td>Bajo → sólo aceptable en proyectos de bajo riesgo o estratégicos</td></tr>
+      <tr><td><b>10% a 30%</b></td><td>Moderado → puede ser aceptable si hay poco riesgo o beneficio indirecto</td></tr>
+      <tr><td><b>&gt; 30%</b></td><td>Bueno → en general, se considera rentable</td></tr>
+      <tr><td><b>&gt; 100%</b></td><td>Excelente → recuperás la inversión y duplicás la ganancia</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout exam">La distinción <b>costo/gasto</b> es la pregunta más repetida (adquisición vs. consumo productivo). Hay que poder clasificar un costo cualquiera en las <b>cinco dimensiones</b> (producción, producto, actividad, acumulación, tiempo): notar que un mismo costo se clasifica simultáneamente en todas. Saber que las amortizaciones tienen doble definición (económica y financiera) y que reducen la base imponible de Ganancias. Y tener las cuatro fórmulas listas: rentabilidad (sobre costo), margen (sobre precio), punto de equilibrio y ROI.</div>
+
+    </section>
+
+    <section class="chapter" id="e06" data-title="derecho conceptos ramas concepto general del tradiciones ordenamiento juridico constitucional argentino division poderes checks and balances pesos contrapesos sistema republicano fuentes prelacion normativa piramide kelsen constitucionalizacion privado codigo civil comercial art aplicacion interpretacion ambito subjetivo obligatoriedad fases derechos subjetivos patrimoniales extrapatrimoniales principios para ejercicio los">
+      <div class="chapter-head">
+        <div class="chapter-number">07</div>
         <div><h2>Derecho: conceptos y ramas</h2></div>
       </div>
   <p class="intro">Esta unidad presenta las nociones básicas de derecho que atraviesan el resto de la materia: qué es una norma, cómo se dividen las ramas del ordenamiento jurídico, qué tradiciones jurídicas existen en el mundo y cómo se organiza el derecho constitucional argentino. Cierra con las fuentes del derecho, la jerarquía de las normas (pirámide de Kelsen), la constitucionalización del derecho privado y los principios que limitan el ejercicio de los derechos. Para una empresa de base tecnológica estas bases explican, por ejemplo, por qué el Estado puede otorgar regímenes de promoción, por qué una ley provincial no puede contradecir a una nacional, y qué garantías y obligaciones rigen cualquier contrato o relación comercial.</p>
@@ -2762,6 +3610,10 @@ Cuota:                  Pi = A + Ii</code></pre>
   <div class="callout example">Una provincia con 700.000 habitantes envía unos 21 diputados a la cámara baja (700.000 dividido 33.000), pero siempre los mismos tres senadores a la cámara alta, sin importar su población: los diputados representan a la gente, los senadores representan a las provincias como unidades políticas iguales entre sí.</div>
   <div class="callout"><b>Poder ejecutivo.</b> Administra, reglamenta y aplica las políticas de Estado. Es unipersonal y está encabezado por el presidente de la Nación.</div>
   <div class="callout"><b>Poder judicial.</b> Garantiza el cumplimiento de los derechos, las garantías y las políticas de Estado. Es independiente de los otros dos poderes. Lo encabeza la Corte Suprema de Justicia de la Nación y lo componen tribunales federales y cámaras.</div>
+  <figure class="diag">
+    <img src="img/poderes-del-estado.png" alt="Organigrama de los tres poderes del Estado argentino.">
+    <figcaption>Los tres poderes del Estado argentino, con los órganos que componen cada uno.</figcaption>
+  </figure>
 
   <h4 id="e06-pesos-contrapesos">Pesos y contrapesos del sistema republicano</h4>
   <p>La forma republicana no se agota en dividir el poder en tres: cada poder controla a los otros dos.</p>
@@ -2873,7 +3725,7 @@ Cuota:                  Pi = A + Ii</code></pre>
 
     <section class="chapter" id="e07" data-title="vinculos actos juridicos relacion juridica tipos relaciones juridicas hechos teoria los voluntarios manifestacion voluntad vicios del acto juridico obligaciones efectos las clasificacion modos extincion">
       <div class="chapter-head">
-        <div class="chapter-number">07</div>
+        <div class="chapter-number">08</div>
         <div><h2>Vínculos y actos jurídicos</h2></div>
       </div>
   <p class="intro">Esta unidad cubre la mitad legal de la materia: qué es una relación jurídica y de qué elementos se compone, cómo se clasifican los hechos jurídicos hasta llegar al acto jurídico, qué convierte a un acto en voluntario y cómo se manifiesta esa voluntad, qué vicios pueden invalidar un acto jurídico, y cómo se estructuran las obligaciones que nacen de todo esto. Es la base conceptual para leer cualquier contrato o entender por qué un compromiso es exigible o nulo, algo central para quien monta una empresa de base tecnológica.</p>
@@ -3067,7 +3919,7 @@ Cuota:                  Pi = A + Ii</code></pre>
 
     <section class="chapter" id="e08" data-title="contratos concepto contrato principio autonomia voluntad elementos del partes efectos clasificacion los">
       <div class="chapter-head">
-        <div class="chapter-number">08</div>
+        <div class="chapter-number">09</div>
         <div><h2>Contratos</h2></div>
       </div>
   <p class="intro">Esta unidad cubre la base legal del contrato: qué es, el principio de autonomía de la voluntad que habilita a las partes a fijar sus propias reglas, los elementos que un contrato necesita para ser válido, quiénes se consideran parte de él, qué efectos produce y cómo se clasifica. Importa para una empresa de base tecnológica porque casi toda relación comercial (con clientes, proveedores, socios o empleados) se instrumenta mediante un contrato, y saber qué lo hace válido y qué alcance tiene evita errores costosos.</p>
@@ -3158,7 +4010,7 @@ Cuota:                  Pi = A + Ii</code></pre>
 
     <section class="chapter" id="e09" data-title="sociedades que una sociedad leyes aplicables las atributos personalidad juridica tipos societarios responsabilidad limitada anonima por acciones simplificada comparativa los con vida estados contables socios">
       <div class="chapter-head">
-        <div class="chapter-number">09</div>
+        <div class="chapter-number">10</div>
         <div><h2>Sociedades</h2></div>
       </div>
   <p class="intro">Esta unidad estudia a la sociedad como el vehículo jurídico más usado para emprender: qué leyes la rigen, qué atributos le da la personalidad jurídica, qué tipos societarios existen y en qué se diferencian (con foco en la responsabilidad de los socios y en cómo se administran, gobiernan y fiscalizan) y cómo es su ciclo de vida completo, desde la constitución hasta la extinción. Para quien monta una empresa de base tecnológica, elegir el tipo societario correcto define cuánto capital hace falta, quién responde si algo sale mal y qué tan rápido y barato es arrancar.</p>
@@ -3386,7 +4238,7 @@ Cuota:                  Pi = A + Ii</code></pre>
 
     <section class="chapter" id="e10" data-title="regimenes promocion conceptos generales beneficios tipicos regimen economia del conocimiento ley 506 marco normativo objeto actividades promovidas requisitos acceso permanencia especificos sancionatorio">
       <div class="chapter-head">
-        <div class="chapter-number">10</div>
+        <div class="chapter-number">11</div>
         <div><h2>Regímenes de promoción</h2></div>
       </div>
   <p class="intro">Un régimen de promoción es la herramienta que usa el Estado para favorecer, con incentivos concretos, el desarrollo de un sector productivo. Para una empresa de base tecnológica esto no es un detalle administrativo: acceder o no a un régimen cambia la carga tributaria, el costo laboral y hasta la viabilidad del negocio. Esta unidad ve los conceptos generales de estos regímenes y después entra en profundidad en el caso más relevante para el sector, el Régimen de Promoción de la Economía del Conocimiento (Ley 27.506): qué actividades cubre, qué requisitos hay que cumplir para entrar y para mantenerse dentro, qué beneficios otorga y qué pasa si se incumple.</p>
@@ -3440,6 +4292,10 @@ Cuota:                  Pi = A + Ii</code></pre>
     <li>Ciencias agropecuarias y médicas.</li>
   </ul>
   <p><i>(Art. 2)</i> La autoridad de aplicación dicta normas aclaratorias para precisar el alcance técnico de las actividades y rubros, y el Poder Ejecutivo puede ampliarlos en virtud de tecnologías emergentes.</p>
+  <figure class="diag">
+    <img src="img/actividades-promovidas.png" alt="Panel con las actividades promovidas por la Ley de Economía del Conocimiento.">
+    <figcaption>Las actividades promovidas por la Ley 27.506, en un panel.</figcaption>
+  </figure>
   <div class="callout warning"><i>(Art. 5)</i> La actividad de <b>autodesarrollo</b> (software para uso propio o de empresas vinculadas) queda excluida del régimen: no alcanza con desarrollar tecnología puertas adentro, tiene que ser una actividad económica en los términos del artículo 2.</div>
 
   <h3 id="e10-requisitos">Requisitos de acceso y permanencia</h3>
@@ -3550,6 +4406,623 @@ Cuota:                  Pi = A + Ii</code></pre>
     </svg>
     <figcaption>Ciclo de vida de una empresa dentro del régimen de la Ley 27.506: de la inscripción en el Registro Nacional de Beneficiarios al cumplimiento de requisitos, el goce de beneficios y la revalidación bianual, con el riesgo de sanción o decaimiento si se incumple en cualquier etapa.</figcaption>
   </figure>
+
+    </section>
+
+    <section class="chapter" id="e12" data-title="derecho laboral fuentes regulacion principios del contrato trabajo requisitos existencia material empleador derechos deberes trabajador estabilidad relacion modalidades contratacion jornadas horas extra descansos remuneracion seguridad social">
+      <div class="chapter-head">
+        <div class="chapter-number">12</div>
+        <div><h2>Derecho laboral</h2></div>
+      </div>
+  <p class="intro">La mitad de derecho cierra con la rama que regula el trabajo en relación de dependencia. El derecho laboral parte de una desigualdad de hecho entre empleador y trabajador y la compensa con el principio protectorio, del que se derivan reglas que no existen en el derecho privado. Este capítulo recorre esos principios, el contrato de trabajo y las tres dependencias que prueban su existencia, los derechos y deberes de cada parte, la estabilidad, las jornadas y descansos, la remuneración y los principios de la seguridad social.</p>
+
+  <div class="callout"><b>Derecho laboral.</b> Rama del derecho para <b>igualar a los sujetos del contrato laboral ante la ley</b>.</div>
+  <p><b>Principio protectorio</b> al trabajador: se lo entiende como <i>vulnerable</i> por su carácter de <b>dependencia</b>, habiendo una <b>desigualdad de hecho</b>.</p>
+
+  <h3 id="e12-fuentes">Fuentes de regulación</h3>
+  <ul>
+    <li>Ley y estatutos</li>
+    <li>Convenios colectivos</li>
+    <li>Voluntad de las partes</li>
+    <li>Usos y costumbres</li>
+  </ul>
+
+  <h3 id="e12-principios">Principios del derecho laboral</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Principio</th><th>Qué establece</th></tr></thead>
+    <tbody>
+      <tr><td><b>Norma más favorable</b></td><td>Ante el análisis de una situación, se toma como referencia la norma que <b>más favorezca al trabajador</b> (a diferencia del derecho privado, que tiene una jerarquía de normas)</td></tr>
+      <tr><td><b>Irrenunciabilidad de los derechos</b></td><td>Todo acuerdo entre partes en el que el trabajador <b>renuncie a sus derechos otorgados por ley</b> será considerado <b>nulo</b></td></tr>
+      <tr><td><b>Primacía de la realidad</b></td><td>Será <b>nulo</b> todo contrato en el que las partes hayan procedido con <b>simulación o fraude</b> a la ley laboral, sea aparentando normas contractuales no laborales, interposición de personas o cualquier otro medio. La relación quedará regida por esta ley</td></tr>
+      <tr><td><b>Continuidad</b></td><td>Preservación del vínculo más allá de los avatares del paso del tiempo</td></tr>
+      <tr><td><b>Estabilidad</b></td><td>Firmeza y solidez del vínculo</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 id="e12-contrato-trabajo">Contrato de trabajo</h3>
+  <div class="callout"><b>Contrato de trabajo.</b> Hay contrato de trabajo cuando <b>una persona física</b> se obliga a realizar actos, ejecutar obras o prestar servicios <b>en favor de otra y en dependencia de esta última</b>, mediante el <b>pago de una remuneración</b>.</div>
+  <ul class="study-list">
+    <li><b>Partes:</b> empleador y trabajador</li>
+    <li><b>Requisitos:</b> consentimiento, capacidad, objeto, forma</li>
+    <li><b>Características:</b> consensual, personal, de trato sucesivo, no formal, oneroso</li>
+  </ul>
+
+  <h4 id="e12-requisitos">Requisitos</h4>
+  <ul>
+    <li>Las partes deben estar de acuerdo, expresando su voluntad</li>
+    <li>La actividad debe ser <b>lícita</b></li>
+    <li>Quien presta los servicios debe ser una <b>persona física en todos los casos</b></li>
+    <li>El trabajo debe beneficiar al empleador, poniendo a disposición su fuerza laboral</li>
+    <li>Remuneración en función de la <b>cantidad y calidad</b></li>
+    <li>Contrato temporalmente flexible</li>
+    <li>Relación de <b>carácter personal</b> para el trabajador</li>
+  </ul>
+
+  <h4 id="e12-existencia-material">Existencia material del contrato de trabajo</h4>
+  <p>Si se cumplen estas <b>tres dependencias</b>, la ley considera que existe un vínculo que se rige bajo un contrato de trabajo:</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Dependencia</th><th>En qué consiste</th></tr></thead>
+    <tbody>
+      <tr><td><b>Económica</b></td><td>El trabajador depende económicamente del empleador ($)</td></tr>
+      <tr><td><b>Técnica</b></td><td>Las decisiones técnicas las pone el <b>empleador</b></td></tr>
+      <tr><td><b>Jurídica</b></td><td>El <b>empleador aplica sanciones</b></td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout exam">Dato de parcial: hasta <b>3 empleados máximo</b>, la ley entiende que <b>no hay marco de dependencia laboral</b>.</div>
+
+  <h3 id="e12-empleador">Empleador</h3>
+  <p>Debe cumplir con el principio de <b>lealtad y buena fe</b>.</p>
+  <h4 id="e12-empleador-derechos">Derechos del empleador</h4>
+  <ul>
+    <li>Organización</li>
+    <li>Dirección</li>
+    <li>Reglamentación</li>
+    <li>Disciplina</li>
+    <li>Controles personales</li>
+    <li>Controles médicos</li>
+    <li>Preferencia en la explotación de inventos personales</li>
+    <li><b>Ius variandi:</b> facultad de variar las condiciones del contrato</li>
+  </ul>
+  <h4 id="e12-empleador-deberes">Deberes del empleador</h4>
+  <ul>
+    <li>Pago de remuneración</li>
+    <li>Previsión: seguridad y salud; seguridad patrimonial (gastos del trabajador)</li>
+    <li>Dar <b>ocupación efectiva</b> con tareas adecuadas a la posición del trabajador</li>
+    <li>Diligencia e iniciativa</li>
+    <li>Obligaciones frente a organismos de seguridad social y sindicales</li>
+  </ul>
+  <div class="callout exam">Límites del <i>ius variandi</i>, se pregunta casi siempre:
+    <ul>
+      <li><b>Razonabilidad</b></li>
+      <li><b>Inalterabilidad de los elementos esenciales</b> del contrato</li>
+      <li><b>Indemnidad del trabajador</b></li>
+    </ul>
+  </div>
+
+  <h3 id="e12-trabajador">Trabajador</h3>
+  <p>Debe cumplir con el principio de <b>lealtad y buena fe</b>.</p>
+  <h4 id="e12-trabajador-derechos">Derechos del trabajador</h4>
+  <ul>
+    <li>Remuneración</li>
+    <li>Seguridad y condiciones dignas de trabajo</li>
+    <li>Ocupación efectiva</li>
+    <li>Libre expresión y dignidad</li>
+    <li>Reconocimiento de propiedad de invenciones personales</li>
+    <li>No modificación de condiciones esenciales del trabajo</li>
+    <li>Impugnación de sanciones</li>
+    <li>Ingreso de aportes</li>
+  </ul>
+  <h4 id="e12-trabajador-deberes">Deberes del trabajador</h4>
+  <ul>
+    <li>Diligencia y colaboración</li>
+    <li>Fidelidad</li>
+    <li>Obediencia</li>
+  </ul>
+
+  <h3 id="e12-estabilidad">Estabilidad de la relación laboral</h3>
+  <div class="callout"><b>Estabilidad.</b> Derecho del trabajador a <b>permanecer en el puesto de trabajo</b>, a menos que decida renunciar o se produzca un hecho justificado que corte el vínculo.</div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tipo</th><th>Subtipo</th><th>En qué consiste</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="2"><b>Estabilidad propia</b></td><td><b>Absoluta</b></td><td>Sistema de los empleados públicos de planta permanente: garantiza la <b>reinstalación</b> en caso de declararse judicialmente la invalidez de la desvinculación</td></tr>
+      <tr><td><b>Relativa</b></td><td>Aun cuando se pueda ordenar la reinstalación, el empleador puede <b>rehusarse</b> a aceptarla y continuar pagando los sustitutos del salario, o el trabajador puede optar por considerarse despedido con una <b>indemnización especial</b></td></tr>
+      <tr><td><b>Estabilidad impropia</b></td><td></td><td>El despido sin causa es <b>eficaz pero ilegítimo</b> (corresponde indemnización)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout blue">Excepción: <b>UOCRA</b>. La relación se termina naturalmente. Se cuenta con un sistema de <b>cuentas de capitalización individual</b>, habiendo un fondo para cubrir económicamente a los obreros durante un tiempo.</div>
+
+  <h3 id="e12-modalidades">Modalidades de contratación</h3>
+  <ul class="study-list">
+    <li><b>Tiempo indeterminado</b> (regla general)</li>
+    <li>Plazo fijo</li>
+    <li>Temporada</li>
+    <li>Eventual</li>
+    <li>Part-time</li>
+  </ul>
+
+  <h3 id="e12-jornadas">Jornadas</h3>
+  <div class="callout"><b>Jornada diurna.</b> De <b>6 a 21 hs</b>.</div>
+  <div class="callout"><b>Jornada nocturna.</b> De <b>21 a 6 hs</b>. No puede ser de más de <b>7 hs</b>.</div>
+
+  <h4 id="e12-horas-extra">Horas extra</h4>
+  <p>Califica como hora extra si se sobrepasan las <b>9 hs diarias</b> o las <b>48 hs semanales</b> de trabajo.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Recargo</th><th>Cuándo</th></tr></thead>
+    <tbody>
+      <tr><td><b>50% más</b></td><td>Un día de semana, o sábado <b>antes</b> de las 13 hs</td></tr>
+      <tr><td><b>100% más</b></td><td>Sábado <b>después</b> de las 13 hs, domingos y feriados</td></tr>
+    </tbody>
+  </table></div>
+  <p>El trabajador <b>no está obligado</b> a trabajar horas extras, a menos que peligre la integridad del empleo por accidentes o casos críticos.</p>
+
+  <h4 id="e12-descansos">Descansos</h4>
+  <ul>
+    <li>Mínimo <b>12 hs entre jornadas</b></li>
+    <li>Descanso semanal entre las <b>13 hs del sábado y las 00 hs del lunes</b></li>
+    <li>Mujeres y niños: pausa de <b>2 horas</b></li>
+    <li>Mujeres lactantes: <b>2 descansos acumulables de 30 minutos</b></li>
+    <li>Anual: <b>vacaciones</b></li>
+  </ul>
+
+  <h3 id="e12-remuneracion">Remuneración</h3>
+  <ul>
+    <li>Debe ser <b>justa</b>; hay un mínimo (<b>SMVM</b>)</li>
+    <li><b>Remuneración igual por la misma tarea</b></li>
+    <li>Se puede fijar por <b>tiempo</b> o por <b>rendimiento</b> de trabajo</li>
+    <li>Como mucho se puede pagar el <b>20% del sueldo en especies</b> (no dinero)</li>
+    <li><b>Aguinaldo</b></li>
+  </ul>
+
+  <h3 id="e12-seguridad-social">Seguridad social</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Principio</th><th>Qué establece</th></tr></thead>
+    <tbody>
+      <tr><td><b>Solidaridad</b></td><td>Toda la población, en la medida de sus posibilidades, debe contribuir económicamente al financiamiento de la protección. Sacrificios individuales</td></tr>
+      <tr><td><b>Subsidiariedad</b></td><td>Busca reforzar a un sector que sufre contingencias</td></tr>
+      <tr><td><b>Universalidad</b></td><td>Aplicable a toda la comunidad. No es un sistema clasista o exclusivo</td></tr>
+      <tr><td><b>Igualdad</b></td><td>Misma cobertura a todos los que están en iguales condiciones</td></tr>
+      <tr><td><b>Unidad de gestión</b></td><td>Criterios congruentes y coordinados en el otorgamiento de las prestaciones. Única estructura administrativa y financiera</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout exam">Arrancar siempre por el <b>principio protectorio</b> y sus derivados (<b>norma más favorable</b>, <b>irrenunciabilidad</b>, <b>primacía de la realidad</b>): es lo que distingue al derecho laboral del privado, donde rige la jerarquía de normas. Después: las <b>tres dependencias</b> que prueban la existencia del contrato de trabajo, el <b>ius variandi</b> con sus tres límites, la diferencia entre estabilidad <b>propia</b> (absoluta/relativa) e <b>impropia</b>, y los números duros: jornada 9 hs diarias / 48 semanales, recargos del 50% y 100%, 12 hs entre jornadas, 20% máximo en especies.</div>
+
+    </section>
+
+    <section class="chapter" id="e98" data-title="repaso final machete como usar este economia finanzas contabilidad costos rentabilidad valor dinero inflacion proyeccion financiera derecho vinculo juridico contratos sociedades laboral regimenes promocion formulas definiciones matematica prestamos evaluacion valuacion numeros que hay saber memoria piden textuales">
+      <div class="chapter-head">
+        <div class="chapter-number">R</div>
+        <div><h2>Repaso final y machete</h2></div>
+      </div>
+  <p class="intro">El <b>mínimo indispensable</b> para aprobar los parciales y el final: definiciones exactas, clasificaciones y fórmulas, sin relleno. Cada sección condensa un tema del apunte; el desarrollo completo, con ejemplos y diagramas, está en los capítulos anteriores. Al final, el <a href="#e98-machete">machete</a>: todas las fórmulas, los números que hay que saber de memoria y las definiciones que se piden textuales.</p>
+
+  <h3 id="e98-como-usar">Cómo usar este repaso</h3>
+  <p>Tres capas, en este orden:</p>
+  <ol>
+    <li><b>Definiciones exactas:</b> la cátedra puntúa las palabras precisas. Están en los recuadros.</li>
+    <li><b>Clasificaciones:</b> casi toda pregunta teórica es «enumerá y diferenciá». Están en las tablas.</li>
+    <li><b>Fórmulas:</b> todas juntas en el <a href="#e98-machete">machete</a> del final.</li>
+  </ol>
+  <div class="callout exam">Si tenés una sola noche: leé las tablas comparativas (mercados, costos, sistemas de amortización, SRL/SA/SAS) y el machete. Son las que más puntos dan por minuto invertido.</div>
+
+  <h3 id="e98-economia">Economía</h3>
+  <div class="callout"><b>Economía.</b> Ciencia social que estudia la forma de administrar <b>recursos escasos</b> para satisfacer la necesidad humana. Momentos: producción, distribución, comercialización, consumo.</div>
+  <ul class="study-list">
+    <li><b>Tipos de economía:</b> capitalista (deciden privados), de Estado (decide el gobierno), mixta.</li>
+    <li><b>Micro:</b> agentes individuales (personas, familias, organizaciones). <b>Macro:</b> variables agregadas (PBI, inflación, empleo, tasa de interés, deuda).</li>
+    <li><b>Costo de oportunidad:</b> cantidad de otros bienes a la que se renuncia para obtener otro.</li>
+    <li><b>FPP:</b> óptimo posible entre dos bienes. Todos los puntos sobre la curva son <b>igualmente eficientes</b>. Se desplaza con <b>capital, fuerza laboral, mejora tecnológica o nuevos recursos</b>. Sin escasez no habría FPP.</li>
+  </ul>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Factor de producción</th><th>Remuneración</th></tr></thead>
+    <tbody>
+      <tr><td>Tierra</td><td>Renta</td></tr>
+      <tr><td>Trabajo</td><td>Salario</td></tr>
+      <tr><td>Capital</td><td>Interés</td></tr>
+      <tr><td>Capacidad empresarial / estadual</td><td>Beneficio</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="study-list">
+    <li><b>PBI:</b> suma de todos los bienes y servicios producidos en una economía en un período. <b>Nominal</b> (precios corrientes) no contempla inflación; <b>real</b> (precios constantes) toma un período base.</li>
+    <li><b>Demanda vs. cantidad demandada:</b> la demanda es <b>toda la curva</b>; la cantidad demandada es <b>un punto</b>. Ídem oferta.</li>
+    <li><b>Ley de demanda:</b> precio ↑ → demanda ↓ (inversa). <b>Ley de oferta:</b> precio ↑ → oferta ↑ (directa).</li>
+    <li><b>Elasticidad:</b> sensibilidad de una variable respecto de otra. Se toma en <b>valor absoluto</b>.</li>
+  </ul>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Elasticidad demanda</th><th>E<sub>p</sub></th><th>Ejemplo</th></tr></thead>
+    <tbody>
+      <tr><td>Perfectamente inelástica</td><td>0</td><td>Pan</td></tr>
+      <tr><td>Inelástica</td><td>&gt;0 y &lt;1</td><td>Electricidad</td></tr>
+      <tr><td>Unitaria</td><td>1</td><td>Casos particulares</td></tr>
+      <tr><td>Elástica</td><td>&gt;1 y &lt;∞</td><td>Pasajes de avión, golosinas</td></tr>
+      <tr><td>Perfectamente elástica</td><td>∞</td><td>Frutas y verduras (ideal)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th></th><th>Comp. perfecta</th><th>Monopolio</th><th>Oligopolio</th><th>Comp. monopólica</th></tr></thead>
+    <tbody>
+      <tr><td><b>Empresas</b></td><td>Muchas</td><td>Una</td><td>Pocas</td><td>Muchas</td></tr>
+      <tr><td><b>Información</b></td><td>Perfecta</td><td>Perfecta</td><td>Imperfecta</td><td>Imperfecta</td></tr>
+      <tr><td><b>Bien</b></td><td>Homogéneo</td><td>Uno solo</td><td>Homog. o diferenc.</td><td>Diferenciado</td></tr>
+      <tr><td><b>Barreras</b></td><td>No hay</td><td>Patentes, monopolio natural</td><td>Inversiones, ventaja costos</td><td>Bajas</td></tr>
+      <tr><td><b>Influye precio</b></td><td>No</td><td>Muchísima</td><td>Mucha</td><td>Poca</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout exam">Trampas: el oligopolio es el <b>95% de los mercados</b> reales. Monopolio tiene información <b>perfecta</b> (igual que competencia perfecta): es la fila en la que más se equivocan.</div>
+
+  <h3 id="e98-finanzas">Finanzas y contabilidad</h3>
+  <div class="callout"><b>Contabilidad.</b> Disciplina técnica que produce informes sobre el <b>patrimonio</b> de una organización y su evolución, para la <b>toma de decisiones</b> internas y externas.</div>
+  <ul class="study-list">
+    <li><b>Hecho económico:</b> todo hecho que <b>modifica el patrimonio</b>.</li>
+    <li><b>Patrimonio:</b> totalidad de lo que posee un ente (bienes, derechos y obligaciones).</li>
+    <li><b>Balance:</b> estado patrimonial en un período. <b>A = P + PN</b>.</li>
+    <li><b>Cuadro de resultado (P&amp;L):</b> ganancias y pérdidas del período; se arma con las <b>cuentas transitorias</b>; su resultado es <i>utilidades</i>.</li>
+    <li><b>EBITDA</b> = utilidad de explotación; <b>EBIT</b> = utilidad operativa.</li>
+  </ul>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Cuenta</th><th>Qué es</th><th>Corriente</th><th>No corriente</th></tr></thead>
+    <tbody>
+      <tr><td><b>Activo</b></td><td>Bienes y derechos</td><td>Caja, banco, créditos, bienes de cambio</td><td>Bienes de uso, amortizaciones acumuladas, cargos diferidos</td></tr>
+      <tr><td><b>Pasivo</b></td><td>Obligaciones hacia <b>terceros</b></td><td>Deudas (bancarias, fiscales, comerciales), provisiones, previsiones</td><td>Deudas, provisiones y previsiones NC</td></tr>
+      <tr><td><b>PN</b></td><td>Obligaciones hacia <b>socios</b></td><td colspan="2">Capital; reservas (legal, especial, estatutaria, facultativa); resultados</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout blue"><b>Partida doble:</b> todo hecho económico tiene origen en otro hecho económico, de <b>igual valor pero naturaleza contraria</b>. Principios: recibe = deudor, entrega = acreedor; no hay deudor sin acreedor; lo que entra = lo que sale; <b>pérdidas se debitan, ganancias se acreditan</b>.</div>
+  <div class="callout warning"><b>Devengamiento</b> (hecho <b>económico</b>) = cuando se realiza la transacción (la venta). <b>Cobro/pago</b> (hecho <b>financiero</b>) = cuando entra o sale el dinero. Es la distinción más preguntada del capítulo.</div>
+  <ul class="study-list">
+    <li><b>Libro diario:</b> hechos económicos del día a día, en <b>orden cronológico</b>.</li>
+    <li><b>Libro mayor:</b> movimientos de <b>cada cuenta por separado</b>; sirve para conocer el <b>saldo</b>.</li>
+    <li><b>Plan de cuentas:</b> ordenamiento sistemático de las cuentas. <b>Manual:</b> plan + análisis detallado de cada una.</li>
+  </ul>
+
+  <h3 id="e98-costos">Costos y rentabilidad</h3>
+  <div class="callout"><b>Costo.</b> Valor monetario de los <b>consumos de factores</b> que supone el ejercicio de una actividad económica destinada a la producción. Ligado al <b>sacrificio</b>; tiene componente de <b>subjetividad</b>.</div>
+  <div class="callout warning">La pregunta estrella, costo vs. gasto: el <b>gasto</b> es al <b>adquirir</b> el bien o servicio; el <b>costo</b> es el gasto <b>consumido</b> al incorporarse al proceso productivo.</div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Dimensión</th><th>Tipos</th><th>Ejemplos</th></tr></thead>
+    <tbody>
+      <tr><td><b>De producción</b></td><td>Variables, fijos, mixtos</td><td>Publicidad, alquiler, energía eléctrica</td></tr>
+      <tr><td><b>De producto/servicio</b></td><td>Directos, indirectos</td><td>Materia prima y mano de obra; electricidad y refrigeración</td></tr>
+      <tr><td><b>De actividad</b></td><td>Producción, operación</td><td>Licencias de desarrollo; salario de atención al cliente</td></tr>
+      <tr><td><b>De acumulación</b></td><td>Órdenes de trabajo (demanda antecede), proceso (oferta antecede)</td><td>Reparar un auto; fabricar el auto</td></tr>
+      <tr><td><b>De tiempo</b></td><td>Históricos, reales, predeterminados</td><td>Pasado; período actual; proyectados</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="study-list">
+    <li><b>Triángulo de hierro:</b> alcance, coste y tiempo, con la <b>calidad</b> en el centro.</li>
+    <li><b>Objeto de costo:</b> la <b>causa que provoca el costo</b>.</li>
+    <li><b>Costo vs. inversión:</b> costo = inversión de corto plazo; inversión = costo de largo plazo.</li>
+    <li><b>Valor</b> = estimación; <b>precio</b> = importe; <b>costo</b> = dinero erogado para producir.</li>
+    <li><b>Amortización:</b> económica = <b>pérdida de valor de un bien de uso</b> por tiempo o uso; financiera = <b>pago periódico de un préstamo</b>. Se descuenta de la utilidad <b>antes</b> de calcular Ganancias (pautas AFIP).</li>
+  </ul>
+  <div class="callout blue"><b>Rentabilidad se calcula sobre el COSTO; margen sobre el PRECIO.</b> Mismo numerador, distinto denominador: no las confundas.</div>
+
+  <h3 id="e98-valor">Valor, dinero e inflación</h3>
+  <div class="callout"><b>Cadena de valor.</b> Conjunto de actividades que una empresa realiza para <b>crear, producir y entregar</b> un bien o servicio.</div>
+  <ul class="study-list">
+    <li><b>Primarias:</b> logística interna, operaciones, logística externa, marketing y ventas, servicios. <b>De apoyo:</b> infraestructura, RRHH, desarrollo tecnológico, adquisiciones. A la derecha, el <b>margen</b>.</li>
+    <li><b>Estrategias:</b> liderazgo en costos, diferenciación, enfoque.</li>
+    <li><b>Sistema de valor:</b> interconexión entre las cadenas de valor de varias empresas.</li>
+    <li><b>Cuello de botella:</b> restricción que ralentiza o detiene el flujo. <b>Siempre existen</b>; hay que identificarlos y decidir si aceptamos que marquen el ritmo.</li>
+    <li><b>Valor agregado:</b> diferencia entre el valor de los insumos y el valor del producto final. Tipos: <b>funcional, emocional, estético</b>.</li>
+    <li><b>Las EBT ofrecen alto valor agregado</b> por innovación tecnológica, problemas complejos, escalabilidad, innovación continua, PI y patentes, ecosistemas tecnológicos.</li>
+  </ul>
+  <div class="table-wrap"><table>
+    <thead><tr><th></th><th>Incubadora</th><th>Aceleradora</th></tr></thead>
+    <tbody>
+      <tr><td><b>Etapa</b></td><td>Temprana, validación de ideas</td><td>Crecimiento y escalabilidad</td></tr>
+      <tr><td><b>Duración</b></td><td>Larga, puede durar años</td><td>3 a 6 meses, intensivo</td></tr>
+      <tr><td><b>Enfoque</b></td><td>Validar ideas, MVP</td><td>Escalar, obtener financiamiento</td></tr>
+      <tr><td><b>Inversión</b></td><td>No financia directamente</td><td><b>Capital semilla a cambio de participación</b></td></tr>
+      <tr><td><b>Espacio físico</b></td><td>Oficinas y recursos compartidos</td><td>Suele no dar espacio permanente</td></tr>
+    </tbody>
+  </table></div>
+  <p><b>TRL (9 niveles):</b> 1-3 <i>Research</i> (principios básicos → concepto formulado → prueba de concepto); 4-6 <i>Development</i> (validado en lab → validado en entorno relevante → demostrado en entorno relevante); 7-9 <i>Deployment</i> (prototipo en entorno operativo → sistema completo y calificado → sistema real probado).</p>
+  <div class="callout"><b>Dinero.</b> Todo activo o bien <b>generalmente aceptado como medio de pago</b>. Evita las inexactitudes del <b>trueque</b>.</div>
+  <ul class="study-list">
+    <li><b>3 funciones:</b> medio de pago, unidad de cuenta, depósito de valor.</li>
+    <li><b>3 características:</b> liquidez, rendimiento, riesgo.</li>
+    <li><b>3 motivos de demanda de dinero:</b> transacciones, precaución, especulación.</li>
+  </ul>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Agregado</th><th>Fórmula</th></tr></thead>
+    <tbody>
+      <tr><td><b>BM</b> Base Monetaria</td><td>C + R</td></tr>
+      <tr><td><b>M</b> Oferta Monetaria</td><td>C + D</td></tr>
+      <tr><td><b>M1</b></td><td>C + CC</td></tr>
+      <tr><td><b>M2</b></td><td>M1 + CA + PF &lt; 1 año</td></tr>
+      <tr><td><b>M3</b></td><td>M2 + PF &gt; 1 año</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout"><b>Inflación.</b> <b>Aumento sostenido del nivel general de precios</b> durante un período; disminuye el <b>poder adquisitivo</b>.</div>
+  <ul class="study-list">
+    <li><b>Magnitud:</b> baja &lt;10% anual, media 10-20% anual, alta &gt;20% anual, <b>hiperinflación &gt;50% mensual durante 3 meses consecutivos</b>.</li>
+    <li><b>Tipos:</b> de demanda, de costos, inercial o por expectativas (profecía autocumplida), estructural (cuellos de botella), por política monetaria.</li>
+    <li><b>Soluciones:</b> pacto social, corregir precios relativos, metas reales, evitar fluctuación del tipo de cambio, subir tasas, moderar emisión.</li>
+  </ul>
+
+  <h3 id="e98-proyeccion">Proyección financiera</h3>
+  <div class="callout"><b>Tasa de interés.</b> <b>Costo del dinero</b> en un período. También es <b>medida de riesgo</b>: a mayor riesgo, mayor tasa.</div>
+  <div class="callout"><b>TNA.</b> La que se declara. Información <b>incompleta</b>: no dice cuántas veces capitaliza.</div>
+  <div class="callout"><b>TEA.</b> Incluye las capitalizaciones del año. Es la que <b>realmente</b> se paga o cobra.</div>
+  <div class="callout warning"><b>Nunca</b> calcules la tasa real como TE − TI. Usá <b>1 + TR = (1 + TE)/(1 + TI)</b>. La resta sólo vale si la inflación ronda 1-2% anual.</div>
+  <p><b>Anualidad:</b> sólo si el flujo cumple las 4 condiciones: cuotas iguales, misma distancia temporal, mismo signo, mismas tasas.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Sistema</th><th>Cuota</th><th>Interés</th><th>Amortización</th><th>Refinanciar</th></tr></thead>
+    <tbody>
+      <tr><td><b>Francés</b></td><td>Constante</td><td>Decreciente</td><td>Creciente</td><td>En desventaja</td></tr>
+      <tr><td><b>Alemán</b></td><td>Decreciente</td><td>Decreciente</td><td>Constante</td><td>Mejor que el francés</td></tr>
+      <tr><td><b>Bullet</b></td><td>Constante (sólo interés)</td><td>Constante</td><td>Toda en la última cuota</td><td><b>Peor escenario</b></td></tr>
+      <tr><td><b>Directo</b></td><td>Constante</td><td>Constante (sobre deuda original)</td><td>Constante</td><td><b>El más costoso</b></td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout blue">Razonalo, no lo memorices: lo que <b>cancela</b> el préstamo es la <b>amortización</b>. Conviene refinanciar en el sistema que a esa altura amortizó más.</div>
+  <ul class="study-list">
+    <li><b>VAN:</b> se descuenta contra la <b>TREMA</b> (Tasa Requerida Mínima Aceptable). Aceptar un proyecto beneficioso <b>aumenta el valor de la empresa</b>.</li>
+    <li><b>KTOP</b> = A<sub>CO</sub> − P<sub>CO</sub>. El activo corriente operativo <b>excluye</b> caja, bancos e inversiones; el pasivo corriente operativo <b>excluye</b> préstamos financieros y deudas bancarias.</li>
+    <li><b>Cashflow:</b> mide movimientos <b>en efectivo</b>. Evita el <i>quiebre</i> o <i>bache</i> de caja. Condiciones: valores <b>en efectivo</b>, en la fecha del movimiento, y <b>marginales</b> (sólo los del proyecto). Enfoques: descendente, ascendente, fiscal.</li>
+    <li><b>Bonos:</b> <b>renta fija</b>, promesa conocida de antemano. <b>Pasivo del emisor, activo del comprador.</b> Cláusulas: rescatables, convertibles, exentos de impuestos.</li>
+    <li><b>Duration:</b> distancia entre el instante de análisis y el <b>baricentro de los ingresos</b> del bono. D corta si querés liquidez; <b>D larga si la tasa va a bajar</b>.</li>
+    <li><b>Acciones:</b> <b>renta variable</b>, depende de la performance de la empresa. Dan derecho a <b>votar en la junta</b>.</li>
+  </ul>
+
+  <h3 id="e98-derecho">Derecho</h3>
+  <div class="callout"><b>Derecho.</b> Regula el funcionamiento de una <b>comunidad determinada en un tiempo y espacio particular</b>. Es producto del <b>desarrollo geográfico e histórico de un pueblo</b>.</div>
+  <div class="callout"><b>Derecho continental.</b> Basado en <b>códigos</b> (Argentina).</div>
+  <div class="callout"><b>Common law.</b> Basado en <b>fallos previos</b>.</div>
+  <ul class="study-list">
+    <li><b>Sistema argentino:</b> <b>representativo</b> (elección de representantes), <b>republicano</b> (división de poderes <b>horizontal</b>), <b>federal</b> (división <b>vertical</b>: Nación, provincias, ciudad).</li>
+    <li><b>Poderes:</b> <b>Legislativo</b> discute y aprueba leyes (colegiado y bicameral); <b>Ejecutivo</b> administra, reglamenta y aplica (unipersonal); <b>Judicial</b> garantiza el cumplimiento (Corte Suprema, tribunales federales, cámaras).</li>
+    <li><b>Fuentes formales:</b> leyes, <i>praeter legem</i> (usos y costumbres), fallos plenarios.</li>
+    <li><b>Fuentes materiales:</b> principios generales, doctrina, derecho comparado, jurisprudencia.</li>
+    <li><b>Jerarquía:</b> 1) Constitución Nacional y Tratados de DDII, 2) leyes nacionales, 3) leyes provinciales, 4) otras legislaciones, 5) normas.</li>
+    <li><b>Derecho privado:</b> <i>de las personas</i> (general, familia, sucesiones) y <i>patrimonial</i> (reales, contratos, obligaciones).</li>
+    <li><b>Constitucionalización:</b> el CCyC debe estar en <b>armonía con los principios constitucionales</b>. Fase objetiva (prevenir y resolver conflictos) y subjetiva (derechos patrimoniales y extrapatrimoniales).</li>
+    <li><b>Principios:</b> buena fe, abuso del derecho, abuso de posición dominante (Defensa de la Competencia), orden público (salario mínimo), prohibición de renuncia general de leyes, derechos individuales, derechos de incidencia colectiva.</li>
+  </ul>
+
+  <h3 id="e98-vinculo">Vínculo jurídico</h3>
+  <p><b>Componentes:</b> sujeto, objeto, causa, contenido. <b>Tipos:</b> obligacional, real, familiar, hereditario, laboral, comercial.</p>
+  <figure class="diag">
+    <svg viewBox="0 0 940 300" role="img" aria-label="Arbol de los hechos juridicos: se dividen en hechos humanos y de la naturaleza; los humanos en voluntarios e involuntarios; los voluntarios en licitos e ilicitos; los licitos en simples actos licitos y actos juridicos, y los ilicitos en delitos y cuasidelitos">
+      <g fill="none" stroke-width="1.5">
+        <rect x="10" y="175" width="160" height="34" rx="8" stroke="var(--acc)"/>
+        <rect x="200" y="128" width="160" height="34" rx="8" stroke="var(--linea)"/>
+        <rect x="200" y="223" width="180" height="34" rx="8" stroke="var(--linea)"/>
+        <rect x="390" y="83" width="150" height="34" rx="8" stroke="var(--linea)"/>
+        <rect x="390" y="173" width="150" height="34" rx="8" stroke="var(--linea)"/>
+        <rect x="570" y="35" width="130" height="34" rx="8" stroke="var(--linea)"/>
+        <rect x="570" y="131" width="130" height="34" rx="8" stroke="var(--linea)"/>
+        <rect x="730" y="11" width="180" height="34" rx="8" stroke="var(--acc2)"/>
+        <rect x="730" y="59" width="180" height="34" rx="8" stroke="var(--acc2)"/>
+        <rect x="730" y="107" width="180" height="34" rx="8" stroke="var(--acc2)"/>
+        <rect x="730" y="155" width="180" height="34" rx="8" stroke="var(--acc2)"/>
+      </g>
+      <g stroke="var(--linea)" fill="none">
+        <line x1="170" y1="192" x2="200" y2="145"/>
+        <line x1="170" y1="192" x2="200" y2="240"/>
+        <line x1="360" y1="145" x2="390" y2="100"/>
+        <line x1="360" y1="145" x2="390" y2="190"/>
+        <line x1="540" y1="100" x2="570" y2="52"/>
+        <line x1="540" y1="100" x2="570" y2="148"/>
+        <line x1="700" y1="52" x2="730" y2="28"/>
+        <line x1="700" y1="52" x2="730" y2="76"/>
+        <line x1="700" y1="148" x2="730" y2="124"/>
+        <line x1="700" y1="148" x2="730" y2="172"/>
+      </g>
+      <g fill="currentColor" font-size="13" text-anchor="middle">
+        <text x="90" y="196" font-weight="bold">Hechos jurídicos</text>
+        <text x="280" y="149">Hecho humano</text>
+        <text x="290" y="244">Hecho de la naturaleza</text>
+        <text x="465" y="104">Voluntario</text>
+        <text x="465" y="194">Involuntario</text>
+        <text x="635" y="56">Lícito</text>
+        <text x="635" y="152">Ilícito</text>
+        <text x="820" y="32">Simples actos lícitos</text>
+        <text x="820" y="80">Actos jurídicos</text>
+        <text x="820" y="128">Delitos</text>
+        <text x="820" y="176">Cuasidelitos</text>
+      </g>
+    </svg>
+    <figcaption>El árbol que hay que saber dibujar de memoria: hechos jurídicos → humano o de la naturaleza → voluntario o involuntario → lícito o ilícito → simples actos lícitos, actos jurídicos, delitos, cuasidelitos.</figcaption>
+  </figure>
+  <ul class="study-list">
+    <li><b>Acto voluntario</b> sólo si hay <b>discernimiento, razón (intención) y libertad</b>.</li>
+    <li><b>Manifestación de voluntad:</b> oral o escrito, signos inequívocos, ejecución de hecho material (Teoría de los Actos Propios).</li>
+    <li><b>¿El silencio manifiesta voluntad? NO</b>, salvo que exista <b>obligación de expedirse</b>.</li>
+    <li><b>Elementos del acto:</b> sujeto (capaz), objeto (sin prohibición legal), forma, causa.</li>
+    <li><b>Vicios:</b> lesión, simulación, fraude, nulidad.</li>
+  </ul>
+  <div class="callout"><b>Obligación.</b> Relación jurídica en virtud de la cual el <b>acreedor</b> tiene derecho a exigir del <b>deudor</b> una <b>prestación</b> destinada a satisfacer un <b>interés lícito</b> y, ante el incumplimiento, a obtener <b>forzadamente</b> su satisfacción.</div>
+  <ul class="study-list">
+    <li><b>Elementos:</b> sujetos, prestación, interés, vínculo. El deudor se libera cumpliendo <b>exactamente</b> lo pactado.</li>
+    <li><b>Clasificación:</b> de <b>dar</b>, de <b>hacer</b> (diligencia apropiada, resultado concreto, resultado eficaz prometido), de <b>no hacer</b>.</li>
+    <li><b>7 modos de extinción:</b> pago, compensación, confusión, novación, dación de pago, renuncia y remisión, imposibilidad de cumplimiento.</li>
+  </ul>
+
+  <h3 id="e98-contrato">Contratos</h3>
+  <div class="callout"><b>Contrato.</b> <b>Acto jurídico</b> mediante el cual <b>dos o más partes</b> manifiestan su <b>consentimiento</b> para <b>crear, regular, modificar, transferir o extinguir</b> relaciones jurídicas <b>patrimoniales</b>.</div>
+  <ul class="study-list">
+    <li><b>Autonomía de la voluntad:</b> potestad de crear normas propias, <b>limitada por el orden público</b>. Aplicación supletoria de normas legales; interpretación restrictiva.</li>
+    <li><b>5 elementos:</b> consentimiento, causa, objeto, forma (libertad de forma) y <b>capacidad</b> (su ausencia genera <b>nulidad</b>).</li>
+    <li><b>3 efectos:</b> <b>relativo</b> (sólo entre partes), <b>vinculante</b> (obligatorio), y <b>el juez NO puede modificar el contrato</b>.</li>
+  </ul>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Criterio</th><th>Clases</th></tr></thead>
+    <tbody>
+      <tr><td><b>Según obligación</b></td><td>Unilateral (donación), bilateral (compra), plurilateral (sociedades); además gratuitos (préstamo de uso) u onerosos</td></tr>
+      <tr><td><b>Según tipo</b></td><td>Nominados o típicos (regulados); innominados o atípicos (no regulados)</td></tr>
+      <tr><td><b>Según gestión</b></td><td>Paritarios (acuerdo libre); de adhesión (una parte propone, la otra acepta o rechaza)</td></tr>
+      <tr><td><b>Según relación</b></td><td>Civiles y comerciales, de consumo, laborales</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 id="e98-sociedades">Sociedades</h3>
+  <div class="callout"><b>Contrato de sociedad.</b> Una o más personas en forma organizada, conforme a un <b>tipo previsto en la ley</b>, se obligan a realizar <b>aportes</b> para producir o intercambiar bienes y servicios, <b>participando de los beneficios y soportando las pérdidas</b>.</div>
+  <ul>
+    <li>La sociedad es una <b>ficción legal</b>: persona jurídica a la que <b>la ley le confiere personalidad</b>.</li>
+    <li><b>Nace desde su constitución</b>; no necesita autorización legal salvo disposición en contrario.</li>
+    <li><b>Atributos:</b> nombre, patrimonio, domicilio y sede social, duración, objeto.</li>
+    <li><b>Clasificación:</b> de Personas (colectiva, comandita simple, capital e industria), mixta (<b>SRL</b>), de capital (<b>SA</b>, comandita por acciones, <b>SAS</b>).</li>
+    <li><b>Actos no inscriptos: inoponibles a terceros.</b></li>
+    <li><b>Estados contables:</b> de ejercicio (todas), especiales (según necesidad), trimestrales (<b>cotizan en bolsa</b>), consolidados (<b>grupos económicos</b>).</li>
+    <li><b>Socios, derechos:</b> dividendos, cuota de liquidación, manejo y control, información. <b>Obligaciones:</b> aportes, ejercicio de gobierno, soporte de pérdidas, deber de lealtad.</li>
+  </ul>
+  <div class="table-wrap"><table>
+    <thead><tr><th></th><th>SRL</th><th>SA</th><th>SAS</th></tr></thead>
+    <tbody>
+      <tr><td><b>Para</b></td><td>PYMEs y familiares</td><td>Grandes empresas</td><td>Capital emprendedor</td></tr>
+      <tr><td><b>Administración</b></td><td>Gerencia</td><td>Directorio (máx. 3 años, reelegible)</td><td>Órgano de Administración (plazo indeterminado)</td></tr>
+      <tr><td><b>Representación</b></td><td>Gerencia</td><td>Presidente del directorio</td><td>Órgano de Administración</td></tr>
+      <tr><td><b>Gobierno</b></td><td>Reunión de socios / Asamblea</td><td>Reunión de accionistas (no permanente)</td><td>Reunión de socios</td></tr>
+      <tr><td><b>Fiscalización</b></td><td>Socios / Sindicatura</td><td>Sindicatura obligatoria si +50M</td><td><b>Optativa</b></td></tr>
+      <tr><td><b>Capital mínimo</b></td><td>No exige</td><td><b>AR$ 100.000</b> (LGS)</td><td><b>2 SMVM</b></td></tr>
+      <tr><td><b>Socios</b></td><td><b>Máx. 50</b></td><td>Sin tope</td><td>Sin tope</td></tr>
+      <tr><td><b>Bolsa</b></td><td>No</td><td><b>Sí</b></td><td>No</td></tr>
+    </tbody>
+  </table></div>
+  <p><b>Asambleas (SA):</b> <b>ordinarias</b> = anuales, aprueban balance y gestión; <b>extraordinarias</b> = cualquier otro asunto.</p>
+
+  <h3 id="e98-laboral">Derecho laboral</h3>
+  <div class="callout"><b>Derecho laboral.</b> Rama del derecho para <b>igualar a los sujetos del contrato laboral ante la ley</b>. Rige el <b>principio protectorio</b>: el trabajador es <i>vulnerable</i> por su dependencia (desigualdad de hecho).</div>
+  <ul class="study-list">
+    <li><b>Norma más favorable:</b> se aplica la que <b>más favorezca al trabajador</b>, a diferencia del derecho privado, que usa jerarquía de normas.</li>
+    <li><b>Irrenunciabilidad:</b> todo acuerdo donde el trabajador renuncie a derechos de ley es <b>nulo</b>.</li>
+    <li><b>Primacía de la realidad:</b> es nulo todo contrato con <b>simulación o fraude</b> a la ley laboral; la relación queda regida por la LCT.</li>
+    <li><b>Continuidad</b> (preservación del vínculo) y <b>estabilidad</b> (firmeza y solidez).</li>
+    <li><b>Fuentes:</b> ley y estatutos, convenios colectivos, voluntad de las partes, usos y costumbres.</li>
+  </ul>
+  <div class="callout"><b>Contrato de trabajo.</b> Una <b>persona física</b> se obliga a realizar actos, ejecutar obras o prestar servicios <b>en favor de otra y en dependencia</b> de ésta, mediante el <b>pago de una remuneración</b>. Características: consensual, personal, de trato sucesivo, no formal, oneroso.</div>
+  <div class="callout warning"><b>3 dependencias que prueban su existencia:</b> <b>económica</b> ($), <b>técnica</b> (las decisiones técnicas las pone el empleador) y <b>jurídica</b> (el empleador aplica sanciones). Hasta <b>3 empleados</b> la ley entiende que <b>no hay</b> marco de dependencia laboral.</div>
+  <div class="callout"><b>Ius variandi.</b> Facultad del empleador de variar las condiciones del contrato. <b>Límites:</b> razonabilidad, inalterabilidad de los elementos esenciales, indemnidad del trabajador.</div>
+  <div class="callout"><b>Estabilidad.</b> <b>Propia:</b> <i>absoluta</i> (públicos de planta: reinstalación) o <i>relativa</i> (el empleador puede rehusarse y pagar sustitutos). <b>Impropia:</b> despido sin causa <b>eficaz pero ilegítimo</b> (indemnización). Excepción: <b>UOCRA</b>.</div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tema</th><th>Números que se preguntan</th></tr></thead>
+    <tbody>
+      <tr><td><b>Jornada</b></td><td>Diurna 6-21 hs; nocturna 21-6 hs (<b>máx. 7 hs</b>)</td></tr>
+      <tr><td><b>Hora extra</b></td><td>Supera <b>9 hs diarias</b> o <b>48 hs semanales</b></td></tr>
+      <tr><td><b>Recargo 50%</b></td><td>Día de semana, o sábado <b>antes</b> de las 13 hs</td></tr>
+      <tr><td><b>Recargo 100%</b></td><td>Sábado <b>después</b> de las 13 hs, domingos y feriados</td></tr>
+      <tr><td><b>Descansos</b></td><td><b>12 hs</b> entre jornadas; semanal de sábado 13 hs a lunes 00 hs; lactantes 2 de 30 min</td></tr>
+      <tr><td><b>Remuneración</b></td><td>Mínimo SMVM; igual por misma tarea; máx. <b>20% en especies</b>; aguinaldo</td></tr>
+    </tbody>
+  </table></div>
+  <p><b>Seguridad social, 5 principios:</b> solidaridad, subsidiariedad, universalidad, igualdad, unidad de gestión.</p>
+  <p>El trabajador <b>no está obligado</b> a hacer horas extra, salvo peligro para la integridad del empleo por accidentes o casos críticos.</p>
+
+  <h3 id="e98-promocion">Regímenes de promoción</h3>
+  <div class="callout"><b>Régimen de promoción.</b> Programas y medidas que promueve el <b>Estado</b> para favorecer la expansión, desarrollo, modernización e inversión de un sector, haciéndolo <b>más competitivo</b>. Deben ser por <b>tiempo limitado</b>.</div>
+  <p><b>4 beneficios principales:</b> bonos de crédito fiscal, descuentos directos en impuestos, <b>amortización acelerada</b> en Ganancias y <b>devolución anticipada del IVA</b>.</p>
+  <div class="callout blue"><b>Ley N° 27.506, Economía del Conocimiento.</b> Objeto: creación, diseño, desarrollo, producción e implementación o adaptación de productos y servicios y su documentación técnica, en aspecto básico y aplicado. Rige en <b>todo el territorio nacional</b>. Autoridad: <b>Ministerio de Desarrollo Productivo</b> (absorbido por Economía).</div>
+  <p><b>Actividades promovidas:</b> software y servicios informáticos; audiovisual; biotecnología y afines; servicios geológicos, electrónica y comunicaciones; servicios profesionales exportables; nanotecnología; aeroespacial y satelital; ingeniería nuclear; automatización e industria 4.0; ciencias agropecuarias y médicas.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Etapa</th><th>Qué exige</th></tr></thead>
+    <tbody>
+      <tr><td><b>Requisitos</b></td><td>Persona jurídica constituida o habilitada en Argentina, <b>libre deuda</b>, actividad principal promovida, <b>70% de facturación</b> de esa actividad (o acreditar desarrollo futuro)</td></tr>
+      <tr><td><b>2 de 3 condiciones</b></td><td>Certificación de mejora continua; inversión (capacitación o desarrollo); exportación de bienes y/o servicios</td></tr>
+      <tr><td><b>Mantenimiento</b></td><td><b>Revalidación bianual</b>, controles anuales, auditoría, obligaciones sociales, <b>mantener o incrementar la nómina</b></td></tr>
+      <tr><td><b>Sanciones</b></td><td>Suspensión, baja, revocación, pago de tributos no ingresados, devolución del bono, inhabilitación, <b>multas ≤ 100% del beneficio</b></td></tr>
+      <tr><td><b>Decaimiento</b></td><td>Trabajadores no registrados, recorte de personal injustificado, <b>REPSAL</b></td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout warning">Pregunta trampa: el <b>AUTODESARROLLO queda excluido</b> de los beneficios. Ya se iba a hacer igual; el espíritu de la ley no lo alcanza.</div>
+
+  <h3 id="e98-machete">Machete: fórmulas y definiciones</h3>
+
+  <h4 id="e98-machete-economia">Economía</h4>
+  <div class="formula">E<sub>p</sub> = (Δ% Q) / (Δ% P) = (P/Q) × (ΔQ/ΔP)   (en valor absoluto)</div>
+  <div class="formula">PBI<sub>pm</sub> = PBI<sub>cf</sub> + T<sub>i</sub> − T<sub>s</sub></div>
+  <div class="formula">PBN = PBI + RF,    PNI = PBI − D,    PNN = PBI + RF − D</div>
+  <div class="formula">Q<sub>D</sub> = f ( PBS, Y, PS, PC, X ),    Q<sub>O</sub> = f ( PBS, PF, Z, X )</div>
+
+  <h4 id="e98-machete-contabilidad">Contabilidad y costos</h4>
+  <div class="formula">A = P + PN</div>
+  <div class="formula">R = (G / C) × 100,   con G = Ingresos − Costos totales</div>
+  <div class="formula">R<sub>u</sub> = [ (P<sub>u</sub> − C<sub>u</sub>) / C<sub>u</sub> ] × 100      (sobre el COSTO)</div>
+  <div class="formula">M = (G / P<sub>u</sub>) × 100      (sobre el PRECIO)</div>
+  <div class="formula">P<sub>eq</sub> = C<sub>f</sub> / (P<sub>u</sub> − C<sub>vu</sub>)</div>
+  <div class="formula">ROI = (G / I) × 100 = (Ing − C) / I<sub>i</sub></div>
+
+  <h4 id="e98-machete-dinero">Dinero e inflación</h4>
+  <div class="formula">BM = C + R,    M = C + D</div>
+  <div class="formula">M1 = C + CC,    M2 = M1 + CA + PF&lt;1año,    M3 = M2 + PF&gt;1año</div>
+  <div class="formula">V = Σ<sub>t=1..∞</sub> FF<sub>t</sub> / (1 + CD)<sup>t</sup></div>
+
+  <h4 id="e98-machete-financiera">Matemática financiera</h4>
+  <div class="formula">Interés simple:   VF = VP × (1 + n×i)</div>
+  <div class="formula">Interés compuesto:   VF = VP × (1 + i)<sup>n</sup>,   I = VF − VP</div>
+  <div class="formula">VF = VP × (1 + TNA/m)<sup>m</sup></div>
+  <div class="formula">(1 + TEA) = (1 + TEM)<sup>12</sup> = (1 + TEX)<sup>Y</sup></div>
+  <div class="formula">1 + TR = (1 + TE) / (1 + TI)      ¡nunca TE − TI!</div>
+  <div class="formula">VP = C × [ ((1+i)<sup>n</sup> − 1) / ((1+i)<sup>n</sup> × i) ],      con n → ∞:  VP = C / i</div>
+
+  <h4 id="e98-machete-prestamos">Préstamos</h4>
+  <div class="formula">Francés:   I<sub>n</sub> = ( P − Σ A<sub>t</sub> ) × i,   A<sub>n</sub> = C − I<sub>n</sub></div>
+  <div class="formula">Alemán:   I<sub>n</sub> = ( P − A×(n−1) ) × i,   C<sub>n</sub> = A + I<sub>n</sub></div>
+  <div class="formula">Bullet:   C<sub>i</sub> = I<sub>i</sub> = P × i  (i ≠ n),   C<sub>n</sub> = P × (1 + i)</div>
+  <div class="formula">Directo:   I = P × i,   A = P / n,   C = A + I</div>
+
+  <h4 id="e98-machete-evaluacion">Evaluación y valuación</h4>
+  <div class="formula">VAN = Σ<sub>t=0..∞</sub> FF<sub>t</sub> / (1 + TREMA)<sup>t</sup></div>
+  <div class="formula">KTOP = A<sub>CO</sub> − P<sub>CO</sub></div>
+  <div class="formula">Bono:   P<sub>0</sub> = C × F<sub>i</sub><sup>n</sup> + VN / (1 + i)<sup>n</sup>,   con C = TC × VN</div>
+  <div class="formula">PER = PPA / UPA,    UPA = U<sub>n</sub> / #a</div>
+  <div class="formula">Gordon:   P<sub>0</sub> = Σ D<sub>t</sub> / (1 + r<sub>s</sub>)<sup>t</sup></div>
+
+  <h4 id="e98-machete-numeros">Números que hay que saber de memoria</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Dato</th><th>Valor</th></tr></thead>
+    <tbody>
+      <tr><td>Hiperinflación</td><td>&gt; <b>50% mensual</b> durante <b>3 meses</b> consecutivos</td></tr>
+      <tr><td>Inflación baja / media / alta</td><td>&lt;10%, 10-20%, &gt;20% anual</td></tr>
+      <tr><td>Oligopolio</td><td><b>95%</b> de los mercados</td></tr>
+      <tr><td>SRL, socios</td><td>Máximo <b>50</b></td></tr>
+      <tr><td>SA, capital mínimo</td><td><b>AR$ 100.000</b> (LGS)</td></tr>
+      <tr><td>SA, directorio</td><td>Máximo <b>3 años</b>, reelegible</td></tr>
+      <tr><td>SA, sindicatura obligatoria</td><td>Si supera <b>50M</b></td></tr>
+      <tr><td>SAS, capital mínimo</td><td><b>2 SMVM</b></td></tr>
+      <tr><td>Dependencia laboral</td><td>Hasta <b>3 empleados</b> la ley entiende que no hay</td></tr>
+      <tr><td>Jornada / horas extra</td><td><b>9 hs</b> diarias o <b>48 hs</b> semanales</td></tr>
+      <tr><td>Jornada nocturna</td><td>21-6 hs, máximo <b>7 hs</b></td></tr>
+      <tr><td>Recargos hora extra</td><td><b>50%</b> / <b>100%</b></td></tr>
+      <tr><td>Descanso entre jornadas</td><td><b>12 hs</b></td></tr>
+      <tr><td>Pago en especies</td><td>Máximo <b>20%</b> del sueldo</td></tr>
+      <tr><td>Ley 27.506, facturación</td><td><b>70%</b> de la actividad principal</td></tr>
+      <tr><td>Ley 27.506, condiciones</td><td><b>2 de 3</b>, revalidación <b>bianual</b></td></tr>
+      <tr><td>Ley 27.506, multas</td><td>≤ <b>100%</b> del beneficio otorgado</td></tr>
+      <tr><td>TRL</td><td><b>9</b> niveles (1-3 research, 4-6 development, 7-9 deployment)</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4 id="e98-machete-definiciones">Definiciones que se piden textuales</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Concepto</th><th>Definición mínima aceptable</th></tr></thead>
+    <tbody>
+      <tr><td><b>Economía</b></td><td>Ciencia social que estudia cómo administrar recursos escasos para satisfacer la necesidad humana</td></tr>
+      <tr><td><b>Costo de oportunidad</b></td><td>Cantidad de otros bienes y servicios a la que se debe renunciar para obtener otro</td></tr>
+      <tr><td><b>PBI</b></td><td>Suma de todos los bienes y servicios producidos en una economía en un período</td></tr>
+      <tr><td><b>Contabilidad</b></td><td>Disciplina técnica que produce informes sobre el patrimonio de una organización y su evolución, para la toma de decisiones</td></tr>
+      <tr><td><b>Patrimonio</b></td><td>Totalidad de lo que posee un ente: bienes, derechos y obligaciones</td></tr>
+      <tr><td><b>Partida doble</b></td><td>Todo hecho económico tiene origen en otro de igual valor y naturaleza contraria</td></tr>
+      <tr><td><b>Costo</b></td><td>Valor monetario de los consumos de factores de una actividad económica destinada a producir. Sacrificio económico y necesario para obtener un producto</td></tr>
+      <tr><td><b>Gasto</b></td><td>Bienes y servicios adquiridos para la actividad; asociado al momento de adquisición</td></tr>
+      <tr><td><b>Cadena de valor</b></td><td>Conjunto de actividades que una empresa realiza para crear, producir y entregar un bien o servicio</td></tr>
+      <tr><td><b>Valor agregado</b></td><td>Diferencia entre el valor de los insumos y el valor del producto final</td></tr>
+      <tr><td><b>Dinero</b></td><td>Todo activo o bien generalmente aceptado como medio de pago por los agentes económicos</td></tr>
+      <tr><td><b>Inflación</b></td><td>Aumento sostenido del nivel general de precios durante un período, que disminuye el poder adquisitivo</td></tr>
+      <tr><td><b>Tasa de interés</b></td><td>Costo del dinero en un período; también medida de riesgo de una inversión</td></tr>
+      <tr><td><b>Cashflow</b></td><td>Documento contable-financiero que mide los movimientos en efectivo y sus variaciones en un período</td></tr>
+      <tr><td><b>Derecho</b></td><td>Regula el funcionamiento de una comunidad determinada en un tiempo y espacio particular; producto del desarrollo geográfico e histórico de un pueblo</td></tr>
+      <tr><td><b>Obligación</b></td><td>Relación jurídica por la que el acreedor puede exigir del deudor una prestación destinada a satisfacer un interés lícito y, ante incumplimiento, obtenerla forzadamente</td></tr>
+      <tr><td><b>Contrato</b></td><td>Acto jurídico por el que dos o más partes manifiestan su consentimiento para crear, regular, modificar, transferir o extinguir relaciones jurídicas patrimoniales</td></tr>
+      <tr><td><b>Sociedad</b></td><td>Una o más personas organizadas conforme a un tipo legal se obligan a realizar aportes para producir o intercambiar bienes y servicios, participando de beneficios y soportando pérdidas</td></tr>
+      <tr><td><b>Derecho laboral</b></td><td>Rama del derecho para igualar a los sujetos del contrato laboral ante la ley</td></tr>
+      <tr><td><b>Contrato de trabajo</b></td><td>Una persona física se obliga a realizar actos, ejecutar obras o prestar servicios en favor de otra y en dependencia de ésta, mediante el pago de una remuneración</td></tr>
+      <tr><td><b>Régimen de promoción</b></td><td>Programas y medidas del Estado, por tiempo limitado, para favorecer la expansión, desarrollo, modernización e inversión de un sector</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout exam">Última pasada antes de entrar: costo vs. gasto, devengamiento vs. cobro, rentabilidad (costo) vs. margen (precio), TNA vs. TEA, los 4 sistemas de amortización y cuál conviene refinanciar, el árbol de hechos y actos jurídicos, SRL/SA/SAS, las 3 dependencias laborales, autodesarrollo excluido. Si eso está firme, aprobás.</div>
 
     </section>
 

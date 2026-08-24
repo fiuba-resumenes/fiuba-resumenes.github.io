@@ -188,6 +188,12 @@ Vp = 1.000 x 10,908 = $10.907,51</code></pre>
   <pre><code>Interes:      Ii = Saldo Deudor Anterior x i
 Amortizacion: Ai = P - Ii</code></pre>
   <p>Donde <b>P</b> es la cuota constante (el pago periódico) e <b>Ii</b> el interés del período i, calculado sobre el saldo deudor que quedó del período anterior. La amortización Ai (la porción de capital que se cancela en esa cuota) es lo que sobra de la cuota una vez descontado el interés. A lo largo del préstamo, la suma de todas las amortizaciones devuelve el capital original: <code>Capital = Sum(Ai)</code>.</p>
+  <p>Para ver cómo se comporta cada sistema, las figuras que siguen usan un mismo préstamo de referencia: capital de <b>$1.000</b>, al <b>10%</b> por período, en <b>4</b> cuotas.</p>
+  <figure class="diag">
+    <!--FIG:amort-frances-->
+    <figcaption>Sistema Francés con el préstamo de referencia: la cuota total no cambia; adentro, el interés cae y la amortización sube.</figcaption>
+  </figure>
+  <!--FIG:amort-frances-tabla-->
 
   <h4 id="e04-sistema-aleman">Sistema Alemán</h4>
   <p>Cuotas decrecientes, con amortización constante y una disminución progresiva de los intereses sobre saldos. Suele usarse en préstamos entre empresas.</p>
@@ -195,6 +201,11 @@ Amortizacion: Ai = P - Ii</code></pre>
 Interes:                Ii = Saldo Deudor Anterior x i
 Cuota:                  Pi = A + Ii</code></pre>
   <p>Acá <b>P</b> es el capital prestado y <b>n</b> el número de cuotas: la amortización A es siempre la misma, y la cuota Pi baja período a período porque el saldo deudor (y con él, el interés) disminuye.</p>
+  <figure class="diag">
+    <!--FIG:amort-aleman-->
+    <figcaption>Sistema Alemán con el préstamo de referencia: amortización fija, cuota que baja período a período.</figcaption>
+  </figure>
+  <!--FIG:amort-aleman-tabla-->
 
   <div class="warn">La letra <b>P</b> cambia de significado entre sistemas: en el sistema Francés es la cuota constante (<code>Ai = P - Ii</code>); en el Alemán, el Bullet y el Directo es el capital prestado (<code>A = P / n</code>, <code>Ii = P x i</code>). Conviene revisar siempre a qué se refiere P antes de aplicar una fórmula: el ejemplo de abajo lo muestra con números concretos.</div>
 
@@ -202,6 +213,11 @@ Cuota:                  Pi = A + Ii</code></pre>
   <p>Pago único al final del plazo: durante el préstamo solo se pagan los intereses periódicos, y el capital se devuelve entero al vencimiento. Suele usarse en bonos.</p>
   <pre><code>Cuota periodica (solo interes): Ii = P x i
 Al final del plazo:             se paga el capital P</code></pre>
+  <figure class="diag">
+    <!--FIG:amort-bullet-->
+    <figcaption>Sistema Bullet con el préstamo de referencia: sólo intereses hasta la última cuota, que carga toda la amortización de golpe.</figcaption>
+  </figure>
+  <!--FIG:amort-bullet-tabla-->
 
   <h4 id="e04-sistema-directo">Sistema Directo</h4>
   <p>Cuotas constantes de capital e intereses, pero calculados siempre sobre el capital inicial y no sobre el saldo deudor. Suelen ofrecerlo las entidades conocidas como "efectivo rápido".</p>
@@ -209,6 +225,11 @@ Al final del plazo:             se paga el capital P</code></pre>
 Interes:                Ii = P x i
 Cuota:                  Pi = A + Ii</code></pre>
   <p>La diferencia con el sistema Alemán es sutil pero importante: acá el interés Ii se calcula siempre sobre el capital inicial P, no sobre el saldo deudor restante, así que la cuota Pi también queda constante.</p>
+  <figure class="diag">
+    <!--FIG:amort-directo-->
+    <figcaption>Sistema Directo con el préstamo de referencia: el interés se calcula siempre sobre la deuda original, aunque el saldo ya haya bajado.</figcaption>
+  </figure>
+  <!--FIG:amort-directo-tabla-->
 
   <div class="ej"><b>Ejemplo.</b> Un préstamo de capital <b>P = $3.000</b>, a <b>i = 10%</b> por período, en <b>n = 3</b> cuotas.
     <p><b>Sistema Francés</b> (cuota constante = $1.206,34):</p>
@@ -250,6 +271,12 @@ Cuota:                  Pi = A + Ii</code></pre>
     <li><b>Sistema Bullet:</b> no se pagó nada de capital, solo intereses: el capital pendiente es siempre el total.</li>
     <li><b>Sistema Directo:</b> se pagó una cantidad constante de capital e intereses: el capital pendiente baja de forma lineal y previsible.</li>
   </ul>
+  <p>El gráfico compara el saldo de deuda de los cuatro sistemas con el préstamo de referencia ($1.000 al 10% en 4 cuotas): cuanto más abajo la línea, menos se debe a esa altura, y mejor parado se llega a una refinanciación.</p>
+  <figure class="diag">
+    <!--FIG:amort-saldos-->
+    <figcaption>Saldo de deuda de los cuatro sistemas, con el mismo préstamo. El <b>bullet</b> se mantiene plano en $1.000 hasta el final; el <b>alemán</b> baja parejo.</figcaption>
+  </figure>
+  <div class="idea">El <b>alemán</b> y el <b>directo</b> dibujan exactamente la misma línea de saldos, porque los dos amortizan P/n por período (por eso el directo va punteado). La diferencia entre ellos no está en el saldo sino en el <b>interés</b>: el alemán lo calcula sobre el saldo que va quedando ($250 en total) y el directo siempre sobre la deuda original ($400 en total).</div>
 
   <h3 id="e04-inflacion-tipo-cambio">Inflación y tipo de cambio</h3>
   <p>El cálculo de las tasas de interés debe considerar la inflación para reflejar el valor real del dinero a lo largo del tiempo. La tasa efectiva es nominal respecto de la inflación (no la descuenta); la tasa real sí está ajustada por inflación.</p>

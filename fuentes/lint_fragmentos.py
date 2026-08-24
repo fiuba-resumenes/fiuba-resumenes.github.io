@@ -17,7 +17,10 @@ from pathlib import Path
 SINTESIS = Path(__file__).resolve().parent / "sintesis"
 
 # Los unicos tokens de color que el adaptador define como alias.
-TOKENS_OK = {"--acc", "--acc2", "--linea"}
+# --acc3 (calido) y --acc4 (riesgo) son series extra para graficos con mas de
+# dos curvas; --grid es la reticula tenue de los graficos. Los tres entraron
+# con las figuras del merge de EBT y armar.py los define junto a los otros.
+TOKENS_OK = {"--acc", "--acc2", "--acc3", "--acc4", "--linea", "--grid"}
 
 # Void y elementos SVG que no cierran.
 VACIOS = {
@@ -29,6 +32,11 @@ VACIOS = {
 CLASES_OK = {
     "def", "idea", "ej", "warn", "examen", "mas", "preg", "diag",
     "nota", "ref", "glo", "unidad", "intro", "tablewrap",
+    # formula: recuadro para formulas sueltas. No es vocabulario del contrato
+    # original: entro con el merge del apunte EBT de echepereza (el machete de
+    # e98 la usa decenas de veces) y el shell ya trae su CSS, pantalla e
+    # impresion, asi que se acepta tal cual en vez de convertirla.
+    "formula",
 }
 
 # Palabras que en un apunte en espanol van con tilde y suelen aparecer sin

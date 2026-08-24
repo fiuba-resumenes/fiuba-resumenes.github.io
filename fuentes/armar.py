@@ -11,6 +11,7 @@ Uso:
     python3 armar.py            # todas
 """
 import re
+import shutil
 import sys
 import unicodedata
 from pathlib import Path
@@ -82,15 +83,69 @@ CSS_EXTRA = """
       background: var(--surface);
       text-align: center;
     }
-    /* Alias que usan los SVG de los fragmentos (ver contrato-fragmento.md).
-       --linea no apunta a --line: ese token es un borde decorativo de 1.2:1 y
-       como trazo de diagrama no se veria. Las flechas necesitan --muted. */
+    /* Alias que usan los SVG de los fragmentos y las figuras generadas (ver
+       contrato-fragmento.md). --linea no apunta a --line: ese token es un
+       borde decorativo de 1.2:1 y como trazo de diagrama no se veria. Las
+       flechas necesitan --muted. --grid si es --line: las reticulas de los
+       graficos tienen que ser mas tenues que los ejes. --acc3 y --acc4 son
+       series extra para graficos con mas de dos curvas. */
     :root, html[data-theme="dark"] {
       --linea: var(--muted);
       --acc: var(--accent);
       --acc2: var(--blue);
+      --acc3: var(--warm);
+      --acc4: var(--danger);
+      --grid: var(--line);
     }
     figure.diag svg { max-width: 100%; height: auto; color: var(--ink); }
+    /* Los PNG importados (capturas de Notion) traen texto oscuro sobre fondo
+       transparente: sin este fondo claro serian ilegibles en modo oscuro. */
+    figure.diag img {
+      display: block;
+      box-sizing: border-box;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+      padding: 10px;
+      border-radius: 10px;
+      background: #fff;
+    }
+    /* Leyenda de series de las figuras generadas (gen_figuras_*.py). */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 18px;
+      justify-content: center;
+      margin: 10px 0 2px;
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+    .legend i {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-right: 6px;
+      border-radius: 3px;
+      vertical-align: -1px;
+    }
+    /* Tarjetas de elasticidad (figuras elast-*). */
+    .elast-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+      gap: 10px;
+      margin: 16px 0 22px;
+    }
+    .elast-card {
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface-2);
+      text-align: center;
+    }
+    .elast-card svg { display: block; width: 100%; height: auto; margin-bottom: 8px; color: var(--ink); }
+    .elast-card b { display: block; font-size: 12.5px; color: var(--accent-ink); line-height: 1.25; }
+    .elast-card .ep { display: block; font-size: 17px; font-weight: 800; margin: 4px 0 2px; }
+    .elast-card small { display: block; color: var(--muted); font-size: 11.5px; line-height: 1.35; }
     figure.diag figcaption {
       margin-top: 12px;
       color: var(--muted);
@@ -153,6 +208,69 @@ def slug_kw(texto: str) -> str:
             vistas.add(w)
             out.append(w)
     return " ".join(out)
+
+
+def poner_figuras(frag: str, frag_dir: Path, uid: str) -> str:
+    """Reemplaza <!--FIG:nombre--> por fuentes/<materia>/figuras/nombre.html.
+
+    Las figuras son generadas (gen_figuras_<materia>.py, resultado commiteado)
+    y no pasan por lint_fragmentos, asi que los vetos del contrato que les
+    aplican se chequean aca, en cada build: nada de colores hardcodeados en
+    SVG (romperian la paleta por materia y el modo oscuro), SVG accesible, y
+    sin guiones largos ni middle dots.
+    """
+    def repl(m):
+        nombre = m.group(1)
+        f = frag_dir / "figuras" / f"{nombre}.html"
+        if not f.exists():
+            raise SystemExit(f"!! {uid}: falta la figura {f.relative_to(REPO)}")
+        cuerpo = f.read_text(encoding="utf-8").strip()
+        fallas = []
+        for c in re.findall(r'(?:fill|stroke)="(#[0-9a-fA-F]{3,8}|rgb[^"]*)"', cuerpo):
+            fallas.append(f"color hardcodeado {c}")
+        for sm in re.finditer(r"<svg([^>]*)>", cuerpo):
+            at = sm.group(1)
+            if "viewBox" not in at:
+                fallas.append("svg sin viewBox")
+            if not any(a in at for a in ("aria-label", "aria-labelledby", "aria-hidden")):
+                fallas.append("svg sin aria-label (o aria-hidden si es decorativo)")
+        for mal, nom in ((chr(0x2014), "guion largo"), (chr(0x2013), "guion medio"),
+                         (chr(0xB7), "middle dot")):
+            if mal in cuerpo:
+                fallas.append(nom)
+        if fallas:
+            raise SystemExit(f"!! figura {nombre} ({uid}): " + "; ".join(fallas))
+        return cuerpo
+    frag = re.sub(r"<!--\s*FIG:([a-z0-9-]+)\s*-->", repl, frag)
+    if "<!--FIG" in frag:
+        raise SystemExit(f"!! {uid}: marcador FIG con nombre invalido "
+                         "(el formato es <!--FIG:nombre-en-kebab-->)")
+    return frag
+
+
+def copiar_imagenes(doc: str, frag_dir: Path, out_dir: Path) -> list:
+    """Copia fuentes/<materia>/attachments/ -> <salida>/img/ y valida.
+
+    Solo se copian las imagenes que el apunte referencia; una referencia sin
+    archivo es error (pagina rota), un archivo sin referencia es aviso (peso
+    muerto en el repo). Devuelve la lista de fallas.
+    """
+    att = frag_dir / "attachments"
+    usadas = set(re.findall(r'src="img/([^"]+)"', doc))
+    disponibles = {p.name for p in att.glob("*")} if att.exists() else set()
+    faltan = sorted(usadas - disponibles)
+    if faltan:
+        return [f"imagenes referenciadas sin archivo en {att.name}/: {faltan[:6]}"]
+    sobran = sorted(disponibles - usadas)
+    if sobran:
+        print(f"  aviso: attachments sin usar: {sobran[:6]}")
+    if usadas:
+        destino = out_dir / "img"
+        destino.mkdir(parents=True, exist_ok=True)
+        for n in sorted(usadas):
+            shutil.copyfile(att / n, destino / n)
+        print(f"  imagenes: {len(usadas)} copiadas a {destino.relative_to(REPO)}/")
+    return []
 
 
 def transformar(frag: str, uid: str, numero: str) -> str:
@@ -240,7 +358,8 @@ def armar(cfg: dict) -> int:
             if not f.exists():
                 faltan.append(f.name)
                 continue
-            capitulos.append(transformar(f.read_text(encoding="utf-8"), uid, num))
+            frag = poner_figuras(f.read_text(encoding="utf-8"), frag_dir, uid)
+            capitulos.append(transformar(frag, uid, num))
     if faltan:
         print(f"!! faltan fragmentos de {cfg['clave']}: {faltan}", file=sys.stderr)
         return 1
@@ -321,7 +440,10 @@ def armar(cfg: dict) -> int:
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(doc, encoding="utf-8")
 
-    # 7. validacion
+    # 8. imagenes referenciadas
+    fallas_img = copiar_imagenes(doc, frag_dir, out.parent)
+
+    # 9. validacion
     ids = re.findall(r'\sid="([^"]+)"', doc)
     dup = sorted({i for i in ids if ids.count(i) > 1})
     rotos = sorted({h for h in re.findall(r'href="#([^"]+)"', doc)} - set(ids))
@@ -343,9 +465,12 @@ def armar(cfg: dict) -> int:
         print(f"  !! tokens CSS sin definir: {huerfanos}")
     if externos:
         print(f"  !! recursos externos: {externos[:4]}")
-    if not (dup or rotos or huerfanos or externos):
-        print("  ids unicos, anclas resuelven, tokens definidos, sin recursos externos")
-    return 1 if (dup or rotos or huerfanos or externos) else 0
+    for f_img in fallas_img:
+        print(f"  !! {f_img}")
+    if not (dup or rotos or huerfanos or externos or fallas_img):
+        print("  ids unicos, anclas resuelven, tokens definidos, imagenes en su "
+              "lugar, sin recursos externos")
+    return 1 if (dup or rotos or huerfanos or externos or fallas_img) else 0
 
 
 def main(argv) -> int:

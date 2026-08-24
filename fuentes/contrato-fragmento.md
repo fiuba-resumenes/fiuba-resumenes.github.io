@@ -43,7 +43,9 @@ sin `<style>` ni `<script>` propios, sin recursos externos de ningun tipo).
 - `<figure class="diag">` para diagramas: SVG inline simple (cajas, flechas,
   texto) + `<figcaption>`. Paleta del SVG: solo `currentColor` y los tokens
   `var(--acc)` (acento), `var(--acc2)` (secundario, anotaciones y lineas
-  punteadas) y `var(--linea)` (trazo neutro, cajas y flechas). Nada de colores
+  punteadas), `var(--linea)` (trazo neutro, cajas y flechas), y para graficos
+  con datos: `var(--acc3)` (serie calida), `var(--acc4)` (serie de riesgo o
+  alerta) y `var(--grid)` (reticula, mas tenue que --linea). Nada de colores
   hardcodeados.
   Esos tres nombres NO son tokens del shell: `adaptar_estetica.py` los define
   como alias en `CSS_EXTRA`, apuntando a tokens reales que se ven en los dos
@@ -58,6 +60,25 @@ sin `<style>` ni `<script>` propios, sin recursos externos de ningun tipo).
   las secciones del apunte donde se estudia el tema.
 - `<dl class="glo">` solo en el glosario, que se genera automaticamente con
   `armar_glosario.py` a partir de los bloques `.def`: no se escribe a mano.
+- `<div class="formula">` recuadro para una formula suelta (la sintaxis usa
+  `<sub>`/`<sup>`; multiplicacion con la x de multiplicar, nunca middle dot).
+
+## Figuras generadas e imagenes (opcionales por materia)
+
+- `<!--FIG:nombre-->` inserta `fuentes/<materia>/figuras/nombre.html` al
+  armar. Es para figuras que salen de un script (graficos con datos, tablas
+  calculadas, tarjetas): el script `gen_figuras_<materia>.py` las escribe y
+  su resultado va commiteado, asi el build nunca depende de correrlo. Las
+  figuras cumplen las mismas reglas de color y accesibilidad que los SVG de
+  fragmento (armar.py las valida en cada build); un SVG puramente decorativo
+  puede llevar `aria-hidden="true"` en vez de `aria-label`.
+- `<img src="img/nombre.png">` (dentro de `figure.diag`, con figcaption)
+  referencia una imagen de `fuentes/<materia>/attachments/`. Nombres
+  descriptivos en kebab-case, nunca hashes. El build copia a `<salida>/img/`
+  solo las imagenes usadas, falla si falta alguna y avisa si sobran. Antes de
+  sumar una imagen, preguntarse si no conviene un SVG con tokens: la imagen
+  no se adapta al tema ni a la paleta (el shell le pone fondo blanco para
+  que sobreviva al modo oscuro).
 
 ## Contenido
 
