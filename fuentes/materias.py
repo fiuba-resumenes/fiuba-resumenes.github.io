@@ -108,6 +108,8 @@ EBT = {
     "prefijo_ls": "ebt",
     "titulo_tab": "Empresas de Base Tecnológica 1 - Apunte completo",
     "marca": "Empresas de Base Tecnológica",
+    # nombre bajo el icono al instalar la PWA (opcional, si "marca" es larga)
+    "nombre_corto": "EBT 1",
     "h1": "Empresas de Base Tecnológica",
     "hero": ("Apunte de EBT 1 (FIUBA), las dos mitades de la materia: economía "
              "(valor, contabilidad, finanzas y evaluación de proyectos) y "

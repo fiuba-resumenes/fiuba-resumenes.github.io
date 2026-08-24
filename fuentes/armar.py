@@ -10,6 +10,8 @@ Uso:
     python3 armar.py ebt
     python3 armar.py            # todas
 """
+import hashlib
+import json
 import re
 import shutil
 import sys
@@ -328,20 +330,140 @@ def sidebar(grupos) -> str:
     return "\n".join(partes)
 
 
+# Glifo de nodos compartido por el favicon y el icono de la PWA: la inicial de
+# la materia no sirve como marca, y tenerlo una sola vez evita que diverjan.
+# Ocupa el rango 10..54 de un viewBox de 64: entra en el 80% central, la zona
+# segura de un icono maskable.
+GLIFO_NODOS = ("<g stroke='white' stroke-width='3' fill='white'>"
+               "<line x1='32' y1='32' x2='32' y2='14' />"
+               "<line x1='32' y1='32' x2='16' y2='44' />"
+               "<line x1='32' y1='32' x2='48' y2='44' />"
+               "<circle cx='32' cy='32' r='6'/>"
+               "<circle cx='32' cy='13' r='5'/>"
+               "<circle cx='15' cy='45' r='5'/>"
+               "<circle cx='49' cy='45' r='5'/>"
+               "</g>")
+
+
 def favicon_de(hexcolor: str) -> str:
-    """Icono propio por materia: la inicial no sirve, se usa un glifo de nodos."""
-    return ("data:image/svg+xml,"
-            "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E"
-            f"%3Crect width='64' height='64' rx='14' fill='%23{hexcolor}'/%3E"
-            "%3Cg stroke='white' stroke-width='3' fill='white'%3E"
-            "%3Cline x1='32' y1='32' x2='32' y2='14' /%3E"
-            "%3Cline x1='32' y1='32' x2='16' y2='44' /%3E"
-            "%3Cline x1='32' y1='32' x2='48' y2='44' /%3E"
-            "%3Ccircle cx='32' cy='32' r='6'/%3E"
-            "%3Ccircle cx='32' cy='13' r='5'/%3E"
-            "%3Ccircle cx='15' cy='45' r='5'/%3E"
-            "%3Ccircle cx='49' cy='45' r='5'/%3E"
-            "%3C/g%3E%3C/svg%3E")
+    """Icono propio por materia, como data URI para la pestana."""
+    svg = ("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>"
+           f"<rect width='64' height='64' rx='14' fill='#{hexcolor}'/>"
+           f"{GLIFO_NODOS}</svg>")
+    return "data:image/svg+xml," + (svg.replace("#", "%23")
+                                    .replace("<", "%3C").replace(">", "%3E"))
+
+
+def icono_svg(hexcolor: str) -> str:
+    """El mismo glifo como archivo suelto para el manifest de la PWA.
+
+    Fondo a sangre completa y glifo en la zona segura: el mismo dibujo sirve
+    para purpose "any" y "maskable" (la plataforma recorta la forma que quiera
+    sin comerse el glifo).
+    """
+    return ("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>"
+            f"<rect width='64' height='64' fill='#{hexcolor}'/>"
+            f"{GLIFO_NODOS}</svg>\n")
+
+
+def manifest_de(cfg: dict) -> str:
+    """Manifest de la PWA, derivado de la config de la materia.
+
+    No hay campos nuevos que llenar: identidad, colores y descripcion son los
+    mismos que ya usa la pagina. El fondo sale de --bg de la paleta clara.
+    """
+    fondo = re.search(r"--bg:\s*(#[0-9a-fA-F]+)", cfg["paleta_light"]).group(1)
+    return json.dumps({
+        "name": cfg["titulo_tab"],
+        "short_name": cfg.get("nombre_corto", cfg["marca"]),
+        "description": cfg["descripcion"],
+        "lang": "es",
+        "id": "./",
+        "start_url": "./",
+        "scope": "./",
+        "display": "standalone",
+        "background_color": fondo,
+        "theme_color": cfg["theme_color"],
+        "icons": [
+            {"src": "icon.svg", "sizes": "any", "type": "image/svg+xml",
+             "purpose": "any maskable"},
+            {"src": "icon-192.png", "sizes": "192x192", "type": "image/png",
+             "purpose": "any maskable"},
+            {"src": "icon-512.png", "sizes": "512x512", "type": "image/png",
+             "purpose": "any maskable"},
+        ],
+    }, ensure_ascii=False, indent=2) + "\n"
+
+
+# Los PNG los rasteriza gen_iconos.py con ImageMagick y van commiteados: el
+# build no depende de herramientas externas, aca solo se valida que existan.
+ICONOS_PNG = ("icon-192.png", "icon-512.png", "apple-touch-icon.png")
+
+SW_PLANTILLA = """\
+// Generado por armar.py: no editar a mano.
+// Precachea el apunte completo. La version del cache sale del hash del
+// contenido: el archivo solo cambia cuando cambia algo, y ahi el navegador
+// reinstala el service worker y renueva el cache en la visita siguiente.
+const CACHE = '%(cache)s';
+const ARCHIVOS = %(archivos)s;
+
+self.addEventListener('install', (e) => {
+  e.waitUntil(caches.open(CACHE)
+    .then((c) => c.addAll(ARCHIVOS))
+    .then(() => self.skipWaiting()));
+});
+
+self.addEventListener('activate', (e) => {
+  // El CacheStorage es por origen, no por scope: se borran solo los caches
+  // viejos de ESTA materia, sin pisar los de los otros apuntes.
+  e.waitUntil(caches.keys()
+    .then((claves) => Promise.all(claves
+      .filter((k) => k.startsWith('%(prefijo)s') && k !== CACHE)
+      .map((k) => caches.delete(k))))
+    .then(() => self.clients.claim()));
+});
+
+self.addEventListener('fetch', (e) => {
+  if (e.request.method !== 'GET') return;
+  e.respondWith(caches.match(e.request, { ignoreSearch: true })
+    .then((r) => r || fetch(e.request)));
+});
+"""
+
+
+def generar_pwa(cfg: dict, out_dir: Path) -> list:
+    """Escribe manifest.webmanifest, icon.svg y sw.js junto al apunte.
+
+    El precache lista el apunte entero (pagina, manifest, iconos, imagenes):
+    instalado, funciona completo sin red. Corre despues de copiar_imagenes
+    para hashear lo que de verdad quedo en la salida.
+    """
+    fallas = []
+    (out_dir / "icon.svg").write_text(icono_svg(cfg["favicon_hex"]),
+                                      encoding="utf-8")
+    (out_dir / "manifest.webmanifest").write_text(manifest_de(cfg),
+                                                  encoding="utf-8")
+    for png in ICONOS_PNG:
+        if not (out_dir / png).exists():
+            fallas.append(f"falta {png}: correr python3 fuentes/gen_iconos.py "
+                          f"{cfg['clave']}")
+    archivos = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg"]
+    archivos += [f"./{p}" for p in ICONOS_PNG]
+    archivos += sorted(f"./{ruta}" for ruta in
+                       set(re.findall(r'src="(img/[^"]+)"',
+                                      (out_dir / "index.html")
+                                      .read_text(encoding="utf-8"))))
+    resumen = hashlib.sha256()
+    for ruta in archivos:
+        archivo = out_dir / ruta
+        if archivo.is_file():
+            resumen.update(archivo.read_bytes())
+    (out_dir / "sw.js").write_text(SW_PLANTILLA % {
+        "cache": f"{cfg['clave']}-{resumen.hexdigest()[:12]}",
+        "prefijo": f"{cfg['clave']}-",
+        "archivos": json.dumps(archivos, indent=2),
+    }, encoding="utf-8")
+    return fallas
 
 
 def armar(cfg: dict) -> int:
@@ -405,10 +527,9 @@ def armar(cfg: dict) -> int:
         print(f"!! autoria de {cfg['clave']}: {e}", file=sys.stderr)
         return 1
 
-    # 6. PWA y botones de la otra materia
-    doc = re.sub(r'\s*<link rel="manifest"[^>]*>', "", doc)
-    doc = re.sub(r'\s*<link rel="apple-touch-icon"[^>]*>', "", doc)
-    doc = re.sub(r"\s*<script>[^<]*serviceWorker.*?</script>", "", doc, flags=re.S)
+    # 6. botones de la otra materia. La PWA del shell (link al manifest,
+    # apple-touch-icon, boton de instalar y registro de sw.js) se conserva:
+    # los hrefs son relativos y generar_pwa escribe esos archivos por materia.
     doc = re.sub(r'\s*<a class="icon-button wide" href="resumen\.html">.*?</a>', "",
                  doc, flags=re.S)
     doc = re.sub(r'<link rel="icon" href="data:image/png;base64,[^"]+"',
@@ -443,6 +564,9 @@ def armar(cfg: dict) -> int:
     # 8. imagenes referenciadas
     fallas_img = copiar_imagenes(doc, frag_dir, out.parent)
 
+    # 8 bis. PWA de la materia
+    fallas_img += generar_pwa(cfg, out.parent)
+
     # 9. validacion
     ids = re.findall(r'\sid="([^"]+)"', doc)
     dup = sorted({i for i in ids if ids.count(i) > 1})
@@ -469,7 +593,7 @@ def armar(cfg: dict) -> int:
         print(f"  !! {f_img}")
     if not (dup or rotos or huerfanos or externos or fallas_img):
         print("  ids unicos, anclas resuelven, tokens definidos, imagenes en su "
-              "lugar, sin recursos externos")
+              "lugar, sin recursos externos, PWA al dia")
     return 1 if (dup or rotos or huerfanos or externos or fallas_img) else 0
 
 

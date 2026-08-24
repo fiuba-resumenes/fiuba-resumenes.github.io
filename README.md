@@ -56,6 +56,20 @@ archivo (sin colores hardcodeados y con SVG accesible) y cada `<img>` con su
 archivo en `attachments/` (avisa si sobran). `fuentes/lint_fragmentos.py`
 revisa cada fragmento contra `fuentes/contrato-fragmento.md`.
 
+### PWA
+
+Cada apunte es instalable y funciona offline. No hay nada que configurar por
+materia: `armar.py` genera en cada build el `manifest.webmanifest` (identidad
+y colores salen de `materias.py`), el `icon.svg` (mismo glifo que el favicon)
+y el `sw.js`, que precachea el apunte completo. La versión del cache es el
+hash del contenido: el service worker solo cambia cuando cambia algo, y ahí
+el navegador renueva el cache en la visita siguiente.
+
+Lo único que no genera el build son los PNG del ícono (los piden iOS y el
+instalador de Chrome): los rasteriza `fuentes/gen_iconos.py` con ImageMagick
+y van commiteados. Se corre una sola vez por materia nueva, o si cambia su
+`favicon_hex`; el build falla avisando si faltan.
+
 ## Sincronizar entre dispositivos
 
 `fuentes/sync.html` es un módulo que los builders inyectan antes de `</body>`.

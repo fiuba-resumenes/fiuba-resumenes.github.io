@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Apunte completo de Empresas de Base Tecnológica 1 (FIUBA).">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2333704b'/%3E%3Cg stroke='white' stroke-width='3' fill='white'%3E%3Cline x1='32' y1='32' x2='32' y2='14' /%3E%3Cline x1='32' y1='32' x2='16' y2='44' /%3E%3Cline x1='32' y1='32' x2='48' y2='44' /%3E%3Ccircle cx='32' cy='32' r='6'/%3E%3Ccircle cx='32' cy='13' r='5'/%3E%3Ccircle cx='15' cy='45' r='5'/%3E%3Ccircle cx='49' cy='45' r='5'/%3E%3C/g%3E%3C/svg%3E" type="image/png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="theme-color" content="#33704b">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -6215,6 +6217,42 @@ Cuota:                  Pi = A + Ii</code></pre>
       link.remove();
       URL.revokeObjectURL(url);
     });
+  </script>
+  <script>
+    const installAppButton = document.getElementById('install-app');
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    const isIOS = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+    let installPrompt = null;
+
+    if (!isStandalone && isIOS) installAppButton.hidden = false;
+
+    window.addEventListener('beforeinstallprompt', event => {
+      event.preventDefault();
+      installPrompt = event;
+      installAppButton.hidden = false;
+    });
+
+    installAppButton.addEventListener('click', async () => {
+      if (installPrompt) {
+        installPrompt.prompt();
+        const choice = await installPrompt.userChoice;
+        installPrompt = null;
+        if (choice.outcome === 'accepted') installAppButton.hidden = true;
+        return;
+      }
+      if (isIOS) window.alert('En Safari, tocá Compartir y después Agregar a inicio.');
+    });
+
+    window.addEventListener('appinstalled', () => {
+      installPrompt = null;
+      installAppButton.hidden = true;
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
   </script>
 <!-- ============================================================================
      Sincronizacion de notas y resaltados entre dispositivos.
