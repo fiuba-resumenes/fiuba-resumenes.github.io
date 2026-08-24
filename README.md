@@ -21,14 +21,18 @@ autocontenido: sin build en el servidor, sin dependencias, sin CDN.
 | Empresas de Base Tecnológica 1 | [/empresas-de-base-tecnologica](https://fiuba-resumenes.github.io/empresas-de-base-tecnologica/) | repo [empresas-de-base-tecnologica](https://github.com/fiuba-resumenes/empresas-de-base-tecnologica) | echepereza, flopeztancredi |
 | Empresas de Base Tecnológica 2 | [/empresas-de-base-tecnologica-2](https://fiuba-resumenes.github.io/empresas-de-base-tecnologica-2/) | repo [empresas-de-base-tecnologica-2](https://github.com/fiuba-resumenes/empresas-de-base-tecnologica-2) | echepereza, flopeztancredi |
 | Ciencia de Datos | [/ciencia-de-datos](https://fiuba-resumenes.github.io/ciencia-de-datos/) | repo [ciencia-de-datos](https://github.com/fiuba-resumenes/ciencia-de-datos) | echepereza, flopeztancredi |
-| Sistemas Distribuidos (75.74) | [/sistemas-distribuidos](https://flopeztancredi.github.io/sistemas-distribuidos/) | repo [sistemas-distribuidos](https://github.com/flopeztancredi/sistemas-distribuidos) | flopeztancredi |
-| Aprendizaje Automático (75.06) | [/aprendizaje-automatico](https://flopeztancredi.github.io/aprendizaje-automatico/) | repo [aprendizaje-automatico](https://github.com/flopeztancredi/aprendizaje-automatico) | flopeztancredi |
+| Sistemas Distribuidos (75.74) | [/sistemas-distribuidos](https://fiuba-resumenes.github.io/sistemas-distribuidos/) | repo [sistemas-distribuidos](https://github.com/fiuba-resumenes/sistemas-distribuidos) | flopeztancredi |
+| Aprendizaje Automático (75.06) | [/aprendizaje-automatico](https://fiuba-resumenes.github.io/aprendizaje-automatico/) | repo [aprendizaje-automatico](https://github.com/fiuba-resumenes/aprendizaje-automatico) | flopeztancredi |
 | Programación Concurrente | [echepereza.github.io/programacion-concurrente](https://echepereza.github.io/programacion-concurrente/) | repo [programacion-concurrente](https://github.com/echepereza/programacion-concurrente) | echepereza |
 
-Las últimas tres todavía viven fuera del org y algunas con su propio
-pipeline de build; se van sumando de a una. Redes y EBT eran markdown
-servido con just-the-docs; las URLs viejas siguen vivas, `docs/redes/` y
-`docs/ebt/` (y `/ebt/`) redirigen.
+Todas las materias salvo Programación Concurrente ya están bajo el org.
+Sistemas Distribuidos ya usa el motor compartido; a Aprendizaje Automático
+le falta convertir su HTML monolítico a fragmentos. Redes y EBT eran
+markdown servido con just-the-docs; las URLs viejas siguen vivas,
+`docs/redes/` y `docs/ebt/` (y `/ebt/`) redirigen. Las URLs viejas de
+Sistemas Distribuidos y Aprendizaje Automático en `flopeztancredi.github.io`
+también redirigen, con una banda que pide sincronizar las notas antes de
+pasarse.
 
 ## Cómo contribuir a una materia
 
