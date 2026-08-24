@@ -1,6 +1,7 @@
-# Apuntes FIUBA
+# FIUBA Resúmenes
 
-Portada de mis apuntes de Ingeniería en Informática: **https://flopeztancredi.github.io**
+Apuntes de Ingeniería en Informática (FIUBA), de varios autores y abiertos a
+contribuciones: **https://fiuba-resumenes.github.io**
 
 Sitio estático puro, sin Jekyll (`.nojekyll`). Todo lo que se publica es HTML
 autocontenido: sin build en el servidor, sin dependencias, sin CDN.
@@ -11,11 +12,11 @@ autocontenido: sin build en el servidor, sin dependencias, sin CDN.
 |---|---|---|---|
 | Sistemas Distribuidos (75.74) | [/sistemas-distribuidos](https://flopeztancredi.github.io/sistemas-distribuidos/) | repo [sistemas-distribuidos](https://github.com/flopeztancredi/sistemas-distribuidos) | flopeztancredi |
 | Aprendizaje Automático (75.06) | [/aprendizaje-automatico](https://flopeztancredi.github.io/aprendizaje-automatico/) | repo [aprendizaje-automatico](https://github.com/flopeztancredi/aprendizaje-automatico) | flopeztancredi |
-| Redes (75.43) | [/redes](https://flopeztancredi.github.io/redes/) | este repo | echepereza, flopeztancredi |
-| Empresas de Base Tecnológica 1 | [/empresas-de-base-tecnologica](https://flopeztancredi.github.io/empresas-de-base-tecnologica/) | este repo | echepereza, flopeztancredi |
-| Empresas de Base Tecnológica 2 | [/empresas-de-base-tecnologica-2](https://flopeztancredi.github.io/empresas-de-base-tecnologica-2/) | este repo | echepereza, flopeztancredi |
+| Redes (75.43) | [/redes](https://fiuba-resumenes.github.io/redes/) | este repo | echepereza, flopeztancredi |
+| Empresas de Base Tecnológica 1 | [/empresas-de-base-tecnologica](https://fiuba-resumenes.github.io/empresas-de-base-tecnologica/) | este repo | echepereza, flopeztancredi |
+| Empresas de Base Tecnológica 2 | [/empresas-de-base-tecnologica-2](https://fiuba-resumenes.github.io/empresas-de-base-tecnologica-2/) | este repo | echepereza, flopeztancredi |
 | Programación Concurrente | [echepereza.github.io/programacion-concurrente](https://echepereza.github.io/programacion-concurrente/) | repo [programacion-concurrente](https://github.com/echepereza/programacion-concurrente) | echepereza |
-| Ciencia de Datos | [/ciencia-de-datos](https://flopeztancredi.github.io/ciencia-de-datos/) | este repo | echepereza, flopeztancredi |
+| Ciencia de Datos | [/ciencia-de-datos](https://fiuba-resumenes.github.io/ciencia-de-datos/) | este repo | echepereza, flopeztancredi |
 
 Redes y EBT eran markdown servido con just-the-docs. Se convirtieron al mismo
 formato que los otros dos: un solo HTML por materia, con buscador, resaltador,

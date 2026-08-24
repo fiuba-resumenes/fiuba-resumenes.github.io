@@ -8,7 +8,9 @@
 //
 // Deploy: ver README.md, son tres comandos.
 
-const ORIGENES = ['https://flopeztancredi.github.io'];
+// El origen viejo queda un tiempo para que los lectores sincronicen sus
+// notas antes de pasarse al nuevo.
+const ORIGENES = ['https://fiuba-resumenes.github.io', 'https://flopeztancredi.github.io'];
 const MAX_BYTES = 512 * 1024;
 const ID_VALIDO = /^[a-f0-9]{32}$/;
 const UN_ANIO = 60 * 60 * 24 * 365;
