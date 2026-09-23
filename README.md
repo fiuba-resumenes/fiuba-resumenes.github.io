@@ -23,6 +23,7 @@ autocontenido: sin build en el servidor, sin dependencias, sin CDN.
 | Ciencia de Datos | [/ciencia-de-datos](https://fiuba-resumenes.github.io/ciencia-de-datos/) | repo [ciencia-de-datos](https://github.com/fiuba-resumenes/ciencia-de-datos) | echepereza, flopeztancredi |
 | Sistemas Distribuidos (75.74) | [/sistemas-distribuidos](https://fiuba-resumenes.github.io/sistemas-distribuidos/) | repo [sistemas-distribuidos](https://github.com/fiuba-resumenes/sistemas-distribuidos) | flopeztancredi |
 | Aprendizaje Automático (75.06) | [/aprendizaje-automatico](https://fiuba-resumenes.github.io/aprendizaje-automatico/) | repo [aprendizaje-automatico](https://github.com/fiuba-resumenes/aprendizaje-automatico) | flopeztancredi |
+| Arquitectura de Software (TB034) | [/arquitectura](https://fiuba-resumenes.github.io/arquitectura/) | repo [arquitectura](https://github.com/fiuba-resumenes/arquitectura) | flopeztancredi |
 | Programación Concurrente | [echepereza.github.io/programacion-concurrente](https://echepereza.github.io/programacion-concurrente/) | repo [programacion-concurrente](https://github.com/echepereza/programacion-concurrente) | echepereza |
 
 Todas las materias salvo Programación Concurrente ya están bajo el org.
